@@ -1,0 +1,76 @@
+{
+  "expectations": [
+    {
+      "text": "Se identifican al menos 2 Features",
+      "passed": true,
+      "evidence": "Two Features present: '#### Feature: Visitor Views Landing Page Toast' (line 41) and '#### Feature: Visitor Views Signup Page Toast' (line 72)."
+    },
+    {
+      "text": "Cada Feature tiene al menos 3 User Tasks",
+      "passed": true,
+      "evidence": "Feature 1 has 3 User Tasks: 'View Landing Page Toast', 'Pause Toast by Hovering', 'Dismiss Toast' (lines 45,49,53). Feature 2 has 3 User Tasks: 'View Signup Page Toast', 'Pause Toast by Hovering', 'Dismiss Toast' (lines 76,80,84)."
+    },
+    {
+      "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] — sin cláusulas adicionales ni conjunciones en el nombre",
+      "passed": true,
+      "evidence": "'Visitor Views Landing Page Toast' and 'Visitor Views Signup Page Toast' both follow Actor+Verb+Object with no conjunctions or extra clauses."
+    },
+    {
+      "text": "Los actores de las Features reflejan los actores del PRD: Visitor (visitante no autenticado) y/o Coach — NOT 'System', 'Sistema', 'Engineer', 'Equipo de producto', ni 'Equipo de ingeniería'",
+      "passed": true,
+      "evidence": "Both Feature names use 'Visitor' as actor; no System/Sistema/Engineer/Equipo terms appear as Feature actors."
+    },
+    {
+      "text": "Ningún User Task incluye el Actor como prefijo",
+      "passed": true,
+      "evidence": "All User Task names start directly with a verb: 'View Landing Page Toast', 'Pause Toast by Hovering', 'Dismiss Toast', 'View Signup Page Toast' — none prefixed with 'Visitor'."
+    },
+    {
+      "text": "Ningún User Task usa verbos genéricos de gestión: Manage, Handle, Gestionar, Manejar, Administrar",
+      "passed": true,
+      "evidence": "Task verbs used are View, Pause, Dismiss — none of the prohibited generic management verbs appear."
+    },
+    {
+      "text": "Ningún User Task contiene una conjunción ('y', 'and', 'o', 'or') que indique bundling",
+      "passed": true,
+      "evidence": "Grep of all '##### User Task'/'##### System Task' heading lines shows no bundling conjunctions in any task name (View Landing Page Toast, Pause Toast by Hovering, Dismiss Toast, View Signup Page Toast, Auto-Dismiss Toast x2)."
+    },
+    {
+      "text": "Ningún User Task describe una operación interna del sistema — no aparece sessionStorage, IntersectionObserver, Redis, thresholds, SQL ni endpoints en los nombres de Tasks",
+      "passed": true,
+      "evidence": "Grep for sessionStorage/IntersectionObserver/Redis/threshold/SQL/endpoint across the whole file shows these terms only appear in the Discovery Context prose (lines 12,13,18,28) and Feature Dependencies (line 97), never inside a Task or Feature name/heading."
+    },
+    {
+      "text": "Ningún nombre de Feature ni User Task contiene términos de implementación técnica (sessionStorage, IntersectionObserver, Redis, GET /api/social-proof, feature flag key names)",
+      "passed": true,
+      "evidence": "Same grep confirms 'GET /api/social-proof' and 'feature flag' only appear in Discovery Context / Feature Dependencies discussion, not in any Feature or Task heading."
+    },
+    {
+      "text": "Todas las System Tasks (si las hay) tienen un campo Trigger explícito",
+      "passed": true,
+      "evidence": "Both System Tasks include an explicit '**Trigger:**' line (lines 58 and 89) describing the ~8s countdown elapsing without hover/dismiss."
+    },
+    {
+      "text": "El scope generado es trazable al PRD — no se añaden Features no descritas en el PRD",
+      "passed": true,
+      "evidence": "Both Features (landing toast, signup toast) map directly to PRD US-1/US-2 and FR-2 placement table; Feature Dependencies section explicitly excludes non-PRD-derived scope (feature-flag config, A/B test setup) rather than inventing new Features."
+    },
+    {
+      "text": "Las capacidades clave del PRD están cubiertas: que el visitante vea prueba social, que pueda descartar el toast, que no se repita en la misma sesión, que los usuarios autenticados no lo vean",
+      "passed": true,
+      "evidence": "'View Landing/Signup Page Toast' tasks cover seeing social proof; 'Dismiss Toast' covers manual dismissal; task descriptions state 'only once per session' (lines 47, 78) covering non-repetition; 'Hidden' UI state (line 64) and Discovery Context explicitly note authenticated coaches never see the toast."
+    },
+    {
+      "text": "El System Task con trigger temporal genuino (auto-dismiss del toast tras ~8s sin hover) permanece standalone — es una transición de workflow autónoma real, no debe embeberse",
+      "passed": true,
+      "evidence": "'System Task 1.1: Auto-Dismiss Toast' / 'System Task 2.1: Auto-Dismiss Toast' remain standalone with Trigger explicitly reasoned as 'an autonomous timeout, not a response to a specific user action' (lines 58, 89), while hover-pause and manual dismiss remain embedded User Tasks."
+    },
+    {
+      "text": "Todo System Task que permanezca independiente usa el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita) y su Trigger fue evaluado contra el test de transición de workflow (autónomo) vs acción directa de usuario con respuesta indivisible",
+      "passed": true,
+      "evidence": "Headings are real markdown level-5 headings '##### System Task 1.1: Auto-Dismiss Toast' / '##### System Task 2.1: Auto-Dismiss Toast' (not bold), matching the skill's own template format 'System Task {N}.{M}: [Verb] [Object]' (per SKILL.md line 168/253). Trigger text explicitly applies the autonomous-transition-vs-indivisible-user-action test."
+    }
+  ],
+  "summary": {"passed": 14, "failed": 0, "total": 14, "pass_rate": 1.0},
+  "eval_feedback": {"overall": "All 14 assertions pass on the literal text of features-backbone.md. Contamination risk: the actor-naming assertion ('Los actores... Visitor/Coach — NOT System...') and, to a lesser extent, the 'no actor prefix'/'no conjunction'/'no technical terms in names' formatting assertions are exactly the kind of surface-level, literally-quotable checks the executor could satisfy simply by having read the answer key rather than by genuine skill-driven reasoning — the executor admitted this for the actor-naming decision specifically. By contrast, the System Task classification assertions (the workflow-transition test correctly keeping auto-dismiss standalone while embedding hover-pause/manual-dismiss/session-gating/threshold-gating as preconditions instead of System Tasks) show real methodological work: the Discovery Context and body text lay out multi-step reasoning (distinguishing autonomous timeout from indivisible user-response, and distinguishing a display precondition from a workflow transition) that goes well beyond restating assertion text, and would be much harder to fake by pattern-matching the eval file alone. The PRD-traceability and coverage-of-key-capabilities assertions likewise required actually parsing the PRD's FR/US sections rather than the eval file, so those are also more likely genuine."}
+}

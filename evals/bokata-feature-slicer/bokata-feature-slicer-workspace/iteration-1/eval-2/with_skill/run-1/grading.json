@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "La sección '## 💀 Walking Skeleton' cubre las 6 User Tasks (Browses, Filters, Sorts, Searches, Updates, Deletes)",
+      "passed": true,
+      "evidence": "Lines 19, 25, 31, 37, 43, 49 contain '### User Task 1: Browses Video Collection', '### User Task 2: Filters Videos by Criteria', '### User Task 3: Sorts Video List', '### User Task 4: Searches Videos by Title or Tag', '### User Task 5: Updates Video Metadata', '### User Task 6: Deletes Video' — all 6 tasks from the source feature file are represented as sub-sections under '## 💀 Walking Skeleton'."
+    },
+    {
+      "text": "Cada item del Walking Skeleton es la opción genuinamente más simple viable, construible en 1-3 días",
+      "passed": true,
+      "evidence": "Each item picks the minimal viable variant and pushes complexity to the backlog: 'Fetch All Videos (No Pagination)' (pagination/infinite-scroll deferred to backlog), 'Single Filter Dropdown (Status Only)' (multi-filter/multi-select deferred), 'Single Sort Dropdown (Date Only)' (multi-criteria sort deferred), 'Basic Search Text Field' + 'Exact Substring Match' (fuzzy/weighted search deferred), 'Update Video Record Fields Directly' (no history/optimistic-concurrency, deferred), 'Hard Delete Video Record' + 'Synchronous Mux Asset Deletion Call' (soft-delete/async-queue deferred). Sort task explicitly notes only 3 steps are needed for the skeleton ('sorting acts on the already-retrieved list from Task 1, so no separate Data-layer step is needed'), showing deliberate minimization rather than padding."
+    },
+    {
+      "text": "El Walking Skeleton NO colapsa Filter/Sort/Search en un único item genérico de 'búsqueda' — son Steps/Increments distintos por venir de User Tasks distintas",
+      "passed": true,
+      "evidence": "Filters, Sorts, and Searches are three separate '### User Task' sections (2, 3, 4) each with their own distinct steps (e.g., 'Single Filter Dropdown (Status Only)' vs 'Single Sort Dropdown (Date Only)' vs 'Basic Search Text Field'), never merged into one generic search item."
+    },
+    {
+      "text": "El item de Walking Skeleton para 'Deletes Video' es reversible o documenta explícitamente por qué el borrado no puede deshacerse (dado que los créditos no se reembolsan)",
+      "passed": true,
+      "evidence": "The Assumptions section explicitly states: 'Video deletion is a genuine hard delete (matches \"permanently removes\"), including a synchronous call to remove the corresponding Mux asset, consistent with \"deletion does not refund credits\" and no soft-delete/undo requirement being stated.' Additionally the skeleton step 'Basic Confirm Modal' includes '...and a note that credits are not refunded', directly tying the irreversibility to the credit rule."
+    },
+    {
+      "text": "La sección '## 🏗️ Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+      "passed": true,
+      "evidence": "Line 58 '## 🏗️ Increments Backlog' is followed by the same 6 '### User Task' sub-headers (lines 61, 74, 86, 95, 106, 117: Browses, Filters, Sorts, Searches, Updates, Deletes), each listing multiple additional increments (e.g., 'Fetch Videos with Pagination', 'Multiple Filter Dropdowns', 'Soft Delete with Recovery Window')."
+    },
+    {
+      "text": "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+      "passed": true,
+      "evidence": "Every checklist line in both the Walking Skeleton and Increments Backlog follows the pattern '- [ ] **[User Task Name]** ...', e.g. '- [ ] **[Browses Video Collection]** Open Library on Tab Navigation...' (line 20) and '- [ ] **[Deletes Video]** Bulk Delete via Multi-select...' (line 118). No item deviates from this tag format."
+    },
+    {
+      "text": "Ningún item del backlog es una tarea genérica ('gestionar biblioteca de videos') — todos son increments específicos",
+      "passed": true,
+      "evidence": "All 47 backlog items are specific, scoped increments tied to a concrete step via '(Enhances: Step N)', e.g. 'Fetch Videos with Infinite Scroll', 'Weighted Relevance Match', 'Confirm Modal Requiring Typed Confirmation', 'Async Deletion via Queue/Webhook Confirmation'. No generic catch-all task like 'gestionar biblioteca de videos' appears anywhere in the backlog section."
+    },
+    {
+      "text": "Las descripciones no contienen nombres de endpoints, campos de base de datos, ni nombres de función/método",
+      "passed": true,
+      "evidence": "A scan of all Walking Skeleton and Increments Backlog item lines (lines 19-127) found no HTTP verbs/paths, database field names, or function/method identifiers. Technical terms like `videos`/`clips` MongoDB collection names, JWT/Cognito auth pattern, and Mux asset processing appear only in the separate '## Assumptions' section (lines 5-12), not inside the sliced item descriptions themselves. Item text stays at user-facing altitude (e.g., 'Update Video Record Fields Directly', 'Filter via Server-side Query Parameters') without naming actual endpoints, fields, or functions."
+    }
+  ],
+  "summary": {"passed": 8, "failed": 0, "total": 8, "pass_rate": 1.0}
+}

@@ -1,0 +1,17 @@
+{
+  "eval_id": 1,
+  "eval_name": "quiz-composes-questions-functional",
+  "prompt": "Genera Acceptance Criteria en modo --functional para esta Feature de Clip2Coach (backbone recién generado, aún sin slicing). Si tienes preguntas de clarificación, usa tu criterio y documenta tus asunciones en lugar de preguntar.\n\nLa Feature está en: evals/bokata-acceptance-criteria/inputs/01-quiz-composes-questions-feature.md",
+  "assertions": [
+    "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+    "Cada Requirement es un SHALL-statement (ej. 'The system SHALL require at least two answer options')",
+    "Existe un Requirement para la regla 'mínimo 2 opciones de respuesta'",
+    "Existe un Requirement para la regla 'exactamente una opción marcada como correcta'",
+    "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una matriz exhaustiva de edge cases/boundary/concurrencia",
+    "El output NO está agrupado por Walking Skeleton item ni Increment ID — esos no existen aún en esta etapa",
+    "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-003 | Source: features.md -->",
+    "Todos los Task IDs del input (C2C-TASK-008 a 011) están cubiertos por al menos un Requirement",
+    "No hay pasos de tipo 'Click button' ni referencias a clases/métodos/nombres de servicio internos",
+    "Los datos usados en los Scenarios son concretos (texto de pregunta o opciones específicas), no abstractos ('opción válida')"
+  ]
+}

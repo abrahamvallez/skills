@@ -57,6 +57,8 @@ See [Methodology & Principles](resources/methodology.md) for naming conventions 
 
 ## Phase 0 — Discovery
 
+**Skip this phase entirely** if a `## Discovery Context — Backbone` section (or an orchestrator's equivalent consolidated discovery context) is already present in the input — proceed directly to Step 1 using that context.
+
 ### 🧠 Think (as an expert PM in discovery):
 Before generating anything, scan the input for gaps that would force wrong assumptions:
 
@@ -162,7 +164,12 @@ Identify 3+ User Tasks per Feature following the [Naming Conventions](resources/
 
 **Bundling check (before moving to Step 4):** Scan each candidate task name using [Bundling Heuristics](resources/bundling-heuristics.md). Catch bundled tasks here — before generating ACs — to avoid rework. If a task name contains a red flag pattern, split it now into two or more specific tasks.
 
-Identify System Tasks where the trigger is a workflow transition (not a direct user action). See [System Tasks section in Methodology](resources/methodology.md).
+**System Task classification (critical):** Identify potential System Tasks, then apply methodology.md's workflow-transition test to each:
+- **Workflow transition** (autonomous state change: app launch, connection lost/restored, session expiry): keep as standalone System Task with explicit trigger, trigger type, and format `System Task {N}.{M}: [Verb] [Object]`.
+- **Direct user action forming an indivisible unit with its response** (user action and system response expected as one unit, e.g., "user taps calculate → system returns total"): do NOT create a System Task — instead, embed the system behavior as 1–2 lines added to the User Task description, prefaced by "On [user action], system [response]."
+See [System Tasks section in Methodology](resources/methodology.md) for the full test and examples.
+
+**If reference/legacy documents were provided as accelerant input** (an existing backbone, PRD, or prior feature-map output), their System Tasks are NOT pre-validated against this test — do not carry over their granularity uncritically. Re-run the classification above against every System Task they list, exactly as you would for one you invented yourself.
 
 ---
 
@@ -203,9 +210,20 @@ For each Feature, document dependencies by:
 - Do all Features follow `[Actor] [Verb] [Object]` format?
 - Do all User Tasks follow `[Verb] [Object]` format (NO actor)?
 - Do all System Tasks have an explicit Trigger?
+- **Has each System Task been tested against the workflow-transition test?** (Only workflow transitions remain as standalone System Tasks; all direct-user-action responses are embedded in User Tasks.)
+- Do Features/User Tasks/System Tasks use the correct heading levels from output-template.md (`#### Feature`, `##### User Task`, `##### System Task`)?
 
 ### ▶️ Execute:
-Generate markdown output following the [Output Template](resources/output-template.md).
+**Before generating final output, produce a System Task Trigger Audit** — a table with one row per candidate System Task (including any inherited from reference/legacy input, and any introduced while incorporating trio review findings):
+
+| Candidate System Task | Trigger | Classification | Verdict |
+|---|---|---|---|
+| e.g. Query Spatial Index | map viewport changes | Direct user action (Task 008 pan/zoom) | Embed into Task 008 |
+| e.g. Detect Network Status | connectivity changes | Autonomous workflow transition | Standalone |
+
+This table is internal reasoning — it does not need to be shown to the user — but it must be produced and every candidate resolved before writing the final backbone. A System Task only survives into the output if its row says "Standalone." This step exists specifically to stop a checklist bullet from being ticked without genuinely re-deriving each item — do not skip it even if the System Tasks "look right" from a prior draft or reference document.
+
+Then generate markdown output following the [Output Template](resources/output-template.md).
 
 ---
 
@@ -232,6 +250,9 @@ Before finishing, verify your output:
 - [ ] Each User Task has `<!-- Task ID: {PRJ}-TASK-{hash} -->` comment
 - [ ] All User Tasks follow `[Verb] [Object]` format (NO actor)
 - [ ] Each System Task has an explicit **Trigger** field
+- [ ] Each System Task uses naming format `System Task {N}.{M}: [Verb] [Object]` (with numbering per Feature)
+- [ ] **Each System Task's Trigger is a genuine workflow transition, NOT a direct user action** — apply methodology.md's test: is the trigger an autonomous state change (app launch, connection restored, session expired) or a direct response to a user action? If the latter and the response is an indivisible unit with the user action (like "user clicks calculate → system returns total"), the behavior must be embedded into the User Task instead, not listed as a standalone System Task
+- [ ] Feature/User Task/System Task use the heading levels from output-template.md: `#### Feature`, `##### User Task`, `##### System Task` (not bold text)
 - [ ] User Task descriptions describe user actions, not implementation details (no class names, method names, or internal service references)
 
 **User Task Bundling Check — scan each User Task name before finalizing:**

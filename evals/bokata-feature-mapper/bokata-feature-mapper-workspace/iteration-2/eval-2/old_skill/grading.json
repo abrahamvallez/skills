@@ -1,0 +1,75 @@
+{
+  "expectations": [
+    {
+      "text": "Se identifican al menos 2 Features",
+      "passed": true,
+      "evidence": "Se identifican 4 Features: 'Visitor Views Social Proof Toast' (línea 45), 'System Delivers Activity Data' (línea 99), 'System Tracks Toast Engagement' (línea 129), 'Engineer Configures A/B Test' (línea 153)."
+    },
+    {
+      "text": "Cada Feature tiene al menos 3 User Tasks",
+      "passed": false,
+      "evidence": "'System Delivers Activity Data' solo tiene 2 User Tasks ('Fetch Activity Data from Endpoint', 'Display Hardcoded Data in Fase 1'; el resto son System Tasks). 'System Tracks Toast Engagement' también solo tiene 2 User Tasks ('Confirm Toast Was Seen', 'Record How Toast Was Closed'; 'Attribute Toast View to Conversion Funnel' es System Task). Solo 'Visitor Views Social Proof Toast' (5) y 'Engineer Configures A/B Test' (3) cumplen el mínimo de 3."
+    },
+    {
+      "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] — sin cláusulas adicionales ni conjunciones en el nombre",
+      "passed": true,
+      "evidence": "Los 4 nombres de Feature siguen el patrón [Actor][Verb][Object] sin cláusulas ni conjunciones: 'Visitor Views Social Proof Toast', 'System Delivers Activity Data', 'System Tracks Toast Engagement', 'Engineer Configures A/B Test'."
+    },
+    {
+      "text": "Los actores de las Features reflejan los actores del PRD: Visitor (visitante no autenticado) y/o Coach — NOT 'System', 'Sistema', 'Engineer', 'Equipo de producto', ni 'Equipo de ingeniería'",
+      "passed": false,
+      "evidence": "Dos Features usan 'System' como actor ('System Delivers Activity Data' línea 99, 'System Tracks Toast Engagement' línea 129) y una usa 'Engineer' ('Engineer Configures A/B Test' línea 153), actores explícitamente prohibidos por la assertion. Solo 1 de 4 Features ('Visitor Views Social Proof Toast') usa un actor válido."
+    },
+    {
+      "text": "Ningún User Task incluye el Actor como prefijo",
+      "passed": true,
+      "evidence": "Todos los nombres de User Task (p.ej. 'View Toast on Landing Page', 'Dismiss Toast Manually', 'Fetch Activity Data from Endpoint', 'Create Feature Flag for Toast Visibility') omiten el prefijo de actor."
+    },
+    {
+      "text": "Ningún User Task usa verbos genéricos de gestión: Manage, Handle, Gestionar, Manejar, Administrar",
+      "passed": true,
+      "evidence": "Los verbos usados son View, Read, Dismiss, Pause, Fetch, Display, Confirm, Record, Create, Configure, Validate — ninguno de la lista prohibida."
+    },
+    {
+      "text": "Ningún User Task contiene una conjunción ('y', 'and', 'o', 'or') que indique bundling",
+      "passed": true,
+      "evidence": "Revisados los 12 nombres de User Task (p.ej. 'View Toast on Landing Page', 'Configure 50/50 Rollout Split', 'Validate Flag Behavior in Staging'); ninguno contiene 'y', 'and', 'o' u 'or' como conjunción de bundling."
+    },
+    {
+      "text": "Ningún User Task describe una operación interna del sistema — no aparece sessionStorage, IntersectionObserver, Redis, thresholds, SQL ni endpoints en los nombres de Tasks",
+      "passed": false,
+      "evidence": "El User Task 'Fetch Activity Data from Endpoint' (línea 105) incluye la palabra 'Endpoint' en el nombre, término explícitamente prohibido por la assertion."
+    },
+    {
+      "text": "Ningún nombre de Feature ni User Task contiene términos de implementación técnica (sessionStorage, IntersectionObserver, Redis, GET /api/social-proof, feature flag key names)",
+      "passed": true,
+      "evidence": "Ningún nombre de Feature o User Task contiene sessionStorage, IntersectionObserver, Redis, la ruta 'GET /api/social-proof' ni nombres de keys de feature flag. Términos como sessionStorage y Redis solo aparecen en el cuerpo descriptivo de los System Tasks (líneas 83, 123), no en los nombres."
+    },
+    {
+      "text": "Todas las System Tasks (si las hay) tienen un campo Trigger explícito",
+      "passed": true,
+      "evidence": "Los 6 System Tasks documentados ('Auto-Dismiss Toast' línea 82, 'Guard Against Repeat Display' línea 88, 'Suppress Toast for Authenticated Users' línea 94, 'Evaluate Activity Thresholds and Select Window' línea 118, 'Cache Activity Data in Redis' línea 124, 'Attribute Toast View to Conversion Funnel' línea 148) incluyen un campo '**Trigger:**' explícito."
+    },
+    {
+      "text": "El scope generado es trazable al PRD — no se añaden Features no descritas en el PRD",
+      "passed": true,
+      "evidence": "Las 4 Features corresponden a secciones del PRD: visualización del toast (FR-1/FR-2), endpoint y cache Fase 2 (TR-2), analytics/eventos (sección Analytics & Tracking), y configuración del A/B test/feature flag (sección A/B Test y Fase 1). No se detectan Features ajenas al PRD."
+    },
+    {
+      "text": "Las capacidades clave del PRD están cubiertas: que el visitante vea prueba social, que pueda descartar el toast, que no se repita en la misma sesión, que los usuarios autenticados no lo vean",
+      "passed": true,
+      "evidence": "Cubierto por: 'View Toast on Landing/Signup Page' y 'Read Activity Message' (ver prueba social), 'Dismiss Toast Manually' (descartar), 'System Task: Guard Against Repeat Display' (no repetir en sesión), 'System Task: Suppress Toast for Authenticated Users' (autenticados no lo ven)."
+    },
+    {
+      "text": "El System Task con trigger temporal genuino (auto-dismiss del toast tras ~8s sin hover) permanece standalone — es una transición de workflow autónoma real, no debe embeberse",
+      "passed": true,
+      "evidence": "'System Task: Auto-Dismiss Toast' (línea 81-84) aparece como entrada independiente con su propio heading y Trigger ('8 seconds elapse after toast becomes visible (and no hover is active)'), no está embebido dentro de la descripción de otro User Task."
+    },
+    {
+      "text": "Todo System Task que permanezca independiente usa el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita) y su Trigger fue evaluado contra el test de transición de workflow (autónomo) vs acción directa de usuario con respuesta indivisible",
+      "passed": false,
+      "evidence": "Los 6 System Tasks usan heading de nivel 4 ('#### System Task: Auto-Dismiss Toast', línea 81; '#### System Task: Guard Against Repeat Display', línea 87; etc.), no el nivel 5 ('##### System Task: ...') requerido. Además no hay evidencia documentada de que el Trigger de cada uno fuera evaluado explícitamente contra el test de transición de workflow autónoma vs. acción directa de usuario."
+    }
+  ],
+  "summary": {"passed": 10, "failed": 4, "total": 14, "pass_rate": 0.71}
+}

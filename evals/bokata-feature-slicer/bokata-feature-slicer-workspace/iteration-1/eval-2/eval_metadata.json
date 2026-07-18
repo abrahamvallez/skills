@@ -1,0 +1,15 @@
+{
+  "eval_id": 2,
+  "eval_name": "video-library-feature",
+  "prompt": "Slice esta Feature de Clip2Coach en un Walking Skeleton + Increments Backlog. Si tienes preguntas de clarificación, usa tu criterio y documenta tus asunciones en lugar de preguntar.\n\nLa Feature está en: evals/bokata-feature-slicer/inputs/02-video-library-feature.md",
+  "assertions": [
+    "La sección '## 💀 Walking Skeleton' cubre las 6 User Tasks (Browses, Filters, Sorts, Searches, Updates, Deletes)",
+    "Cada item del Walking Skeleton es la opción genuinamente más simple viable, construible en 1-3 días",
+    "El Walking Skeleton NO colapsa Filter/Sort/Search en un único item genérico de 'búsqueda' — son Steps/Increments distintos por venir de User Tasks distintas",
+    "El item de Walking Skeleton para 'Deletes Video' es reversible o documenta explícitamente por qué el borrado no puede deshacerse (dado que los créditos no se reembolsan)",
+    "La sección '## 🏗️ Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+    "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+    "Ningún item del backlog es una tarea genérica ('gestionar biblioteca de videos') — todos son increments específicos",
+    "Las descripciones no contienen nombres de endpoints, campos de base de datos, ni nombres de función/método"
+  ]
+}

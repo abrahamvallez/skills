@@ -9,37 +9,35 @@
 
 ### Features Map
 
-## Feature: [Actor] [Verb] [Object]
+#### Feature: [Actor] [Verb] [Object]
 <!-- ID: {PRJ}-FEAT-{hash} -->
 **Purpose:** [What the user accomplishes with this feature]
 
----
-
-### User Task: [Verb] [Object]
+##### User Task: [Verb] [Object]
 <!-- Task ID: {PRJ}-TASK-{hash} -->
 [One-line description of what the user does]
 
----
-
-### User Task: [Verb] [Object]
+##### User Task: [Verb] [Object]
 <!-- Task ID: {PRJ}-TASK-{hash} -->
 [One-line description]
 
----
-
-#### System Task: [Verb] [Object]
+##### System Task {N}.{M}: [Verb] [Object]
 **Trigger:** [workflow transition that fires it — e.g. "order confirmed", "session expired"]
 The system [description of what it executes and what it produces].
 
 ---
 
-## Feature: [Actor] [Verb] [Object]
-<!-- ID: {PRJ}-FEAT-{hash} -->
-**Purpose:** [What the user accomplishes with this feature]
+**UI States:**
+- [State name]: [Description]
+- [State name]: [Description]
 
 ---
 
-### User Task: [Verb] [Object]
+#### Feature: [Actor] [Verb] [Object]
+<!-- ID: {PRJ}-FEAT-{hash} -->
+**Purpose:** [What the user accomplishes with this feature]
+
+##### User Task: [Verb] [Object]
 <!-- Task ID: {PRJ}-TASK-{hash} -->
 [One-line description]
 

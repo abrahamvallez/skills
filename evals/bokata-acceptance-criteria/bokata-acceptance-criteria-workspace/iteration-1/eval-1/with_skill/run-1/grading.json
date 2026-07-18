@@ -1,0 +1,55 @@
+{
+  "expectations": [
+    {
+      "text": "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+      "passed": true,
+      "evidence": "All 7 requirement blocks use '### Requirement: <name>' headers followed by '#### Scenario: <name>' headers (e.g. '### Requirement: Question text capture' / '#### Scenario: Coach writes valid question text'). Scenario bodies use WHEN/THEN bullets, not strict Given/When/Then Gherkin keywords."
+    },
+    {
+      "text": "Cada Requirement es un SHALL-statement (ej. 'The system SHALL require at least two answer options')",
+      "passed": true,
+      "evidence": "All 7 Requirements are phrased as SHALL statements: 'The system SHALL require the Coach to provide non-empty question text...', 'The system SHALL require at least two answer options...', 'The system SHALL treat all answer options...as a single-select multiple-choice set...', 'The system SHALL ensure exactly one answer option is marked correct...', 'The system SHALL allow the Coach to modify the text of an existing answer option...', 'The system SHALL prevent removal of an answer option if doing so would leave the question with fewer than two...', 'The system SHALL prevent removal of the answer option currently marked correct unless another option is marked correct first.'"
+    },
+    {
+      "text": "Existe un Requirement para la regla 'mínimo 2 opciones de respuesta'",
+      "passed": true,
+      "evidence": "'### Requirement: Minimum answer options' states 'The system SHALL require at least two answer options before a quiz question is considered complete.' Reinforced by '### Requirement: Minimum option count preserved on removal'."
+    },
+    {
+      "text": "Existe un Requirement para la regla 'exactamente una opción marcada como correcta'",
+      "passed": true,
+      "evidence": "'### Requirement: Exactly one correct answer' states 'The system SHALL ensure exactly one answer option is marked correct for a given question at all times.'"
+    },
+    {
+      "text": "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una matriz exhaustiva de edge cases/boundary/concurrencia",
+      "passed": true,
+      "evidence": "Scenario counts per Requirement: Question text capture (2), Minimum answer options (2), Multiple-choice format (1), Exactly one correct answer (2), Edit existing option text (1), Minimum option count preserved on removal (2), Correct-answer integrity on removal (1). No Requirement exceeds 2 Scenarios and none attempts an exhaustive boundary/concurrency matrix."
+    },
+    {
+      "text": "El output NO está agrupado por Walking Skeleton item ni Increment ID — esos no existen aún en esta etapa",
+      "passed": true,
+      "evidence": "The document is organized only under '## User Task: <name>' headings (Writes Quiz Question Text, Adds Answer Options, Marks Correct Answer, Edits or Removes Answer Option) with no mention of Walking Skeleton items or Increment IDs anywhere in the file."
+    },
+    {
+      "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-003 | Source: features.md -->",
+      "passed": true,
+      "evidence": "Line 2 of the output contains '<!-- Feature ID: C2C-FEAT-003 | Source: backbone.md | Depth: functional -->'. The Feature ID (C2C-FEAT-003) and cross-link comment format are present as required; the source filename differs (backbone.md vs. features.md) but this matches the skill's own dedicated functional-mode template (resources/output-template-functional.md), which explicitly specifies 'Source: backbone.md' for --functional depth, overriding the generic checklist example in SKILL.md."
+    },
+    {
+      "text": "Todos los Task IDs del input (C2C-TASK-008 a 011) están cubiertos por al menos un Requirement",
+      "passed": true,
+      "evidence": "Each User Task section carries its Task ID comment and at least one Requirement: '<!-- Task ID: C2C-TASK-008 -->' under Writes Quiz Question Text (1 Requirement), '<!-- Task ID: C2C-TASK-009 -->' under Adds Answer Options (2 Requirements), '<!-- Task ID: C2C-TASK-010 -->' under Marks Correct Answer (1 Requirement), '<!-- Task ID: C2C-TASK-011 -->' under Edits or Removes Answer Option (3 Requirements)."
+    },
+    {
+      "text": "No hay pasos de tipo 'Click button' ni referencias a clases/métodos/nombres de servicio internos",
+      "passed": true,
+      "evidence": "No occurrences of 'click', UI-widget instructions, class names, method names, or internal service names found anywhere in the Scenario WHEN/THEN steps; all steps describe domain-level actions (e.g. 'the Coach enters...', 'the Coach marks...as correct')."
+    },
+    {
+      "text": "Los datos usados en los Scenarios son concretos (texto de pregunta o opciones específicas), no abstractos ('opción válida')",
+      "passed": true,
+      "evidence": "Scenarios use concrete values such as the question text 'What is the primary movement pattern shown in this clip?' and answer options 'Hip hinge', 'Knee dominant', 'Rotational', and the edit example changing 'Knee dominant' to 'Knee-dominant pattern' — no abstract placeholders like 'a valid option' appear."
+    }
+  ],
+  "summary": {"passed": 10, "failed": 0, "total": 10, "pass_rate": 1.0}
+}

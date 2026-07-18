@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "La sección '## 💀 Walking Skeleton' cubre las 5 User Tasks (Verifica Créditos, Selecciona Plan, Ingresa Metadata, Sube Archivo, Monitorea Progreso)",
+      "passed": true,
+      "evidence": "Section '## 💀 Walking Skeleton' (line 17) contains 'User Task 1: Verifies Credit Availability', 'User Task 2: Selects Storage Plan', 'User Task 3: Enters Video Metadata', 'User Task 4: Uploads Video File', 'User Task 5: Monitors Upload Progress' — matching all 5 User Tasks from the source feature file (01-video-upload-feature.md), plus a 'System Task: Processes Uploaded Video' subsection."
+    },
+    {
+      "text": "Cada item del Walking Skeleton es la opción genuinamente más simple viable, construible en 1-3 días",
+      "passed": true,
+      "evidence": "Items favor the simplest viable mechanism throughout, e.g. 'Fixed Threshold Check Against Cheapest Plan', 'Static Text Balance Display', 'Static List of 3 Plans', 'Single Radio Button Selection', 'Required Title Field', 'Native File Picker', 'Check File Extension and Size Before Upload' (client-side only), 'Simple Percentage Progress Bar', 'Default Mux Transcoding', 'Single Default Thumbnail'. More complex alternatives (server-side re-validation, adaptive bitrate ladder, multiple thumbnails, resumable uploads, audit trails) are explicitly deferred to the Increments Backlog rather than included in the skeleton, and the Assumptions section documents why some borderline calls (e.g. keeping ETA/background upload) were kept as core rather than cut."
+    },
+    {
+      "text": "Los items de Walking Skeleton que tocan la capa de Data son reversibles (se puede deshacer sin pérdida de datos)",
+      "passed": true,
+      "evidence": "Data-touching items are structured to avoid migration lock-in: 'Fetch Live Balance from Database' is a read-only lookup; 'Hold Plan Choice for the Upload Session' is explicitly described as in-session/not-yet-persisted ('it is not yet locked in permanently'), with the Assumptions section stating the plan choice is 'kept for the current upload attempt... held in-session until then (reversible)'; 'Save Metadata at Upload Start' and 'Deduct Plan Credits Immediately' are simple writes that later increments extend additively (ledger/audit trail, rollback-on-failure, draft save, edit history) without requiring schema migration or data loss."
+    },
+    {
+      "text": "La sección '## 🏗️ Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+      "passed": true,
+      "evidence": "Section '## 🏗️ Increments Backlog' (line 59) is subdivided into 'User Task 1: Verifies Credit Availability' through 'User Task 5: Monitors Upload Progress' plus 'System Task: Processes Uploaded Video', each with 8 (or 8) additional increment items grouped under it."
+    },
+    {
+      "text": "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+      "passed": true,
+      "evidence": "Verified programmatically: all 72 checklist lines in the file match the pattern '^- \\[ \\] \\*\\*\\[[^]]+\\]\\*\\*' (e.g. '- [ ] **[Verifies Credit Availability]** Fetch Live Balance from Database...'), with zero exceptions across both Walking Skeleton and Increments Backlog sections."
+    },
+    {
+      "text": "Ningún item del backlog es una tarea genérica ('implementar upload', 'manejar créditos') — todos son increments específicos derivados de las opciones de Phase 2",
+      "passed": true,
+      "evidence": "All 40 backlog items (lines 63-120) are specific and named after a concrete technique or variant, e.g. 'Real-Time Synced Balance Across Devices', 'Disable Unaffordable Plans in UI', 'Description Plus Structured Tag Picker', 'Resumable Chunked Upload', 'Smoothed ETA Using Rolling Average', 'Credit Deduction Ledger/Audit Trail', 'Full Adaptive Bitrate Ladder'. No item reads as a generic catch-all like 'implementar upload' or 'manejar créditos'; each is tagged '(Enhances: Step N)' or '(Alternative: Step N)' tying it to a specific skeleton option."
+    },
+    {
+      "text": "Las descripciones del Walking Skeleton explican qué ve/hace el coach — pueden mencionar tecnología (Mux, progress bar) pero NO nombres de endpoints, campos de base de datos, ni nombres de función/método",
+      "passed": true,
+      "evidence": "Descriptions are phrased in coach-observable terms, e.g. 'the coach sees a bar filling from 0% to 100%', 'the coach sees the video flip from \"Procesando...\" to \"Listo\"', 'the file streams directly to Mux storage once the coach confirms'. Technology names appear only at the allowed level (Mux, webhook, database as a concept). A targeted regex scan of lines 17-55 for endpoint/route/column/function-name patterns ('endpoint', 'POST ', 'GET /', 'route', 'column', 'api/', 'function', 'method(', 'table', 'schema') returned zero matches."
+    },
+    {
+      "text": "El System Task 'Processes Uploaded Video' (deducción de créditos + transcoding) se refleja en la decomposición de 'Uploads Video File' o 'Monitors Upload Progress' como parte del flujo, no se ignora",
+      "passed": true,
+      "evidence": "Line 50-55 includes a full 'System Task: Processes Uploaded Video' subsection within the Walking Skeleton, explicitly annotated: '*Trigger: upload to Mux completes successfully — sits between \"Uploads Video File\" / \"Monitors Upload Progress\" and the coach seeing the finished video.*', with 4 items covering credit deduction ('Deduct Plan Credits Immediately'), transcoding ('Default Mux Transcoding'), thumbnailing, and the webhook-driven status flip that 'Monitors Upload Progress' depends on ('Status Visible on Next Visit'). It is explicitly positioned in the flow, not omitted, and is mirrored again in the Increments Backlog (lines 112-120)."
+    }
+  ],
+  "summary": {"passed": 8, "failed": 0, "total": 8, "pass_rate": 1.0}
+}

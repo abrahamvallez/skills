@@ -1,0 +1,21 @@
+{
+  "eval_id": 2,
+  "eval_name": "social-proof-toast-prd",
+  "prompt": "Genera el Features Backbone para esta feature de Clip2Coach. Si tienes preguntas de clarificación, usa tu criterio y documenta tus asunciones en lugar de preguntar.\n\nEl PRD está en: evals/bokata-feature-mapper/inputs/02-social-proof-toast-prd.md",
+  "assertions": [
+    "Se identifican al menos 2 Features",
+    "Cada Feature tiene al menos 3 User Tasks",
+    "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] — sin cláusulas adicionales ni conjunciones en el nombre",
+    "Los actores de las Features reflejan los actores del PRD: Visitor (visitante no autenticado) y/o Coach — NOT 'System', 'Sistema', 'Engineer', 'Equipo de producto', ni 'Equipo de ingeniería'",
+    "Ningún User Task incluye el Actor como prefijo",
+    "Ningún User Task usa verbos genéricos de gestión: Manage, Handle, Gestionar, Manejar, Administrar",
+    "Ningún User Task contiene una conjunción ('y', 'and', 'o', 'or') que indique bundling",
+    "Ningún User Task describe una operación interna del sistema — no aparece sessionStorage, IntersectionObserver, Redis, thresholds, SQL ni endpoints en los nombres de Tasks",
+    "Ningún nombre de Feature ni User Task contiene términos de implementación técnica (sessionStorage, IntersectionObserver, Redis, GET /api/social-proof, feature flag key names)",
+    "Todas las System Tasks (si las hay) tienen un campo Trigger explícito",
+    "El scope generado es trazable al PRD — no se añaden Features no descritas en el PRD",
+    "Las capacidades clave del PRD están cubiertas: que el visitante vea prueba social, que pueda descartar el toast, que no se repita en la misma sesión, que los usuarios autenticados no lo vean",
+    "El System Task con trigger temporal genuino (auto-dismiss del toast tras ~8s sin hover) permanece standalone — es una transición de workflow autónoma real, no debe embeberse",
+    "Todo System Task que permanezca independiente usa el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita) y su Trigger fue evaluado contra el test de transición de workflow (autónomo) vs acción directa de usuario con respuesta indivisible"
+  ]
+}

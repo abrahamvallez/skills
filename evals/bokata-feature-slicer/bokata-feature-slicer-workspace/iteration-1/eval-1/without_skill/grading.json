@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "La sección '## 💀 Walking Skeleton' cubre las 5 User Tasks (Verifica Créditos, Selecciona Plan, Ingresa Metadata, Sube Archivo, Monitorea Progreso)",
+      "passed": true,
+      "evidence": "The document has a '## Walking Skeleton' section (line 37, without the skull emoji) containing a table (lines 42-48) with one row per User Task: Verifies Credit Availability, Selects Storage Plan, Enters Video Metadata, Uploads Video File, and Monitors Upload Progress, plus the System Task. All 5 User Tasks are covered; only the emoji in the heading is missing."
+    },
+    {
+      "text": "Cada item del Walking Skeleton es la opción genuinamente más simple viable, construible en 1-3 días",
+      "passed": true,
+      "evidence": "Each row includes an 'Est.' column with estimates of 1 day, 1 day, 0.5 day, 2 days, 1 day, and 2 days (lines 43-48), all within/under a 1-3 day range, and each option is explicitly the minimal viable slice (e.g. 'Read coach's credit balance...show a static blocking message...No live balance widget', 'Single required title text field...Description and tags fields omitted entirely')."
+    },
+    {
+      "text": "Los items de Walking Skeleton que tocan la capa de Data son reversibles (se puede deshacer sin pérdida de datos)",
+      "passed": false,
+      "evidence": "The document never discusses reversibility, rollback, or 'undo without data loss' for any data-layer item (credits deduction, plan field, video status flip, upload_id/asset_id storage). A grep for 'revers|revert|rollback|undo|deshac' across the file returns zero matches — this concern is simply absent from the walking skeleton descriptions and from the assumptions section."
+    },
+    {
+      "text": "La sección '## 🏗️ Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+      "passed": true,
+      "evidence": "There is an '## Increments Backlog' section (line 56, without the construction emoji) with 6 subsections (lines 60-95) each headed by a numbered User Task name ('### 1. Verifies Credit Availability' through '### 6. (System) Processes Uploaded Video'), each containing multiple additional options grouped under that task."
+    },
+    {
+      "text": "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+      "passed": false,
+      "evidence": "Backlog items are grouped under '### N. <User Task Name>' headings, but individual bullet items use a priority tag instead, e.g. '- **[High]** Wire the \"purchase more credits\" CTA...' (line 61), '- **[Medium]** Live/reactive credit balance display...' (line 62). No item uses an inline '**[User Task Name]**' tag; the required per-item tag format is absent throughout the backlog (lines 61-95)."
+    },
+    {
+      "text": "Ningún item del backlog es una tarea genérica ('implementar upload', 'manejar créditos') — todos son increments específicos derivados de las opciones de Phase 2",
+      "passed": true,
+      "evidence": "All 24 backlog bullets are specific and concrete, e.g. 'Handle the race condition where credits drop to zero between the check and the actual deduction' (line 63), 'Webhook idempotency and retry handling — Mux may redeliver webhooks; duplicate delivery must not double-deduct credits' (line 90), 'Resumable/retry-on-network-failure upload' (line 80). None are generic phrases like 'implementar upload' or 'manejar créditos'."
+    },
+    {
+      "text": "Las descripciones del Walking Skeleton explican qué ve/hace el coach — pueden mencionar tecnología (Mux, progress bar) pero NO nombres de endpoints, campos de base de datos, ni nombres de función/método",
+      "passed": false,
+      "evidence": "The Walking Skeleton table repeatedly names DB/record fields and API payload fields directly: 'if `credits <= 0`' (line 43), 'sets `plan` on the pending upload record' (line 44), 'Single required `title` text field' (line 45), 'stores the returned Mux `upload_id`/`asset_id`' (line 46), and 'the upload XHR `progress` event' (line 47). These are backticked field/variable names, not coach-facing descriptions, violating the 'no DB field names' constraint."
+    },
+    {
+      "text": "El System Task 'Processes Uploaded Video' (deducción de créditos + transcoding) se refleja en la decomposición de 'Uploads Video File' o 'Monitors Upload Progress' como parte del flujo, no se ignora",
+      "passed": true,
+      "evidence": "The System Task is explicitly present as its own row in the Walking Skeleton table: 'Mux webhook receiver listens for video.asset.ready; on receipt, deducts the plan's credit cost from the coach's balance and flips video status from procesando to listo' (line 48), and is elaborated further in Increments Backlog section 6 (lines 89-95) covering webhook idempotency, no-download enforcement, rendition pipeline, thumbnails, failure handling, and audit trail. It is clearly tied into the upload flow's end-to-end loop, not ignored."
+    }
+  ],
+  "summary": {"passed": 5, "failed": 3, "total": 8, "pass_rate": 0.63}
+}

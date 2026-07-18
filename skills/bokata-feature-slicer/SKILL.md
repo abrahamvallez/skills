@@ -48,6 +48,8 @@ Optionally enriched by any context containing:
 
 ## Phase 0 — Discovery
 
+**Skip this phase entirely** if a `## Discovery Context — Slicer: [Feature]` section (or an orchestrator's equivalent consolidated discovery context) is already present in the input — proceed directly to `## YOUR TASK` using that context.
+
 ### Think (as an expert tech lead in discovery):
 Before decomposing, scan the Feature and its User Tasks for gaps that would produce wrong steps or increment options:
 

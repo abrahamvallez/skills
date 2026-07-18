@@ -1,0 +1,55 @@
+{
+  "expectations": [
+    {
+      "text": "El output usa Gherkin estricto Given/When/Then (no el formato Requirement/Scenario de --functional)",
+      "passed": true,
+      "evidence": "Every scenario throughout the document uses fenced ```gherkin blocks with 'Scenario:' / 'Given' / 'When' / 'Then' / 'And' keywords (e.g. lines 50-55: 'Scenario: Coach opens their video library from tab navigation\\n  Given Coach \"Alice\" is authenticated...\\n  When Alice taps \"Mis Videos\"...\\n  Then the video library screen opens'). No 'Requirement:' / narrative --functional format appears anywhere in the file."
+    },
+    {
+      "text": "Los escenarios están agrupados por item de Walking Skeleton / Increment ID, no únicamente por User Task",
+      "passed": true,
+      "evidence": "Within each 'User Task' section, scenarios are further nested under '### Skeleton Item: ...' headers (e.g. 'Skeleton Item: Open Library on Tab Navigation', 'Skeleton Item: Fetch All Videos (No Pagination)') and under the Increments Backlog, under '### Increment: ...' headers (e.g. 'Increment: Multiple Filter Dropdowns (Status, Plan, Expiration)', 'Increment: Soft Delete with Recovery Window'), each explicitly tagged '(Enhances: Skeleton Item ...)'."
+    },
+    {
+      "text": "Existen escenarios para al menos 3 de los 4 items del Walking Skeleton presentes en el input (Browses, Filters, Updates, Deletes)",
+      "passed": true,
+      "evidence": "All 4 User Tasks have full scenario coverage under the Walking Skeleton section: 'User Task: Browses Video Collection' (line 42), 'User Task: Filters Videos by Criteria' (line 157), 'User Task: Updates Video Metadata' (line 229), and 'User Task: Deletes Video' (line 338), each with multiple Skeleton Items and Gherkin scenarios."
+    },
+    {
+      "text": "El escenario de 'Deletes Video' cubre explícitamente: warning cuando existen clips activos, que los créditos no se reembolsan, y el caso feliz de borrado sin clips activos",
+      "passed": true,
+      "evidence": "Warning on active clips: 'Scenario: Confirm modal for a video with active clips ... And it shows a warning that the video has active clips' (lines 400-406). No credit refund: 'Scenario: Deleting a video does not refund consumed credits ... And Alice's credit balance is unchanged (no refund is issued)' (lines 431-436), also stated in the confirm modal ('And it states that deletion does not refund credits', lines 391-397). Happy path without active clips: 'Scenario: Confirm modal for a video with no active clips' (391-397) and 'Scenario: Confirming deletion permanently removes the video' (423-428) using video 'Old Session' with 0 active clips context."
+    },
+    {
+      "text": "El escenario de 'Updates Video Metadata' incluye un caso negativo: el campo plan no puede modificarse (permission/negative scenario)",
+      "passed": true,
+      "evidence": "Lines 292-298: 'Scenario: Plan cannot be changed through the metadata edit flow\\n  Given video \"Deadlift Form\" has plan \"Pro\"\\n  When Coach \"Alice\" submits the edit form (which contains no plan field or control)\\n  Then the saved video retains plan \"Pro\" unchanged\\n  And no plan value is accepted from the submission even if injected outside the UI'."
+    },
+    {
+      "text": "Cobertura exhaustiva por item: al menos happy path + 1 edge case/boundary/error por item de skeleton, no solo el camino feliz",
+      "passed": false,
+      "evidence": "Most skeleton items do have happy + edge/error coverage (e.g. 'Fetch All Videos' has 3 scenarios including a fetch-failure error; 'Validate Editable Fields Only' has 5 scenarios including empty-title, max-length boundary, and over-length rejection). However, at least 3 of the 17 skeleton items have only a single scenario with no accompanying edge/boundary/error case: 'Skeleton Item: Filter by Exact Status Match' has only one scenario (lines 186-191, 'Scenario: Filter excludes videos with a different status'); 'Skeleton Item: Filter Client-side on Loaded List' has only one scenario (lines 200-205, 'Scenario: Filtering does not trigger a new fetch'); and 'Skeleton Item: Update Card/List View Immediately' has only one scenario (lines 329-334, 'Scenario: Library list reflects updated metadata without extra reload action'). Since the assertion requires happy path + edge case for every skeleton item, these gaps make the claim not fully true."
+    },
+    {
+      "text": "Cada Scenario tiene un único 'When' (una acción por escenario)",
+      "passed": true,
+      "evidence": "Scanned all Gherkin blocks in the file; every 'Scenario:' block contains exactly one 'When' line (single action), e.g. lines 50-55, 260-266, 522-528. No scenario contains multiple 'When' steps."
+    },
+    {
+      "text": "Los datos usados son concretos (ej. nombre de video específico, cantidad de clips específica), no abstractos",
+      "passed": true,
+      "evidence": "Concrete video names throughout ('Squat Technique', 'Deadlift Form', 'Old Session', 'Warmup Routine', 'Mobility Drill'), specific clip counts ('3 active clips', 'clip count 0', '12 uploaded videos', '200 uploaded videos', '5 clips'), and specific values ('title to exactly 100 characters', 'expiration \"2026-09-01\"', 'soft-deleted 5 days ago', '30 days')."
+    },
+    {
+      "text": "No hay pasos de tipo 'Click button' ni nombres de clase/método/servicio interno en los Scenarios",
+      "passed": true,
+      "evidence": "Grep for 'click', 'Service', 'Controller', file extensions, and 'method(' across the entire file returned no matches. Steps use business-level language ('taps \"Mis Videos\"', 'selects \"Processing\" from the status filter dropdown', 'submits'). 'Mux' is referenced (e.g. line 448) but it is the actual third-party provider name used in the source input itself (see input file line 46: 'Synchronous Mux Asset Deletion Call'), not an internal class/method/service name invented by the output."
+    },
+    {
+      "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-c3d4 | Source: features.md -->",
+      "passed": true,
+      "evidence": "Line 2: '<!-- Feature ID: C2C-FEAT-c3d4 | Source: features.md -->' — exact match immediately below the H1 title."
+    }
+  ],
+  "summary": {"passed": 9, "failed": 1, "total": 10, "pass_rate": 0.90}
+}

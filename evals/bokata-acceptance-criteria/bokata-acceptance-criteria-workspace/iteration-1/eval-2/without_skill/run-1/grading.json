@@ -1,0 +1,55 @@
+{
+  "expectations": [
+    {
+      "text": "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+      "passed": false,
+      "evidence": "El output usa '## Requirement 1 — Toast Visibility Gating (cross-cutting)' (H2, no H3) seguido de un header '### Scenarios' (H3, plural, no un header por escenario) y cada escenario es un bullet '- **Scenario: ...**' con texto Given/When/Then estricto dentro (ej. líneas 30-33: 'Given a Coach is logged in and authenticated / When they load the landing page... / Then the social proof toast does not render'). No coincide con el formato requerido y sí usa Given/When/Then estricto."
+    },
+    {
+      "text": "Cada Requirement es un SHALL-statement",
+      "passed": false,
+      "evidence": "Todos los Requirements usan 'must' en vez de 'shall', p.ej. línea 26: 'The toast must only be rendered for unauthenticated Visitors...'; línea 52: 'the toast must appear after 4 seconds...'; línea 131: 'The visitor must be able to dismiss the toast...'. Ninguno usa la palabra 'shall'."
+    },
+    {
+      "text": "Existe un Requirement que cubre que el toast NUNCA se muestra a usuarios autenticados (regla de permisos/negativa)",
+      "passed": true,
+      "evidence": "Requirement 1 (línea 24-26): 'The toast must only be rendered for unauthenticated Visitors... It must never be shown to Authenticated Users.' con escenario dedicado 'Authenticated user never sees the toast' (líneas 30-33)."
+    },
+    {
+      "text": "Existe un Requirement que cubre el dedup de una sola vez por sesión (sessionStorage)",
+      "passed": true,
+      "evidence": "Requirement 7 — Session-Level Deduplication (línea 183-185): 'The toast must be shown at most once per browser session (sessionStorage-backed)...' con 3 escenarios dedicados a este comportamiento."
+    },
+    {
+      "text": "Existe un Requirement que cubre el auto-dismiss a los 8 segundos y su pausa al hacer hover",
+      "passed": true,
+      "evidence": "Requirement 6 — Auto-Dismiss Timer & Hover Pause (línea 150-153): 'The toast must auto-dismiss after 8 seconds of display unless the visitor is hovering over it, in which case the countdown pauses...' con escenarios de auto-dismiss (línea 157) y hover pause (línea 162)."
+    },
+    {
+      "text": "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una enumeración exhaustiva de edge cases",
+      "passed": false,
+      "evidence": "El conteo real de escenarios por Requirement es: Req1=3, Req2=4, Req3=2, Req4=5, Req5=3, Req6=5, Req7=3. Solo Requirement 3 cumple el límite de 1-2; el resto excede claramente, incluyendo enumeraciones de edge cases (ej. Req6 tiene 5 escenarios incluyendo 'Visitor hovers repeatedly' y 'Visitor manually dismisses while hovering')."
+    },
+    {
+      "text": "El output NO está agrupado por Walking Skeleton item ni Increment ID",
+      "passed": true,
+      "evidence": "El documento agrupa el contenido por 'Requirement 1' a 'Requirement 7' con títulos temáticos (ej. 'Toast Visibility Gating', 'Session-Level Deduplication'); no aparece ninguna referencia a 'Walking Skeleton' ni 'Increment ID' en todo el archivo."
+    },
+    {
+      "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-a1b2 | Source: features.md -->",
+      "passed": false,
+      "evidence": "Línea 3 del output contiene '<!-- Feature ID: C2C-FEAT-a1b2 -->' — el ID coincide pero falta el segmento '| Source: features.md' requerido por la aserción, por lo que el formato exacto del cross-link no está presente."
+    },
+    {
+      "text": "Todos los Task IDs del input (C2C-TASK-c3d4, e5f6, g7h8, i9j0, k1l2) están cubiertos por al menos un Requirement",
+      "passed": true,
+      "evidence": "Cada Task ID aparece como comentario HTML asociado a un Requirement: C2C-TASK-c3d4 en Requirement 2 (línea 51), e5f6 en Requirement 3 (línea 79), g7h8 en Requirement 4 (línea 98), i9j0 en Requirement 5 (línea 130), k1l2 en Requirement 6 (línea 152). Los 5 Task IDs están cubiertos."
+    },
+    {
+      "text": "No hay referencias a sessionStorage, nombres de eventos de analytics, ni implementación técnica dentro de los Scenarios — descritos como comportamiento observable",
+      "passed": false,
+      "evidence": "El escenario 'New session resets dedup' (Requirement 7, línea 194-197) dice explícitamente: 'Given a Visitor's browser session has ended (tab/browser closed, sessionStorage cleared) after having seen the toast' — referencia directa a sessionStorage dentro de un Scenario, no solo en el Requirement o en las asunciones."
+    }
+  ],
+  "summary": {"passed": 5, "failed": 5, "total": 10, "pass_rate": 0.5}
+}

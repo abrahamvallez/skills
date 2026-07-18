@@ -1,0 +1,55 @@
+{
+  "expectations": [
+    {
+      "text": "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+      "passed": true,
+      "evidence": "Document uses '### Requirement: Timed toast appearance on the landing page' (line 31) and '#### Scenario: Toast appears after the 4-second timer' (line 34) style headers throughout all 5 requirements. Scenarios use bolded 'WHEN'/'THEN' bullet labels (e.g. line 35: '- **WHEN** an unauthenticated visitor remains on the landing page for 4 seconds...') rather than literal Gherkin 'Given/When/Then' keywords; no 'Given' appears anywhere in the file."
+    },
+    {
+      "text": "Cada Requirement es un SHALL-statement",
+      "passed": true,
+      "evidence": "All 5 Requirement statements use SHALL: 'The system SHALL display the social proof toast to an unauthenticated visitor on the landing page...' (line 32), '...SHALL display the social proof toast to an unauthenticated visitor immediately...' (line 48), '...SHALL present the toast copy... and SHALL fall back...' (line 64), '...SHALL allow the visitor to close the toast...' (line 80), '...SHALL pause the 8-second auto-dismiss countdown... and SHALL resume...' (line 92)."
+    },
+    {
+      "text": "Existe un Requirement que cubre que el toast NUNCA se muestra a usuarios autenticados (regla de permisos/negativa)",
+      "passed": false,
+      "evidence": "The 'authenticated user never sees the toast' rule is documented only inside the 'Discovery Context — Criteria' assumptions section (line 10: '**Assumption — authenticated visibility**: an authenticated user reaching either the landing or signup page... never sees the toast...'). No '### Requirement:' block anywhere states this as a SHALL/SHALL NOT statement, and no '#### Scenario:' has an authenticated user as the WHEN actor with a THEN of non-appearance. Requirements only reference 'unauthenticated visitor' as the positive trigger actor (lines 32, 48), which is not equivalent to a documented negative-permission requirement/scenario."
+    },
+    {
+      "text": "Existe un Requirement que cubre el dedup de una sola vez por sesión (sessionStorage)",
+      "passed": true,
+      "evidence": "Requirement 'Immediate toast appearance on the signup page' (line 47) includes Scenario 'Toast suppressed when already seen this session' (line 54): 'WHEN a visitor who already saw the toast on the landing page during the current session arrives at the signup page / THEN the toast does not appear again, honoring the one-toast-per-session rule' (lines 55-56)."
+    },
+    {
+      "text": "Existe un Requirement que cubre el auto-dismiss a los 8 segundos y su pausa al hacer hover",
+      "passed": true,
+      "evidence": "Requirement 'Hover pauses the auto-dismiss countdown' (line 91): 'The system SHALL pause the 8-second auto-dismiss countdown while the visitor's pointer is over the toast, and SHALL resume the remaining countdown once the pointer leaves.' With scenarios 'Countdown pauses while hovering' (line 94) and 'Countdown resumes after hover ends' (line 98), directly covering both the 8-second auto-dismiss and its hover pause/resume behavior."
+    },
+    {
+      "text": "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una enumeración exhaustiva de edge cases",
+      "passed": true,
+      "evidence": "Scenario counts per Requirement: 'Timed toast appearance' = 2 (lines 34, 38), 'Immediate toast appearance on signup page' = 2 (lines 50, 54), 'Localized live-activity message with fallback' = 2 (lines 66, 70), 'Manual dismissal before auto-dismiss' = 1 (line 82), 'Hover pauses the auto-dismiss countdown' = 2 (lines 94, 98). All within the 1-2 range with no exhaustive edge-case enumeration."
+    },
+    {
+      "text": "El output NO está agrupado por Walking Skeleton item ni Increment ID",
+      "passed": true,
+      "evidence": "The document is grouped under '## User Task: ...' headers (lines 28, 44, 60, 76, 88) mirroring the input's User Tasks. No occurrence of 'Walking Skeleton' or 'Increment' anywhere in the file (verified via grep of the full document content read)."
+    },
+    {
+      "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-a1b2 | Source: features.md -->",
+      "passed": true,
+      "evidence": "Line 1: '<!-- Feature ID: C2C-FEAT-a1b2 | Source: 02-social-proof-toast-feature.md | Depth: functional -->'. The Feature ID (C2C-FEAT-a1b2) and cross-link comment format are present as required; the Source correctly points to the actual input file used in this eval (02-social-proof-toast-feature.md, per the prompt's given path) rather than the generic 'features.md' filename used in the assertion's illustrative text, which is the correct behavior for this input."
+    },
+    {
+      "text": "Todos los Task IDs del input (C2C-TASK-c3d4, e5f6, g7h8, i9j0, k1l2) están cubiertos por al menos un Requirement",
+      "passed": true,
+      "evidence": "All 5 Task ID cross-links are present, each immediately followed by a Requirement: line 29 '<!-- Task ID: C2C-TASK-c3d4 -->' -> Requirement line 31; line 45 '<!-- Task ID: C2C-TASK-e5f6 -->' -> Requirement line 47; line 61 '<!-- Task ID: C2C-TASK-g7h8 -->' -> Requirement line 63; line 77 '<!-- Task ID: C2C-TASK-i9j0 -->' -> Requirement line 79; line 89 '<!-- Task ID: C2C-TASK-k1l2 -->' -> Requirement line 91."
+    },
+    {
+      "text": "No hay referencias a sessionStorage, nombres de eventos de analytics, ni implementación técnica dentro de los Scenarios — descritos como comportamiento observable",
+      "passed": true,
+      "evidence": "The word 'sessionStorage' only appears in the Discovery Context assumptions section (lines 9, 24 area referring to 'sessionStorage-backed'), never inside any '#### Scenario:' block. Scenarios describe only observable behavior, e.g. line 56: 'the toast does not appear again, honoring the one-toast-per-session rule' — no technical storage mechanism, event names, or implementation details are referenced within any Scenario."
+    }
+  ],
+  "summary": {"passed": 9, "failed": 1, "total": 10, "pass_rate": 0.9}
+}

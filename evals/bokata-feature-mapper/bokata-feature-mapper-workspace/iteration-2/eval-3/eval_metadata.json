@@ -1,0 +1,22 @@
+{
+  "eval_id": 3,
+  "eval_name": "video-upload-mux-prd",
+  "prompt": "Genera el Features Backbone para esta iniciativa de Clip2Coach. Si tienes preguntas de clarificación, usa tu criterio y documenta tus asunciones en lugar de preguntar.\n\nEl PRD está en: evals/bokata-feature-mapper/inputs/03-video-upload-mux-prd.md",
+  "assertions": [
+    "Se identifican al menos 3 Features — el PRD cubre dominios distintos: subir videos, gestionar biblioteca, gestionar expiración/renovación, y crear clips desde videos propios",
+    "Cada Feature tiene al menos 3 User Tasks",
+    "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] — sin cláusulas adicionales ni conjunciones en el nombre",
+    "Ningún Feature usa 'System', 'Sistema' ni actores no-humanos del PRD como Actor",
+    "No hay bundling de dominios: Upload y gestión de biblioteca son Features separadas; expiración y renovación no se colapsan en una Feature genérica tipo 'Coach Manages Videos'",
+    "Ningún User Task incluye el Actor como prefijo",
+    "Ningún User Task usa verbos genéricos de gestión que oculten CRUD: Manage, Handle, Gestionar, Manejar, Administrar",
+    "Ningún User Task contiene una conjunción ('y', 'and', 'o', 'or') que indique bundling — por ejemplo 'Filters and Sorts Videos' debe splitearse",
+    "Ningún User Task describe una operación interna del sistema (procesamiento de webhook de Mux, descuento automático de créditos, job de expiración automática)",
+    "Ningún nombre de Feature ni User Task contiene términos de implementación técnica (Mux, Stripe, webhook, cron job, signed URL, HLS/DASH, Direct Uploads API)",
+    "Todas las System Tasks (si las hay) tienen un campo Trigger explícito que describe qué acción del usuario las dispara",
+    "El scope generado es trazable al PRD — no se añaden Features no descritas en las secciones 1-5",
+    "Las capacidades clave del PRD están cubiertas: subir video con selección de plan de créditos, gestionar la biblioteca de videos, renovar un video antes de que expire, crear clips desde videos propios",
+    "Los System Tasks de confirmación de pago (Stripe) y de procesamiento de video subido (webhook de Mux) permanecen standalone — son transiciones de workflow asíncronas genuinas, no deben embeberse en una User Task",
+    "Todos los System Tasks usan el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita '#### System Task:') y cada uno fue evaluado contra el test de transición de workflow autónoma vs acción directa de usuario"
+  ]
+}

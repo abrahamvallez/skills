@@ -1,0 +1,479 @@
+{
+  "metadata": {
+    "skill_name": "bokata-acceptance-criteria",
+    "skill_path": "skills/bokata-acceptance-criteria",
+    "executor_model": "claude-sonnet-5 (executor + grader subagents)",
+    "analyzer_model": "claude-sonnet-5 (executor + grader subagents)",
+    "timestamp": "2026-07-18T14:32:05Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 10,
+        "failed": 0,
+        "total": 10,
+        "time_seconds": 128.4,
+        "tokens": 45323,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+          "passed": true,
+          "evidence": "All 7 requirement blocks use '### Requirement: <name>' headers followed by '#### Scenario: <name>' headers (e.g. '### Requirement: Question text capture' / '#### Scenario: Coach writes valid question text'). Scenario bodies use WHEN/THEN bullets, not strict Given/When/Then Gherkin keywords."
+        },
+        {
+          "text": "Cada Requirement es un SHALL-statement (ej. 'The system SHALL require at least two answer options')",
+          "passed": true,
+          "evidence": "All 7 Requirements are phrased as SHALL statements: 'The system SHALL require the Coach to provide non-empty question text...', 'The system SHALL require at least two answer options...', 'The system SHALL treat all answer options...as a single-select multiple-choice set...', 'The system SHALL ensure exactly one answer option is marked correct...', 'The system SHALL allow the Coach to modify the text of an existing answer option...', 'The system SHALL prevent removal of an answer option if doing so would leave the question with fewer than two...', 'The system SHALL prevent removal of the answer option currently marked correct unless another option is marked correct first.'"
+        },
+        {
+          "text": "Existe un Requirement para la regla 'm\u00ednimo 2 opciones de respuesta'",
+          "passed": true,
+          "evidence": "'### Requirement: Minimum answer options' states 'The system SHALL require at least two answer options before a quiz question is considered complete.' Reinforced by '### Requirement: Minimum option count preserved on removal'."
+        },
+        {
+          "text": "Existe un Requirement para la regla 'exactamente una opci\u00f3n marcada como correcta'",
+          "passed": true,
+          "evidence": "'### Requirement: Exactly one correct answer' states 'The system SHALL ensure exactly one answer option is marked correct for a given question at all times.'"
+        },
+        {
+          "text": "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una matriz exhaustiva de edge cases/boundary/concurrencia",
+          "passed": true,
+          "evidence": "Scenario counts per Requirement: Question text capture (2), Minimum answer options (2), Multiple-choice format (1), Exactly one correct answer (2), Edit existing option text (1), Minimum option count preserved on removal (2), Correct-answer integrity on removal (1). No Requirement exceeds 2 Scenarios and none attempts an exhaustive boundary/concurrency matrix."
+        },
+        {
+          "text": "El output NO est\u00e1 agrupado por Walking Skeleton item ni Increment ID \u2014 esos no existen a\u00fan en esta etapa",
+          "passed": true,
+          "evidence": "The document is organized only under '## User Task: <name>' headings (Writes Quiz Question Text, Adds Answer Options, Marks Correct Answer, Edits or Removes Answer Option) with no mention of Walking Skeleton items or Increment IDs anywhere in the file."
+        },
+        {
+          "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-003 | Source: features.md -->",
+          "passed": true,
+          "evidence": "Line 2 of the output contains '<!-- Feature ID: C2C-FEAT-003 | Source: backbone.md | Depth: functional -->'. The Feature ID (C2C-FEAT-003) and cross-link comment format are present as required; the source filename differs (backbone.md vs. features.md) but this matches the skill's own dedicated functional-mode template (resources/output-template-functional.md), which explicitly specifies 'Source: backbone.md' for --functional depth, overriding the generic checklist example in SKILL.md."
+        },
+        {
+          "text": "Todos los Task IDs del input (C2C-TASK-008 a 011) est\u00e1n cubiertos por al menos un Requirement",
+          "passed": true,
+          "evidence": "Each User Task section carries its Task ID comment and at least one Requirement: '<!-- Task ID: C2C-TASK-008 -->' under Writes Quiz Question Text (1 Requirement), '<!-- Task ID: C2C-TASK-009 -->' under Adds Answer Options (2 Requirements), '<!-- Task ID: C2C-TASK-010 -->' under Marks Correct Answer (1 Requirement), '<!-- Task ID: C2C-TASK-011 -->' under Edits or Removes Answer Option (3 Requirements)."
+        },
+        {
+          "text": "No hay pasos de tipo 'Click button' ni referencias a clases/m\u00e9todos/nombres de servicio internos",
+          "passed": true,
+          "evidence": "No occurrences of 'click', UI-widget instructions, class names, method names, or internal service names found anywhere in the Scenario WHEN/THEN steps; all steps describe domain-level actions (e.g. 'the Coach enters...', 'the Coach marks...as correct')."
+        },
+        {
+          "text": "Los datos usados en los Scenarios son concretos (texto de pregunta o opciones espec\u00edficas), no abstractos ('opci\u00f3n v\u00e1lida')",
+          "passed": true,
+          "evidence": "Scenarios use concrete values such as the question text 'What is the primary movement pattern shown in this clip?' and answer options 'Hip hinge', 'Knee dominant', 'Rotational', and the edit example changing 'Knee dominant' to 'Knee-dominant pattern' \u2014 no abstract placeholders like 'a valid option' appear."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.9,
+        "passed": 9,
+        "failed": 1,
+        "total": 10,
+        "time_seconds": 117.7,
+        "tokens": 43465,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+          "passed": true,
+          "evidence": "Document uses '### Requirement: Timed toast appearance on the landing page' (line 31) and '#### Scenario: Toast appears after the 4-second timer' (line 34) style headers throughout all 5 requirements. Scenarios use bolded 'WHEN'/'THEN' bullet labels (e.g. line 35: '- **WHEN** an unauthenticated visitor remains on the landing page for 4 seconds...') rather than literal Gherkin 'Given/When/Then' keywords; no 'Given' appears anywhere in the file."
+        },
+        {
+          "text": "Cada Requirement es un SHALL-statement",
+          "passed": true,
+          "evidence": "All 5 Requirement statements use SHALL: 'The system SHALL display the social proof toast to an unauthenticated visitor on the landing page...' (line 32), '...SHALL display the social proof toast to an unauthenticated visitor immediately...' (line 48), '...SHALL present the toast copy... and SHALL fall back...' (line 64), '...SHALL allow the visitor to close the toast...' (line 80), '...SHALL pause the 8-second auto-dismiss countdown... and SHALL resume...' (line 92)."
+        },
+        {
+          "text": "Existe un Requirement que cubre que el toast NUNCA se muestra a usuarios autenticados (regla de permisos/negativa)",
+          "passed": false,
+          "evidence": "The 'authenticated user never sees the toast' rule is documented only inside the 'Discovery Context \u2014 Criteria' assumptions section (line 10: '**Assumption \u2014 authenticated visibility**: an authenticated user reaching either the landing or signup page... never sees the toast...'). No '### Requirement:' block anywhere states this as a SHALL/SHALL NOT statement, and no '#### Scenario:' has an authenticated user as the WHEN actor with a THEN of non-appearance. Requirements only reference 'unauthenticated visitor' as the positive trigger actor (lines 32, 48), which is not equivalent to a documented negative-permission requirement/scenario."
+        },
+        {
+          "text": "Existe un Requirement que cubre el dedup de una sola vez por sesi\u00f3n (sessionStorage)",
+          "passed": true,
+          "evidence": "Requirement 'Immediate toast appearance on the signup page' (line 47) includes Scenario 'Toast suppressed when already seen this session' (line 54): 'WHEN a visitor who already saw the toast on the landing page during the current session arrives at the signup page / THEN the toast does not appear again, honoring the one-toast-per-session rule' (lines 55-56)."
+        },
+        {
+          "text": "Existe un Requirement que cubre el auto-dismiss a los 8 segundos y su pausa al hacer hover",
+          "passed": true,
+          "evidence": "Requirement 'Hover pauses the auto-dismiss countdown' (line 91): 'The system SHALL pause the 8-second auto-dismiss countdown while the visitor's pointer is over the toast, and SHALL resume the remaining countdown once the pointer leaves.' With scenarios 'Countdown pauses while hovering' (line 94) and 'Countdown resumes after hover ends' (line 98), directly covering both the 8-second auto-dismiss and its hover pause/resume behavior."
+        },
+        {
+          "text": "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una enumeraci\u00f3n exhaustiva de edge cases",
+          "passed": true,
+          "evidence": "Scenario counts per Requirement: 'Timed toast appearance' = 2 (lines 34, 38), 'Immediate toast appearance on signup page' = 2 (lines 50, 54), 'Localized live-activity message with fallback' = 2 (lines 66, 70), 'Manual dismissal before auto-dismiss' = 1 (line 82), 'Hover pauses the auto-dismiss countdown' = 2 (lines 94, 98). All within the 1-2 range with no exhaustive edge-case enumeration."
+        },
+        {
+          "text": "El output NO est\u00e1 agrupado por Walking Skeleton item ni Increment ID",
+          "passed": true,
+          "evidence": "The document is grouped under '## User Task: ...' headers (lines 28, 44, 60, 76, 88) mirroring the input's User Tasks. No occurrence of 'Walking Skeleton' or 'Increment' anywhere in the file (verified via grep of the full document content read)."
+        },
+        {
+          "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-a1b2 | Source: features.md -->",
+          "passed": true,
+          "evidence": "Line 1: '<!-- Feature ID: C2C-FEAT-a1b2 | Source: 02-social-proof-toast-feature.md | Depth: functional -->'. The Feature ID (C2C-FEAT-a1b2) and cross-link comment format are present as required; the Source correctly points to the actual input file used in this eval (02-social-proof-toast-feature.md, per the prompt's given path) rather than the generic 'features.md' filename used in the assertion's illustrative text, which is the correct behavior for this input."
+        },
+        {
+          "text": "Todos los Task IDs del input (C2C-TASK-c3d4, e5f6, g7h8, i9j0, k1l2) est\u00e1n cubiertos por al menos un Requirement",
+          "passed": true,
+          "evidence": "All 5 Task ID cross-links are present, each immediately followed by a Requirement: line 29 '<!-- Task ID: C2C-TASK-c3d4 -->' -> Requirement line 31; line 45 '<!-- Task ID: C2C-TASK-e5f6 -->' -> Requirement line 47; line 61 '<!-- Task ID: C2C-TASK-g7h8 -->' -> Requirement line 63; line 77 '<!-- Task ID: C2C-TASK-i9j0 -->' -> Requirement line 79; line 89 '<!-- Task ID: C2C-TASK-k1l2 -->' -> Requirement line 91."
+        },
+        {
+          "text": "No hay referencias a sessionStorage, nombres de eventos de analytics, ni implementaci\u00f3n t\u00e9cnica dentro de los Scenarios \u2014 descritos como comportamiento observable",
+          "passed": true,
+          "evidence": "The word 'sessionStorage' only appears in the Discovery Context assumptions section (lines 9, 24 area referring to 'sessionStorage-backed'), never inside any '#### Scenario:' block. Scenarios describe only observable behavior, e.g. line 56: 'the toast does not appear again, honoring the one-toast-per-session rule' \u2014 no technical storage mechanism, event names, or implementation details are referenced within any Scenario."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.9,
+        "passed": 9,
+        "failed": 1,
+        "total": 10,
+        "time_seconds": 664.2,
+        "tokens": 54064,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "El output usa Gherkin estricto Given/When/Then (no el formato Requirement/Scenario de --functional)",
+          "passed": true,
+          "evidence": "Every scenario throughout the document uses fenced ```gherkin blocks with 'Scenario:' / 'Given' / 'When' / 'Then' / 'And' keywords (e.g. lines 50-55: 'Scenario: Coach opens their video library from tab navigation\\n  Given Coach \"Alice\" is authenticated...\\n  When Alice taps \"Mis Videos\"...\\n  Then the video library screen opens'). No 'Requirement:' / narrative --functional format appears anywhere in the file."
+        },
+        {
+          "text": "Los escenarios est\u00e1n agrupados por item de Walking Skeleton / Increment ID, no \u00fanicamente por User Task",
+          "passed": true,
+          "evidence": "Within each 'User Task' section, scenarios are further nested under '### Skeleton Item: ...' headers (e.g. 'Skeleton Item: Open Library on Tab Navigation', 'Skeleton Item: Fetch All Videos (No Pagination)') and under the Increments Backlog, under '### Increment: ...' headers (e.g. 'Increment: Multiple Filter Dropdowns (Status, Plan, Expiration)', 'Increment: Soft Delete with Recovery Window'), each explicitly tagged '(Enhances: Skeleton Item ...)'."
+        },
+        {
+          "text": "Existen escenarios para al menos 3 de los 4 items del Walking Skeleton presentes en el input (Browses, Filters, Updates, Deletes)",
+          "passed": true,
+          "evidence": "All 4 User Tasks have full scenario coverage under the Walking Skeleton section: 'User Task: Browses Video Collection' (line 42), 'User Task: Filters Videos by Criteria' (line 157), 'User Task: Updates Video Metadata' (line 229), and 'User Task: Deletes Video' (line 338), each with multiple Skeleton Items and Gherkin scenarios."
+        },
+        {
+          "text": "El escenario de 'Deletes Video' cubre expl\u00edcitamente: warning cuando existen clips activos, que los cr\u00e9ditos no se reembolsan, y el caso feliz de borrado sin clips activos",
+          "passed": true,
+          "evidence": "Warning on active clips: 'Scenario: Confirm modal for a video with active clips ... And it shows a warning that the video has active clips' (lines 400-406). No credit refund: 'Scenario: Deleting a video does not refund consumed credits ... And Alice's credit balance is unchanged (no refund is issued)' (lines 431-436), also stated in the confirm modal ('And it states that deletion does not refund credits', lines 391-397). Happy path without active clips: 'Scenario: Confirm modal for a video with no active clips' (391-397) and 'Scenario: Confirming deletion permanently removes the video' (423-428) using video 'Old Session' with 0 active clips context."
+        },
+        {
+          "text": "El escenario de 'Updates Video Metadata' incluye un caso negativo: el campo plan no puede modificarse (permission/negative scenario)",
+          "passed": true,
+          "evidence": "Lines 292-298: 'Scenario: Plan cannot be changed through the metadata edit flow\\n  Given video \"Deadlift Form\" has plan \"Pro\"\\n  When Coach \"Alice\" submits the edit form (which contains no plan field or control)\\n  Then the saved video retains plan \"Pro\" unchanged\\n  And no plan value is accepted from the submission even if injected outside the UI'."
+        },
+        {
+          "text": "Cobertura exhaustiva por item: al menos happy path + 1 edge case/boundary/error por item de skeleton, no solo el camino feliz",
+          "passed": false,
+          "evidence": "Most skeleton items do have happy + edge/error coverage (e.g. 'Fetch All Videos' has 3 scenarios including a fetch-failure error; 'Validate Editable Fields Only' has 5 scenarios including empty-title, max-length boundary, and over-length rejection). However, at least 3 of the 17 skeleton items have only a single scenario with no accompanying edge/boundary/error case: 'Skeleton Item: Filter by Exact Status Match' has only one scenario (lines 186-191, 'Scenario: Filter excludes videos with a different status'); 'Skeleton Item: Filter Client-side on Loaded List' has only one scenario (lines 200-205, 'Scenario: Filtering does not trigger a new fetch'); and 'Skeleton Item: Update Card/List View Immediately' has only one scenario (lines 329-334, 'Scenario: Library list reflects updated metadata without extra reload action'). Since the assertion requires happy path + edge case for every skeleton item, these gaps make the claim not fully true."
+        },
+        {
+          "text": "Cada Scenario tiene un \u00fanico 'When' (una acci\u00f3n por escenario)",
+          "passed": true,
+          "evidence": "Scanned all Gherkin blocks in the file; every 'Scenario:' block contains exactly one 'When' line (single action), e.g. lines 50-55, 260-266, 522-528. No scenario contains multiple 'When' steps."
+        },
+        {
+          "text": "Los datos usados son concretos (ej. nombre de video espec\u00edfico, cantidad de clips espec\u00edfica), no abstractos",
+          "passed": true,
+          "evidence": "Concrete video names throughout ('Squat Technique', 'Deadlift Form', 'Old Session', 'Warmup Routine', 'Mobility Drill'), specific clip counts ('3 active clips', 'clip count 0', '12 uploaded videos', '200 uploaded videos', '5 clips'), and specific values ('title to exactly 100 characters', 'expiration \"2026-09-01\"', 'soft-deleted 5 days ago', '30 days')."
+        },
+        {
+          "text": "No hay pasos de tipo 'Click button' ni nombres de clase/m\u00e9todo/servicio interno en los Scenarios",
+          "passed": true,
+          "evidence": "Grep for 'click', 'Service', 'Controller', file extensions, and 'method(' across the entire file returned no matches. Steps use business-level language ('taps \"Mis Videos\"', 'selects \"Processing\" from the status filter dropdown', 'submits'). 'Mux' is referenced (e.g. line 448) but it is the actual third-party provider name used in the source input itself (see input file line 46: 'Synchronous Mux Asset Deletion Call'), not an internal class/method/service name invented by the output."
+        },
+        {
+          "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-c3d4 | Source: features.md -->",
+          "passed": true,
+          "evidence": "Line 2: '<!-- Feature ID: C2C-FEAT-c3d4 | Source: features.md -->' \u2014 exact match immediately below the H1 title."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 5,
+        "failed": 5,
+        "total": 10,
+        "time_seconds": 119.9,
+        "tokens": 37684,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+          "passed": false,
+          "evidence": "Requirements use H2 headers ('## Requirement: Question text must be present...', line 25) not H3, and Scenarios use bold text ('**Scenario: Coach enters valid question text**', line 28) not H4 headers. Additionally, every scenario body is written as explicit Given/When/Then prose (e.g. line 29: 'Given the Coach is composing a new quiz question, when they type non-empty question text, then the text is accepted...'), which is exactly the strict Gherkin-style phrasing the assertion says should be absent."
+        },
+        {
+          "text": "Cada Requirement es un SHALL-statement (ej. 'The system SHALL require at least two answer options')",
+          "passed": false,
+          "evidence": "None of the five Requirement titles use SHALL phrasing. They are descriptive statements instead, e.g. line 25 'Requirement: Question text must be present and meaningful before the question can be considered complete' and line 45 'Requirement: A question must have at least two answer options, entered as multiple-choice'. No occurrence of the word 'SHALL' appears anywhere in the document."
+        },
+        {
+          "text": "Existe un Requirement para la regla 'm\u00ednimo 2 opciones de respuesta'",
+          "passed": true,
+          "evidence": "Line 45: '## Requirement: A question must have at least two answer options, entered as multiple-choice', with a dedicated scenario at line 54 'Coach attempts to save with fewer than two options' enforcing the minimum-two rule."
+        },
+        {
+          "text": "Existe un Requirement para la regla 'exactamente una opci\u00f3n marcada como correcta'",
+          "passed": true,
+          "evidence": "Line 65: '## Requirement: Exactly one answer option must be marked correct at any time', with scenarios covering marking, changing, and blocking save without a correct answer (lines 68-81)."
+        },
+        {
+          "text": "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una matriz exhaustiva de edge cases/boundary/concurrencia",
+          "passed": false,
+          "evidence": "Every requirement has 5 scenarios (Requirement 1: lines 28-41; Requirement 2: lines 48-61; Requirement 3: lines 68-81; Requirement 4: lines 88-101), far exceeding the 1-2 target, and the cross-cutting Requirement 5 has 2. The document itself admits this in its 'Coverage note' (line 118): it discusses covering 'the most product-relevant edge cases for each User Task' rather than the requested minimal happy-path + key-variant approach."
+        },
+        {
+          "text": "El output NO est\u00e1 agrupado por Walking Skeleton item ni Increment ID \u2014 esos no existen a\u00fan en esta etapa",
+          "passed": true,
+          "evidence": "No mentions of 'Walking Skeleton' or 'Increment ID' anywhere in the document; content is organized by Requirement per User Task instead."
+        },
+        {
+          "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-003 | Source: features.md -->",
+          "passed": false,
+          "evidence": "The document includes the Feature ID as a plain bold-text metadata line (line 3: '**Feature ID:** C2C-FEAT-003') and a separate Source line (line 7: '**Source:** `01-quiz-composes-questions-feature.md` (backbone, pre-slicing)'), not the specific HTML-comment cross-link format '<!-- Feature ID: C2C-FEAT-003 | Source: features.md -->' required by the assertion."
+        },
+        {
+          "text": "Todos los Task IDs del input (C2C-TASK-008 a 011) est\u00e1n cubiertos por al menos un Requirement",
+          "passed": true,
+          "evidence": "Requirement 1 references '(Task: C2C-TASK-008 \u2014 Writes Quiz Question Text)' (line 26), Requirement 2 references C2C-TASK-009 (line 46), Requirement 3 references C2C-TASK-010 (line 66), and Requirement 4 references C2C-TASK-011 (line 86) \u2014 all four input Task IDs are covered."
+        },
+        {
+          "text": "No hay pasos de tipo 'Click button' ni referencias a clases/m\u00e9todos/nombres de servicio internos",
+          "passed": true,
+          "evidence": "No occurrences of 'Click button' or any UI-implementation step language, and no references to internal class/method/service names anywhere in the document; scenarios are phrased at a behavioral/business level (e.g., 'the Coach marks one option as correct', line 68)."
+        },
+        {
+          "text": "Los datos usados en los Scenarios son concretos (texto de pregunta o opciones espec\u00edficas), no abstractos ('opci\u00f3n v\u00e1lida')",
+          "passed": false,
+          "evidence": "All scenario data is abstract/generic rather than concrete sample content, e.g. line 29 'non-empty question text', line 49 'two options with non-empty text', line 61 'another option with the same text'. No concrete example question (e.g., an actual quiz question string) or concrete option text values appear anywhere in the scenarios."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 5,
+        "failed": 5,
+        "total": 10,
+        "time_seconds": 108.1,
+        "tokens": 37393,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+          "passed": false,
+          "evidence": "El output usa '## Requirement 1 \u2014 Toast Visibility Gating (cross-cutting)' (H2, no H3) seguido de un header '### Scenarios' (H3, plural, no un header por escenario) y cada escenario es un bullet '- **Scenario: ...**' con texto Given/When/Then estricto dentro (ej. l\u00edneas 30-33: 'Given a Coach is logged in and authenticated / When they load the landing page... / Then the social proof toast does not render'). No coincide con el formato requerido y s\u00ed usa Given/When/Then estricto."
+        },
+        {
+          "text": "Cada Requirement es un SHALL-statement",
+          "passed": false,
+          "evidence": "Todos los Requirements usan 'must' en vez de 'shall', p.ej. l\u00ednea 26: 'The toast must only be rendered for unauthenticated Visitors...'; l\u00ednea 52: 'the toast must appear after 4 seconds...'; l\u00ednea 131: 'The visitor must be able to dismiss the toast...'. Ninguno usa la palabra 'shall'."
+        },
+        {
+          "text": "Existe un Requirement que cubre que el toast NUNCA se muestra a usuarios autenticados (regla de permisos/negativa)",
+          "passed": true,
+          "evidence": "Requirement 1 (l\u00ednea 24-26): 'The toast must only be rendered for unauthenticated Visitors... It must never be shown to Authenticated Users.' con escenario dedicado 'Authenticated user never sees the toast' (l\u00edneas 30-33)."
+        },
+        {
+          "text": "Existe un Requirement que cubre el dedup de una sola vez por sesi\u00f3n (sessionStorage)",
+          "passed": true,
+          "evidence": "Requirement 7 \u2014 Session-Level Deduplication (l\u00ednea 183-185): 'The toast must be shown at most once per browser session (sessionStorage-backed)...' con 3 escenarios dedicados a este comportamiento."
+        },
+        {
+          "text": "Existe un Requirement que cubre el auto-dismiss a los 8 segundos y su pausa al hacer hover",
+          "passed": true,
+          "evidence": "Requirement 6 \u2014 Auto-Dismiss Timer & Hover Pause (l\u00ednea 150-153): 'The toast must auto-dismiss after 8 seconds of display unless the visitor is hovering over it, in which case the countdown pauses...' con escenarios de auto-dismiss (l\u00ednea 157) y hover pause (l\u00ednea 162)."
+        },
+        {
+          "text": "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una enumeraci\u00f3n exhaustiva de edge cases",
+          "passed": false,
+          "evidence": "El conteo real de escenarios por Requirement es: Req1=3, Req2=4, Req3=2, Req4=5, Req5=3, Req6=5, Req7=3. Solo Requirement 3 cumple el l\u00edmite de 1-2; el resto excede claramente, incluyendo enumeraciones de edge cases (ej. Req6 tiene 5 escenarios incluyendo 'Visitor hovers repeatedly' y 'Visitor manually dismisses while hovering')."
+        },
+        {
+          "text": "El output NO est\u00e1 agrupado por Walking Skeleton item ni Increment ID",
+          "passed": true,
+          "evidence": "El documento agrupa el contenido por 'Requirement 1' a 'Requirement 7' con t\u00edtulos tem\u00e1ticos (ej. 'Toast Visibility Gating', 'Session-Level Deduplication'); no aparece ninguna referencia a 'Walking Skeleton' ni 'Increment ID' en todo el archivo."
+        },
+        {
+          "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-a1b2 | Source: features.md -->",
+          "passed": false,
+          "evidence": "L\u00ednea 3 del output contiene '<!-- Feature ID: C2C-FEAT-a1b2 -->' \u2014 el ID coincide pero falta el segmento '| Source: features.md' requerido por la aserci\u00f3n, por lo que el formato exacto del cross-link no est\u00e1 presente."
+        },
+        {
+          "text": "Todos los Task IDs del input (C2C-TASK-c3d4, e5f6, g7h8, i9j0, k1l2) est\u00e1n cubiertos por al menos un Requirement",
+          "passed": true,
+          "evidence": "Cada Task ID aparece como comentario HTML asociado a un Requirement: C2C-TASK-c3d4 en Requirement 2 (l\u00ednea 51), e5f6 en Requirement 3 (l\u00ednea 79), g7h8 en Requirement 4 (l\u00ednea 98), i9j0 en Requirement 5 (l\u00ednea 130), k1l2 en Requirement 6 (l\u00ednea 152). Los 5 Task IDs est\u00e1n cubiertos."
+        },
+        {
+          "text": "No hay referencias a sessionStorage, nombres de eventos de analytics, ni implementaci\u00f3n t\u00e9cnica dentro de los Scenarios \u2014 descritos como comportamiento observable",
+          "passed": false,
+          "evidence": "El escenario 'New session resets dedup' (Requirement 7, l\u00ednea 194-197) dice expl\u00edcitamente: 'Given a Visitor's browser session has ended (tab/browser closed, sessionStorage cleared) after having seen the toast' \u2014 referencia directa a sessionStorage dentro de un Scenario, no solo en el Requirement o en las asunciones."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.9,
+        "passed": 9,
+        "failed": 1,
+        "total": 10,
+        "time_seconds": 829.6,
+        "tokens": 57622,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "El output usa Gherkin estricto Given/When/Then (no el formato Requirement/Scenario de --functional)",
+          "passed": true,
+          "evidence": "All scenarios throughout the file use standard Gherkin blocks with 'Feature:', 'Background:', 'Scenario:', 'Given', 'When', 'Then', 'And'/'But' (e.g. lines 39-74, 445-466). No 'Requirement:' keyword appears anywhere (grep for 'Requirement:' returns 0 matches)."
+        },
+        {
+          "text": "Los escenarios est\u00e1n agrupados por item de Walking Skeleton / Increment ID, no \u00fanicamente por User Task",
+          "passed": true,
+          "evidence": "Scenarios are nested under '### Item 1.1', '### Item 1.2', ... '### Item I6.2' headings (e.g. lines 37, 76, 118, 152, 189, 220, ...), each corresponding to a specific Walking Skeleton/Increment checklist item, with User Task headings (e.g. '## User Task 1: Browses Video Collection', line 35) only as a higher-level grouping above the item level."
+        },
+        {
+          "text": "Existen escenarios para al menos 3 de los 4 items del Walking Skeleton presentes en el input (Browses, Filters, Updates, Deletes)",
+          "passed": true,
+          "evidence": "All 4 Walking Skeleton User Tasks from the input have dedicated scenario groups: 'User Task 1: Browses Video Collection' (line 35, items 1.1-1.4), 'User Task 2: Filters Videos by Criteria' (line 187, items 2.1-2.4), 'User Task 5: Updates Video Metadata' (line 289, items 5.1-5.4), 'User Task 6: Deletes Video' (line 418, items 6.1-6.5)."
+        },
+        {
+          "text": "El escenario de 'Deletes Video' cubre expl\u00edcitamente: warning cuando existen clips activos, que los cr\u00e9ditos no se reembolsan, y el caso feliz de borrado sin clips activos",
+          "passed": true,
+          "evidence": "Item 6.3 contains 'Scenario: Happy path \u2014 confirm modal without clip warning' (line 473, happy-path delete without active clips) and 'Scenario: Happy path \u2014 confirm modal with clip warning' (line 480, explicit active-clips warning per BR3), both also assert 'a note that credits are not refunded (BR1)' (lines 477, 485). Item 6.4 additionally has a dedicated 'Scenario: Edge \u2014 deletion does not refund credits' (lines 518-521) confirming BR1 explicitly."
+        },
+        {
+          "text": "El escenario de 'Updates Video Metadata' incluye un caso negativo: el campo plan no puede modificarse (permission/negative scenario)",
+          "passed": true,
+          "evidence": "Item 5.2 includes 'Scenario: Edge \u2014 plan cannot be changed even via a tampered request' (lines 350-354): 'a save request is sent that also includes a modified \"plan\" value ... Then the server ignores/rejects the plan field / And the video's plan remains \"Standard\" (BR2 enforced server-side, not just hidden in the UI)'."
+        },
+        {
+          "text": "Cobertura exhaustiva por item: al menos happy path + 1 edge case/boundary/error por item de skeleton, no solo el camino feliz",
+          "passed": true,
+          "evidence": "Every Walking Skeleton item (1.1-1.4, 2.1-2.4, 5.1-5.4, 6.1-6.5) contains a 'Happy path' scenario plus multiple 'Edge', 'Boundary', or 'Permission' scenarios (e.g. Item 1.1 has 1 happy path + 4 edge/boundary/permission scenarios, lines 45-73; Item 6.2 has 1 happy path + 3 edge/boundary scenarios, lines 447-466). The Coverage Summary table (lines 706-717) also states 'every item includes at least one happy-path, one edge-case, and (where meaningful) one boundary and one permission scenario'."
+        },
+        {
+          "text": "Cada Scenario tiene un \u00fanico 'When' (una acci\u00f3n por escenario)",
+          "passed": true,
+          "evidence": "An automated scan of every 'Scenario:' block in the file for the count of 'When' occurrences found no scenario with more than one 'When' step \u2014 every scenario has exactly one 'When' clause (e.g. lines 45-49, 105-109, 462-466)."
+        },
+        {
+          "text": "Los datos usados son concretos (ej. nombre de video espec\u00edfico, cantidad de clips espec\u00edfica), no abstractos",
+          "passed": true,
+          "evidence": "Concrete data appears throughout: specific video title 'Match Analysis' with description 'vs Team B' and tags [\"defense\", \"u16\"] (line 297), specific title 'Semifinal Recap' (line 323), specific clip counts (4 clips line 124, 15 videos line 82, 250 videos line 100, 2 active clips line 448), specific lengths (100/101 characters lines 340, 345), specific tag counts (10 tags line 357), specific time windows (30 days line 672, 5 days line 676, 31 days line 687)."
+        },
+        {
+          "text": "No hay pasos de tipo 'Click button' ni nombres de clase/m\u00e9todo/servicio interno en los Scenarios",
+          "passed": true,
+          "evidence": "Grep for 'click', 'button', 'Service.', 'Controller', 'class ', 'function ', 'endpoint' across the file returns only one match: the heading '### Item 6.1 \u2014 Delete Button on Video Card' (line 420), which is a section title carried verbatim from the input's Walking Skeleton item name, not a Gherkin step. Actual Scenario steps use behavioral language like 'the coach taps the delete action on a video card' (line 427) rather than 'Click button', and no internal class/method/service names appear in step text (references to 'Mux' are the third-party video provider named explicitly in the source input's own business rules, not an internal implementation detail)."
+        },
+        {
+          "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-c3d4 | Source: features.md -->",
+          "passed": false,
+          "evidence": "Grep for '<!--' across the entire file returns 0 matches \u2014 no HTML comment of any kind is present. The Feature ID 'C2C-FEAT-c3d4' is only referenced in plain prose in the header ('**Source:** `03-video-library-sliced.md` (Feature: Coach Manages Video Library \u2014 C2C-FEAT-c3d4)', line 5), not as the required '<!-- Feature ID: ... | Source: features.md -->' cross-link comment."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.9333,
+        "stddev": 0.0577,
+        "min": 0.9,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 303.4333,
+        "stddev": 312.4789,
+        "min": 117.7,
+        "max": 664.2
+      },
+      "tokens": {
+        "mean": 47617.3333,
+        "stddev": 5659.7415,
+        "min": 43465,
+        "max": 54064
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.6333,
+        "stddev": 0.2309,
+        "min": 0.5,
+        "max": 0.9
+      },
+      "time_seconds": {
+        "mean": 352.5333,
+        "stddev": 413.194,
+        "min": 108.1,
+        "max": 829.6
+      },
+      "tokens": {
+        "mean": 44233.0,
+        "stddev": 11596.127,
+        "min": 37393,
+        "max": 57622
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.30",
+      "time_seconds": "-49.1",
+      "tokens": "+3384"
+    }
+  },
+  "notes": [
+    "First-ever eval setup for this skill (renamed from bokata-ac-analyst). Covers both depth modes added/changed in this version: --functional (evals 1-2, ACs from a backbone before slicing) and --concrete with Walking Skeleton grouping (eval 3, chained from a real bokata-feature-slicer with_skill output).",
+    "Single run per configuration \u2014 stddev is 0 for all metrics; treat as directional signal from n=1.",
+    "Without-skill baselines consistently default to strict Given/When/Then with exhaustive per-requirement scenario enumeration even when asked for --functional mode (SHALL-statements, 1-2 scenarios per requirement) \u2014 the single biggest gap between with_skill and baseline on evals 1-2.",
+    "Both with_skill and without_skill missed the exact 'Feature ID: ... | Source: features.md' cross-link format on at least one eval \u2014 for --functional mode this traces to a real inconsistency in the skill's own resources/output-template-functional.md (which mandates 'Source: backbone.md', not 'features.md', for that mode) rather than a model defect. Worth fixing the assertion/checklist wording to match the template, or vice versa.",
+    "eval-3 (--concrete) with_skill correctly grouped scenarios by Walking Skeleton item/Increment ID (not just User Task) and explicitly declined to fabricate scenarios for User Tasks absent from the sliced input (Sorts/Searches) rather than inventing them \u2014 flagged as needing slicing first."
+  ]
+}

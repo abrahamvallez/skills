@@ -1,0 +1,17 @@
+{
+  "eval_id": 3,
+  "eval_name": "video-library-concrete-post-slicing",
+  "prompt": "Genera Acceptance Criteria en modo --concrete para esta Feature de Clip2Coach, que ya fue sliced (contiene Walking Skeleton + Increments Backlog). Si tienes preguntas de clarificación, usa tu criterio y documenta tus asunciones en lugar de preguntar.\n\nEl input está en: evals/bokata-acceptance-criteria/inputs/03-video-library-sliced.md",
+  "assertions": [
+    "El output usa Gherkin estricto Given/When/Then (no el formato Requirement/Scenario de --functional)",
+    "Los escenarios están agrupados por item de Walking Skeleton / Increment ID, no únicamente por User Task",
+    "Existen escenarios para al menos 3 de los 4 items del Walking Skeleton presentes en el input (Browses, Filters, Updates, Deletes)",
+    "El escenario de 'Deletes Video' cubre explícitamente: warning cuando existen clips activos, que los créditos no se reembolsan, y el caso feliz de borrado sin clips activos",
+    "El escenario de 'Updates Video Metadata' incluye un caso negativo: el campo plan no puede modificarse (permission/negative scenario)",
+    "Cobertura exhaustiva por item: al menos happy path + 1 edge case/boundary/error por item de skeleton, no solo el camino feliz",
+    "Cada Scenario tiene un único 'When' (una acción por escenario)",
+    "Los datos usados son concretos (ej. nombre de video específico, cantidad de clips específica), no abstractos",
+    "No hay pasos de tipo 'Click button' ni nombres de clase/método/servicio interno en los Scenarios",
+    "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-c3d4 | Source: features.md -->"
+  ]
+}

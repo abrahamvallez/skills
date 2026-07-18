@@ -1,0 +1,17 @@
+{
+  "eval_id": 2,
+  "eval_name": "social-proof-toast-functional",
+  "prompt": "Genera Acceptance Criteria en modo --functional para esta Feature de Clip2Coach (backbone recién generado, aún sin slicing). Si tienes preguntas de clarificación, usa tu criterio y documenta tus asunciones en lugar de preguntar.\n\nLa Feature está en: evals/bokata-acceptance-criteria/inputs/02-social-proof-toast-feature.md",
+  "assertions": [
+    "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+    "Cada Requirement es un SHALL-statement",
+    "Existe un Requirement que cubre que el toast NUNCA se muestra a usuarios autenticados (regla de permisos/negativa)",
+    "Existe un Requirement que cubre el dedup de una sola vez por sesión (sessionStorage)",
+    "Existe un Requirement que cubre el auto-dismiss a los 8 segundos y su pausa al hacer hover",
+    "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una enumeración exhaustiva de edge cases",
+    "El output NO está agrupado por Walking Skeleton item ni Increment ID",
+    "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-a1b2 | Source: features.md -->",
+    "Todos los Task IDs del input (C2C-TASK-c3d4, e5f6, g7h8, i9j0, k1l2) están cubiertos por al menos un Requirement",
+    "No hay referencias a sessionStorage, nombres de eventos de analytics, ni implementación técnica dentro de los Scenarios — descritos como comportamiento observable"
+  ]
+}

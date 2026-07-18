@@ -1,0 +1,15 @@
+{
+  "eval_id": 1,
+  "eval_name": "video-upload-feature",
+  "prompt": "Slice esta Feature de Clip2Coach en un Walking Skeleton + Increments Backlog. Si tienes preguntas de clarificación, usa tu criterio y documenta tus asunciones en lugar de preguntar.\n\nLa Feature está en: evals/bokata-feature-slicer/inputs/01-video-upload-feature.md",
+  "assertions": [
+    "La sección '## 💀 Walking Skeleton' cubre las 5 User Tasks (Verifica Créditos, Selecciona Plan, Ingresa Metadata, Sube Archivo, Monitorea Progreso)",
+    "Cada item del Walking Skeleton es la opción genuinamente más simple viable, construible en 1-3 días",
+    "Los items de Walking Skeleton que tocan la capa de Data son reversibles (se puede deshacer sin pérdida de datos)",
+    "La sección '## 🏗️ Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+    "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+    "Ningún item del backlog es una tarea genérica ('implementar upload', 'manejar créditos') — todos son increments específicos derivados de las opciones de Phase 2",
+    "Las descripciones del Walking Skeleton explican qué ve/hace el coach — pueden mencionar tecnología (Mux, progress bar) pero NO nombres de endpoints, campos de base de datos, ni nombres de función/método",
+    "El System Task 'Processes Uploaded Video' (deducción de créditos + transcoding) se refleja en la decomposición de 'Uploads Video File' o 'Monitors Upload Progress' como parte del flujo, no se ignora"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "expectations": [
+    {
+      "text": "El output usa Gherkin estricto Given/When/Then (no el formato Requirement/Scenario de --functional)",
+      "passed": true,
+      "evidence": "All scenarios throughout the file use standard Gherkin blocks with 'Feature:', 'Background:', 'Scenario:', 'Given', 'When', 'Then', 'And'/'But' (e.g. lines 39-74, 445-466). No 'Requirement:' keyword appears anywhere (grep for 'Requirement:' returns 0 matches)."
+    },
+    {
+      "text": "Los escenarios están agrupados por item de Walking Skeleton / Increment ID, no únicamente por User Task",
+      "passed": true,
+      "evidence": "Scenarios are nested under '### Item 1.1', '### Item 1.2', ... '### Item I6.2' headings (e.g. lines 37, 76, 118, 152, 189, 220, ...), each corresponding to a specific Walking Skeleton/Increment checklist item, with User Task headings (e.g. '## User Task 1: Browses Video Collection', line 35) only as a higher-level grouping above the item level."
+    },
+    {
+      "text": "Existen escenarios para al menos 3 de los 4 items del Walking Skeleton presentes en el input (Browses, Filters, Updates, Deletes)",
+      "passed": true,
+      "evidence": "All 4 Walking Skeleton User Tasks from the input have dedicated scenario groups: 'User Task 1: Browses Video Collection' (line 35, items 1.1-1.4), 'User Task 2: Filters Videos by Criteria' (line 187, items 2.1-2.4), 'User Task 5: Updates Video Metadata' (line 289, items 5.1-5.4), 'User Task 6: Deletes Video' (line 418, items 6.1-6.5)."
+    },
+    {
+      "text": "El escenario de 'Deletes Video' cubre explícitamente: warning cuando existen clips activos, que los créditos no se reembolsan, y el caso feliz de borrado sin clips activos",
+      "passed": true,
+      "evidence": "Item 6.3 contains 'Scenario: Happy path — confirm modal without clip warning' (line 473, happy-path delete without active clips) and 'Scenario: Happy path — confirm modal with clip warning' (line 480, explicit active-clips warning per BR3), both also assert 'a note that credits are not refunded (BR1)' (lines 477, 485). Item 6.4 additionally has a dedicated 'Scenario: Edge — deletion does not refund credits' (lines 518-521) confirming BR1 explicitly."
+    },
+    {
+      "text": "El escenario de 'Updates Video Metadata' incluye un caso negativo: el campo plan no puede modificarse (permission/negative scenario)",
+      "passed": true,
+      "evidence": "Item 5.2 includes 'Scenario: Edge — plan cannot be changed even via a tampered request' (lines 350-354): 'a save request is sent that also includes a modified \"plan\" value ... Then the server ignores/rejects the plan field / And the video's plan remains \"Standard\" (BR2 enforced server-side, not just hidden in the UI)'."
+    },
+    {
+      "text": "Cobertura exhaustiva por item: al menos happy path + 1 edge case/boundary/error por item de skeleton, no solo el camino feliz",
+      "passed": true,
+      "evidence": "Every Walking Skeleton item (1.1-1.4, 2.1-2.4, 5.1-5.4, 6.1-6.5) contains a 'Happy path' scenario plus multiple 'Edge', 'Boundary', or 'Permission' scenarios (e.g. Item 1.1 has 1 happy path + 4 edge/boundary/permission scenarios, lines 45-73; Item 6.2 has 1 happy path + 3 edge/boundary scenarios, lines 447-466). The Coverage Summary table (lines 706-717) also states 'every item includes at least one happy-path, one edge-case, and (where meaningful) one boundary and one permission scenario'."
+    },
+    {
+      "text": "Cada Scenario tiene un único 'When' (una acción por escenario)",
+      "passed": true,
+      "evidence": "An automated scan of every 'Scenario:' block in the file for the count of 'When' occurrences found no scenario with more than one 'When' step — every scenario has exactly one 'When' clause (e.g. lines 45-49, 105-109, 462-466)."
+    },
+    {
+      "text": "Los datos usados son concretos (ej. nombre de video específico, cantidad de clips específica), no abstractos",
+      "passed": true,
+      "evidence": "Concrete data appears throughout: specific video title 'Match Analysis' with description 'vs Team B' and tags [\"defense\", \"u16\"] (line 297), specific title 'Semifinal Recap' (line 323), specific clip counts (4 clips line 124, 15 videos line 82, 250 videos line 100, 2 active clips line 448), specific lengths (100/101 characters lines 340, 345), specific tag counts (10 tags line 357), specific time windows (30 days line 672, 5 days line 676, 31 days line 687)."
+    },
+    {
+      "text": "No hay pasos de tipo 'Click button' ni nombres de clase/método/servicio interno en los Scenarios",
+      "passed": true,
+      "evidence": "Grep for 'click', 'button', 'Service.', 'Controller', 'class ', 'function ', 'endpoint' across the file returns only one match: the heading '### Item 6.1 — Delete Button on Video Card' (line 420), which is a section title carried verbatim from the input's Walking Skeleton item name, not a Gherkin step. Actual Scenario steps use behavioral language like 'the coach taps the delete action on a video card' (line 427) rather than 'Click button', and no internal class/method/service names appear in step text (references to 'Mux' are the third-party video provider named explicitly in the source input's own business rules, not an internal implementation detail)."
+    },
+    {
+      "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-c3d4 | Source: features.md -->",
+      "passed": false,
+      "evidence": "Grep for '<!--' across the entire file returns 0 matches — no HTML comment of any kind is present. The Feature ID 'C2C-FEAT-c3d4' is only referenced in plain prose in the header ('**Source:** `03-video-library-sliced.md` (Feature: Coach Manages Video Library — C2C-FEAT-c3d4)', line 5), not as the required '<!-- Feature ID: ... | Source: features.md -->' cross-link comment."
+    }
+  ],
+  "summary": {"passed": 9, "failed": 1, "total": 10, "pass_rate": 0.9}
+}

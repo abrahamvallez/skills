@@ -1,0 +1,81 @@
+{
+  "expectations": [
+    {
+      "text": "Se identifican al menos 3 Features — el PRD cubre dominios distintos: subir videos, gestionar biblioteca, gestionar expiración/renovación, y crear clips desde videos propios",
+      "passed": true,
+      "evidence": "5 Features present: 'User Manages Credit Balance' (C2C-FEAT-01), 'User Uploads Video' (C2C-FEAT-02), 'User Manages Video Library' (C2C-FEAT-03), 'User Renews Expiring Videos' (C2C-FEAT-04), 'User Creates Clips from Own Videos' (C2C-FEAT-05) — covers upload, library, expiration/renewal, and clip creation domains distinctly."
+    },
+    {
+      "text": "Cada Feature tiene al menos 3 User Tasks",
+      "passed": true,
+      "evidence": "Feature 01 has 3 (Purchases Credit Package, Views Credit Balance, Views Credit Transaction History); Feature 02 has 5; Feature 03 has 6; Feature 04 has 3 (Views Expiration Status, Extends Expiration by One Month, Extends Expiration by One Year); Feature 05 has 4. All meet or exceed the 3-task minimum."
+    },
+    {
+      "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] — sin cláusulas adicionales ni conjunciones en el nombre",
+      "passed": true,
+      "evidence": "All 5 Feature headings follow the pattern: 'User Manages Credit Balance', 'User Uploads Video', 'User Manages Video Library', 'User Renews Expiring Videos', 'User Creates Clips from Own Videos'. Each is Actor+Verb+Object with a single (possibly compound-noun) object and no 'y'/'and' conjunctions."
+    },
+    {
+      "text": "Ningún Feature usa 'System', 'Sistema' ni actores no-humanos del PRD como Actor",
+      "passed": true,
+      "evidence": "Every Feature's Actor is 'User'. Discovery Context explicitly states: 'Mux and Stripe are backend integrations, not user actors, and are never used as a Feature's Actor' (line 10), and this is honored throughout."
+    },
+    {
+      "text": "No hay bundling de dominios: Upload y gestión de biblioteca son Features separadas; expiración y renovación no se colapsan en una Feature genérica tipo 'Coach Manages Videos'",
+      "passed": true,
+      "evidence": "'User Uploads Video' (C2C-FEAT-02) and 'User Manages Video Library' (C2C-FEAT-03) are distinct Features. Expiration/renewal is its own Feature 'User Renews Expiring Videos' (C2C-FEAT-04), not folded into the library-management Feature. NOTE: per the data-leakage caveat, the executor stated it read this exact assertion before producing output and used it to confirm this split — this pass likely reflects assertion-reading rather than independently-derived methodology."
+    },
+    {
+      "text": "Ningún User Task incluye el Actor como prefijo",
+      "passed": true,
+      "evidence": "All User Task headings omit the 'User' prefix, e.g. 'Purchases Credit Package', 'Views Video List', 'Extends Expiration by One Month', 'Selects Own Video from Library' — none begin with 'User'."
+    },
+    {
+      "text": "Ningún User Task usa verbos genéricos de gestión que oculten CRUD: Manage, Handle, Gestionar, Manejar, Administrar",
+      "passed": true,
+      "evidence": "All User Task verbs are concrete CRUD/domain verbs: Purchases, Views, Initiates, Selects, Enters, Uploads, Cancels, Sorts, Filters, Searches, Edits, Deletes, Extends, Continues, Saves. No instance of Manage/Handle/Gestionar/Manejar/Administrar found in any User Task heading."
+    },
+    {
+      "text": "Ningún User Task contiene una conjunción ('y', 'and', 'o', 'or') que indique bundling — por ejemplo 'Filters and Sorts Videos' debe splitearse",
+      "passed": true,
+      "evidence": "'Filters Video List' (C2C-TASK-0303) and 'Sorts Video List' (C2C-TASK-0302) are already split into separate User Tasks rather than combined as 'Filters and Sorts'. No User Task heading contains 'and'/'y'/'or'/'o' as a bundling conjunction."
+    },
+    {
+      "text": "Ningún User Task describe una operación interna del sistema (procesamiento de webhook de Mux, descuento automático de créditos, job de expiración automática)",
+      "passed": true,
+      "evidence": "Webhook processing, automatic credit deduction, and automatic expiration are all extracted into separate System Tasks (2.3 Processes Uploaded Video, 2.1 Deducts Upload Credits, 4.1 Expires Video) rather than described inside User Tasks. The one system-mention inside 'Uploads Video File' ('the system checks that the credit balance covers the selected plan') is a synchronous pre-condition check, not one of the three prohibited async/automatic operations."
+    },
+    {
+      "text": "Ningún nombre de Feature ni User Task contiene términos de implementación técnica (Mux, Stripe, webhook, cron job, signed URL, HLS/DASH, Direct Uploads API)",
+      "passed": true,
+      "evidence": "No Feature or User Task heading contains any of these terms. 'Stripe' appears only inside the body text of the 'Purchases Credit Package' User Task description ('through the existing Stripe checkout integration'), not in the heading/name itself, which is what the assertion scopes to."
+    },
+    {
+      "text": "Todas las System Tasks (si las hay) tienen un campo Trigger explícito que describe qué acción del usuario las dispara",
+      "passed": true,
+      "evidence": "All 6 System Tasks (1.1, 2.1, 2.2, 2.3, 4.1, 4.2) have an explicit '**Trigger:**' line, e.g. 'Payment confirmation is received for a credit package purchase', 'Video upload completes successfully'. Each traces back to a preceding user-initiated action (purchase, upload, renewal) even where the immediate trigger is a downstream system/time event (e.g. transcoding finishing, expiration date reached) — consistent with the methodology's own 'payment confirmed → system generates invoice' pattern referenced in the doc's Assumptions section."
+    },
+    {
+      "text": "El scope generado es trazable al PRD — no se añaden Features no descritas en las secciones 1-5",
+      "passed": true,
+      "evidence": "All 5 Features map directly to PRD FR-1 (Upload), FR-2 (Credits), FR-3 (Video Management), FR-4 (Expiración y Renovación), FR-5 (Clip Creation). Out-of-scope items (Mux Data dashboards FR-6.4, bulk upload, sharing, mobile upload, etc.) are explicitly excluded per the Discovery Context 'Scope boundaries' section (lines 12-19), referencing PRD §12 Future Enhancements."
+    },
+    {
+      "text": "Las capacidades clave del PRD están cubiertas: subir video con selección de plan de créditos, gestionar la biblioteca de videos, renovar un video antes de que expire, crear clips desde videos propios",
+      "passed": true,
+      "evidence": "Upload+plan selection: 'Selects Pricing Plan' (C2C-TASK-0202) inside 'User Uploads Video'. Library management: Feature 'User Manages Video Library' with 6 tasks. Renewal before expiration: Feature 'User Renews Expiring Videos' with 'Extends Expiration by One Month/Year'. Clip creation from own videos: Feature 'User Creates Clips from Own Videos'. All four key capabilities present."
+    },
+    {
+      "text": "Los System Tasks de confirmación de pago (Stripe) y de procesamiento de video subido (webhook de Mux) permanecen standalone — son transiciones de workflow asíncronas genuinas, no deben embeberse en una User Task",
+      "passed": true,
+      "evidence": "System Task 1.1 'Adds Purchased Credits' (trigger: payment confirmation received) and System Task 2.3 'Processes Uploaded Video' (trigger: transcoding finishes) are both standalone System Tasks, not embedded inside 'Purchases Credit Package' or 'Uploads Video File'. NOTE: per the data-leakage caveat, the executor's own Assumptions section (line 36) states it deliberately kept the Stripe confirmation standalone by matching it to 'the methodology's own... example' after reading the assertions — this pass is likely assertion-driven rather than purely independently derived, though the resulting document structure does genuinely satisfy the assertion."
+    },
+    {
+      "text": "Todos los System Tasks usan el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita '#### System Task:') y cada uno fue evaluado contra el test de transición de workflow autónoma vs acción directa de usuario",
+      "passed": true,
+      "evidence": "CORRECTED ON REVIEW: the assertion text as written omitted the '{N}.{M}' numbering that bokata-feature-mapper's own SKILL.md checklist explicitly mandates ('Each System Task uses naming format System Task {N}.{M}: [Verb] [Object] (with numbering per Feature)') — that was an eval-authoring bug, not a defect in the output. Headings like '##### System Task 1.1: Adds Purchased Credits' are real h5 headings (not bold text) and correctly follow the skill's own numbered template. The autonomous-workflow-transition vs direct-user-action test is genuinely demonstrated in the Discovery Context/Assumptions sections (upload-credit deduction, renewal, manual deletion, Stripe/Mux confirmations all reasoned case-by-case)."
+    }
+  ],
+  "summary": {"passed": 15, "failed": 0, "total": 15, "pass_rate": 1.0},
+  "eval_feedback": {"overall": "15/15 assertions pass once the heading-format assertion is corrected for an eval-authoring bug (it omitted the {N}.{M} numbering the skill's own spec requires). Per the data-leakage caveat, assertions 5 (expiration/renewal as separate Feature) and 14 (Stripe/Mux confirmations kept standalone) are the ones most likely inflated by contamination — the executor explicitly said it read this eval's assertions and used them to confirm those exact decisions. By contrast, the workflow-transition classification work behind assertion 15 (and, more defensibly, 9 and 11) required genuine methodological reasoning that reading assertion text alone couldn't have supplied — the document's Discovery Context shows real case-by-case application of the sync-vs-async test."}
+}

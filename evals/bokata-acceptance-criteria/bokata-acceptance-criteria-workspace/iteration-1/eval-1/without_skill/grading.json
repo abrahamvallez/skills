@@ -1,0 +1,55 @@
+{
+  "expectations": [
+    {
+      "text": "El output usa headers '### Requirement:' + '#### Scenario:' (no Given/When/Then estricto de Gherkin)",
+      "passed": false,
+      "evidence": "Requirements use H2 headers ('## Requirement: Question text must be present...', line 25) not H3, and Scenarios use bold text ('**Scenario: Coach enters valid question text**', line 28) not H4 headers. Additionally, every scenario body is written as explicit Given/When/Then prose (e.g. line 29: 'Given the Coach is composing a new quiz question, when they type non-empty question text, then the text is accepted...'), which is exactly the strict Gherkin-style phrasing the assertion says should be absent."
+    },
+    {
+      "text": "Cada Requirement es un SHALL-statement (ej. 'The system SHALL require at least two answer options')",
+      "passed": false,
+      "evidence": "None of the five Requirement titles use SHALL phrasing. They are descriptive statements instead, e.g. line 25 'Requirement: Question text must be present and meaningful before the question can be considered complete' and line 45 'Requirement: A question must have at least two answer options, entered as multiple-choice'. No occurrence of the word 'SHALL' appears anywhere in the document."
+    },
+    {
+      "text": "Existe un Requirement para la regla 'mínimo 2 opciones de respuesta'",
+      "passed": true,
+      "evidence": "Line 45: '## Requirement: A question must have at least two answer options, entered as multiple-choice', with a dedicated scenario at line 54 'Coach attempts to save with fewer than two options' enforcing the minimum-two rule."
+    },
+    {
+      "text": "Existe un Requirement para la regla 'exactamente una opción marcada como correcta'",
+      "passed": true,
+      "evidence": "Line 65: '## Requirement: Exactly one answer option must be marked correct at any time', with scenarios covering marking, changing, and blocking save without a correct answer (lines 68-81)."
+    },
+    {
+      "text": "Cada Requirement tiene 1-2 Scenarios (regla principal + variante clave), no una matriz exhaustiva de edge cases/boundary/concurrencia",
+      "passed": false,
+      "evidence": "Every requirement has 5 scenarios (Requirement 1: lines 28-41; Requirement 2: lines 48-61; Requirement 3: lines 68-81; Requirement 4: lines 88-101), far exceeding the 1-2 target, and the cross-cutting Requirement 5 has 2. The document itself admits this in its 'Coverage note' (line 118): it discusses covering 'the most product-relevant edge cases for each User Task' rather than the requested minimal happy-path + key-variant approach."
+    },
+    {
+      "text": "El output NO está agrupado por Walking Skeleton item ni Increment ID — esos no existen aún en esta etapa",
+      "passed": true,
+      "evidence": "No mentions of 'Walking Skeleton' or 'Increment ID' anywhere in the document; content is organized by Requirement per User Task instead."
+    },
+    {
+      "text": "Feature ID cross-link presente: <!-- Feature ID: C2C-FEAT-003 | Source: features.md -->",
+      "passed": false,
+      "evidence": "The document includes the Feature ID as a plain bold-text metadata line (line 3: '**Feature ID:** C2C-FEAT-003') and a separate Source line (line 7: '**Source:** `01-quiz-composes-questions-feature.md` (backbone, pre-slicing)'), not the specific HTML-comment cross-link format '<!-- Feature ID: C2C-FEAT-003 | Source: features.md -->' required by the assertion."
+    },
+    {
+      "text": "Todos los Task IDs del input (C2C-TASK-008 a 011) están cubiertos por al menos un Requirement",
+      "passed": true,
+      "evidence": "Requirement 1 references '(Task: C2C-TASK-008 — Writes Quiz Question Text)' (line 26), Requirement 2 references C2C-TASK-009 (line 46), Requirement 3 references C2C-TASK-010 (line 66), and Requirement 4 references C2C-TASK-011 (line 86) — all four input Task IDs are covered."
+    },
+    {
+      "text": "No hay pasos de tipo 'Click button' ni referencias a clases/métodos/nombres de servicio internos",
+      "passed": true,
+      "evidence": "No occurrences of 'Click button' or any UI-implementation step language, and no references to internal class/method/service names anywhere in the document; scenarios are phrased at a behavioral/business level (e.g., 'the Coach marks one option as correct', line 68)."
+    },
+    {
+      "text": "Los datos usados en los Scenarios son concretos (texto de pregunta o opciones específicas), no abstractos ('opción válida')",
+      "passed": false,
+      "evidence": "All scenario data is abstract/generic rather than concrete sample content, e.g. line 29 'non-empty question text', line 49 'two options with non-empty text', line 61 'another option with the same text'. No concrete example question (e.g., an actual quiz question string) or concrete option text values appear anywhere in the scenarios."
+    }
+  ],
+  "summary": {"passed": 5, "failed": 5, "total": 10, "pass_rate": 0.50}
+}

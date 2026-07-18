@@ -1,0 +1,301 @@
+{
+  "metadata": {
+    "skill_name": "bokata-feature-slicer",
+    "skill_path": "skills/bokata-feature-slicer",
+    "executor_model": "claude-sonnet-5 (executor + grader subagents)",
+    "analyzer_model": "claude-sonnet-5 (executor + grader subagents)",
+    "timestamp": "2026-07-18T14:32:05Z",
+    "evals_run": [
+      1,
+      2
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 300.8,
+        "tokens": 81627,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "La secci\u00f3n '## \ud83d\udc80 Walking Skeleton' cubre las 5 User Tasks (Verifica Cr\u00e9ditos, Selecciona Plan, Ingresa Metadata, Sube Archivo, Monitorea Progreso)",
+          "passed": true,
+          "evidence": "Section '## \ud83d\udc80 Walking Skeleton' (line 17) contains 'User Task 1: Verifies Credit Availability', 'User Task 2: Selects Storage Plan', 'User Task 3: Enters Video Metadata', 'User Task 4: Uploads Video File', 'User Task 5: Monitors Upload Progress' \u2014 matching all 5 User Tasks from the source feature file (01-video-upload-feature.md), plus a 'System Task: Processes Uploaded Video' subsection."
+        },
+        {
+          "text": "Cada item del Walking Skeleton es la opci\u00f3n genuinamente m\u00e1s simple viable, construible en 1-3 d\u00edas",
+          "passed": true,
+          "evidence": "Items favor the simplest viable mechanism throughout, e.g. 'Fixed Threshold Check Against Cheapest Plan', 'Static Text Balance Display', 'Static List of 3 Plans', 'Single Radio Button Selection', 'Required Title Field', 'Native File Picker', 'Check File Extension and Size Before Upload' (client-side only), 'Simple Percentage Progress Bar', 'Default Mux Transcoding', 'Single Default Thumbnail'. More complex alternatives (server-side re-validation, adaptive bitrate ladder, multiple thumbnails, resumable uploads, audit trails) are explicitly deferred to the Increments Backlog rather than included in the skeleton, and the Assumptions section documents why some borderline calls (e.g. keeping ETA/background upload) were kept as core rather than cut."
+        },
+        {
+          "text": "Los items de Walking Skeleton que tocan la capa de Data son reversibles (se puede deshacer sin p\u00e9rdida de datos)",
+          "passed": true,
+          "evidence": "Data-touching items are structured to avoid migration lock-in: 'Fetch Live Balance from Database' is a read-only lookup; 'Hold Plan Choice for the Upload Session' is explicitly described as in-session/not-yet-persisted ('it is not yet locked in permanently'), with the Assumptions section stating the plan choice is 'kept for the current upload attempt... held in-session until then (reversible)'; 'Save Metadata at Upload Start' and 'Deduct Plan Credits Immediately' are simple writes that later increments extend additively (ledger/audit trail, rollback-on-failure, draft save, edit history) without requiring schema migration or data loss."
+        },
+        {
+          "text": "La secci\u00f3n '## \ud83c\udfd7\ufe0f Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+          "passed": true,
+          "evidence": "Section '## \ud83c\udfd7\ufe0f Increments Backlog' (line 59) is subdivided into 'User Task 1: Verifies Credit Availability' through 'User Task 5: Monitors Upload Progress' plus 'System Task: Processes Uploaded Video', each with 8 (or 8) additional increment items grouped under it."
+        },
+        {
+          "text": "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+          "passed": true,
+          "evidence": "Verified programmatically: all 72 checklist lines in the file match the pattern '^- \\[ \\] \\*\\*\\[[^]]+\\]\\*\\*' (e.g. '- [ ] **[Verifies Credit Availability]** Fetch Live Balance from Database...'), with zero exceptions across both Walking Skeleton and Increments Backlog sections."
+        },
+        {
+          "text": "Ning\u00fan item del backlog es una tarea gen\u00e9rica ('implementar upload', 'manejar cr\u00e9ditos') \u2014 todos son increments espec\u00edficos derivados de las opciones de Phase 2",
+          "passed": true,
+          "evidence": "All 40 backlog items (lines 63-120) are specific and named after a concrete technique or variant, e.g. 'Real-Time Synced Balance Across Devices', 'Disable Unaffordable Plans in UI', 'Description Plus Structured Tag Picker', 'Resumable Chunked Upload', 'Smoothed ETA Using Rolling Average', 'Credit Deduction Ledger/Audit Trail', 'Full Adaptive Bitrate Ladder'. No item reads as a generic catch-all like 'implementar upload' or 'manejar cr\u00e9ditos'; each is tagged '(Enhances: Step N)' or '(Alternative: Step N)' tying it to a specific skeleton option."
+        },
+        {
+          "text": "Las descripciones del Walking Skeleton explican qu\u00e9 ve/hace el coach \u2014 pueden mencionar tecnolog\u00eda (Mux, progress bar) pero NO nombres de endpoints, campos de base de datos, ni nombres de funci\u00f3n/m\u00e9todo",
+          "passed": true,
+          "evidence": "Descriptions are phrased in coach-observable terms, e.g. 'the coach sees a bar filling from 0% to 100%', 'the coach sees the video flip from \"Procesando...\" to \"Listo\"', 'the file streams directly to Mux storage once the coach confirms'. Technology names appear only at the allowed level (Mux, webhook, database as a concept). A targeted regex scan of lines 17-55 for endpoint/route/column/function-name patterns ('endpoint', 'POST ', 'GET /', 'route', 'column', 'api/', 'function', 'method(', 'table', 'schema') returned zero matches."
+        },
+        {
+          "text": "El System Task 'Processes Uploaded Video' (deducci\u00f3n de cr\u00e9ditos + transcoding) se refleja en la decomposici\u00f3n de 'Uploads Video File' o 'Monitors Upload Progress' como parte del flujo, no se ignora",
+          "passed": true,
+          "evidence": "Line 50-55 includes a full 'System Task: Processes Uploaded Video' subsection within the Walking Skeleton, explicitly annotated: '*Trigger: upload to Mux completes successfully \u2014 sits between \"Uploads Video File\" / \"Monitors Upload Progress\" and the coach seeing the finished video.*', with 4 items covering credit deduction ('Deduct Plan Credits Immediately'), transcoding ('Default Mux Transcoding'), thumbnailing, and the webhook-driven status flip that 'Monitors Upload Progress' depends on ('Status Visible on Next Visit'). It is explicitly positioned in the flow, not omitted, and is mirrored again in the Increments Backlog (lines 112-120)."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 218.1,
+        "tokens": 78767,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "La secci\u00f3n '## \ud83d\udc80 Walking Skeleton' cubre las 6 User Tasks (Browses, Filters, Sorts, Searches, Updates, Deletes)",
+          "passed": true,
+          "evidence": "Lines 19, 25, 31, 37, 43, 49 contain '### User Task 1: Browses Video Collection', '### User Task 2: Filters Videos by Criteria', '### User Task 3: Sorts Video List', '### User Task 4: Searches Videos by Title or Tag', '### User Task 5: Updates Video Metadata', '### User Task 6: Deletes Video' \u2014 all 6 tasks from the source feature file are represented as sub-sections under '## \ud83d\udc80 Walking Skeleton'."
+        },
+        {
+          "text": "Cada item del Walking Skeleton es la opci\u00f3n genuinamente m\u00e1s simple viable, construible en 1-3 d\u00edas",
+          "passed": true,
+          "evidence": "Each item picks the minimal viable variant and pushes complexity to the backlog: 'Fetch All Videos (No Pagination)' (pagination/infinite-scroll deferred to backlog), 'Single Filter Dropdown (Status Only)' (multi-filter/multi-select deferred), 'Single Sort Dropdown (Date Only)' (multi-criteria sort deferred), 'Basic Search Text Field' + 'Exact Substring Match' (fuzzy/weighted search deferred), 'Update Video Record Fields Directly' (no history/optimistic-concurrency, deferred), 'Hard Delete Video Record' + 'Synchronous Mux Asset Deletion Call' (soft-delete/async-queue deferred). Sort task explicitly notes only 3 steps are needed for the skeleton ('sorting acts on the already-retrieved list from Task 1, so no separate Data-layer step is needed'), showing deliberate minimization rather than padding."
+        },
+        {
+          "text": "El Walking Skeleton NO colapsa Filter/Sort/Search en un \u00fanico item gen\u00e9rico de 'b\u00fasqueda' \u2014 son Steps/Increments distintos por venir de User Tasks distintas",
+          "passed": true,
+          "evidence": "Filters, Sorts, and Searches are three separate '### User Task' sections (2, 3, 4) each with their own distinct steps (e.g., 'Single Filter Dropdown (Status Only)' vs 'Single Sort Dropdown (Date Only)' vs 'Basic Search Text Field'), never merged into one generic search item."
+        },
+        {
+          "text": "El item de Walking Skeleton para 'Deletes Video' es reversible o documenta expl\u00edcitamente por qu\u00e9 el borrado no puede deshacerse (dado que los cr\u00e9ditos no se reembolsan)",
+          "passed": true,
+          "evidence": "The Assumptions section explicitly states: 'Video deletion is a genuine hard delete (matches \"permanently removes\"), including a synchronous call to remove the corresponding Mux asset, consistent with \"deletion does not refund credits\" and no soft-delete/undo requirement being stated.' Additionally the skeleton step 'Basic Confirm Modal' includes '...and a note that credits are not refunded', directly tying the irreversibility to the credit rule."
+        },
+        {
+          "text": "La secci\u00f3n '## \ud83c\udfd7\ufe0f Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+          "passed": true,
+          "evidence": "Line 58 '## \ud83c\udfd7\ufe0f Increments Backlog' is followed by the same 6 '### User Task' sub-headers (lines 61, 74, 86, 95, 106, 117: Browses, Filters, Sorts, Searches, Updates, Deletes), each listing multiple additional increments (e.g., 'Fetch Videos with Pagination', 'Multiple Filter Dropdowns', 'Soft Delete with Recovery Window')."
+        },
+        {
+          "text": "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+          "passed": true,
+          "evidence": "Every checklist line in both the Walking Skeleton and Increments Backlog follows the pattern '- [ ] **[User Task Name]** ...', e.g. '- [ ] **[Browses Video Collection]** Open Library on Tab Navigation...' (line 20) and '- [ ] **[Deletes Video]** Bulk Delete via Multi-select...' (line 118). No item deviates from this tag format."
+        },
+        {
+          "text": "Ning\u00fan item del backlog es una tarea gen\u00e9rica ('gestionar biblioteca de videos') \u2014 todos son increments espec\u00edficos",
+          "passed": true,
+          "evidence": "All 47 backlog items are specific, scoped increments tied to a concrete step via '(Enhances: Step N)', e.g. 'Fetch Videos with Infinite Scroll', 'Weighted Relevance Match', 'Confirm Modal Requiring Typed Confirmation', 'Async Deletion via Queue/Webhook Confirmation'. No generic catch-all task like 'gestionar biblioteca de videos' appears anywhere in the backlog section."
+        },
+        {
+          "text": "Las descripciones no contienen nombres de endpoints, campos de base de datos, ni nombres de funci\u00f3n/m\u00e9todo",
+          "passed": true,
+          "evidence": "A scan of all Walking Skeleton and Increments Backlog item lines (lines 19-127) found no HTTP verbs/paths, database field names, or function/method identifiers. Technical terms like `videos`/`clips` MongoDB collection names, JWT/Cognito auth pattern, and Mux asset processing appear only in the separate '## Assumptions' section (lines 5-12), not inside the sliced item descriptions themselves. Item text stays at user-facing altitude (e.g., 'Update Video Record Fields Directly', 'Filter via Server-side Query Parameters') without naming actual endpoints, fields, or functions."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.63,
+        "passed": 5,
+        "failed": 3,
+        "total": 8,
+        "time_seconds": 140.3,
+        "tokens": 38995,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "La secci\u00f3n '## \ud83d\udc80 Walking Skeleton' cubre las 5 User Tasks (Verifica Cr\u00e9ditos, Selecciona Plan, Ingresa Metadata, Sube Archivo, Monitorea Progreso)",
+          "passed": true,
+          "evidence": "The document has a '## Walking Skeleton' section (line 37, without the skull emoji) containing a table (lines 42-48) with one row per User Task: Verifies Credit Availability, Selects Storage Plan, Enters Video Metadata, Uploads Video File, and Monitors Upload Progress, plus the System Task. All 5 User Tasks are covered; only the emoji in the heading is missing."
+        },
+        {
+          "text": "Cada item del Walking Skeleton es la opci\u00f3n genuinamente m\u00e1s simple viable, construible en 1-3 d\u00edas",
+          "passed": true,
+          "evidence": "Each row includes an 'Est.' column with estimates of 1 day, 1 day, 0.5 day, 2 days, 1 day, and 2 days (lines 43-48), all within/under a 1-3 day range, and each option is explicitly the minimal viable slice (e.g. 'Read coach's credit balance...show a static blocking message...No live balance widget', 'Single required title text field...Description and tags fields omitted entirely')."
+        },
+        {
+          "text": "Los items de Walking Skeleton que tocan la capa de Data son reversibles (se puede deshacer sin p\u00e9rdida de datos)",
+          "passed": false,
+          "evidence": "The document never discusses reversibility, rollback, or 'undo without data loss' for any data-layer item (credits deduction, plan field, video status flip, upload_id/asset_id storage). A grep for 'revers|revert|rollback|undo|deshac' across the file returns zero matches \u2014 this concern is simply absent from the walking skeleton descriptions and from the assumptions section."
+        },
+        {
+          "text": "La secci\u00f3n '## \ud83c\udfd7\ufe0f Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+          "passed": true,
+          "evidence": "There is an '## Increments Backlog' section (line 56, without the construction emoji) with 6 subsections (lines 60-95) each headed by a numbered User Task name ('### 1. Verifies Credit Availability' through '### 6. (System) Processes Uploaded Video'), each containing multiple additional options grouped under that task."
+        },
+        {
+          "text": "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+          "passed": false,
+          "evidence": "Backlog items are grouped under '### N. <User Task Name>' headings, but individual bullet items use a priority tag instead, e.g. '- **[High]** Wire the \"purchase more credits\" CTA...' (line 61), '- **[Medium]** Live/reactive credit balance display...' (line 62). No item uses an inline '**[User Task Name]**' tag; the required per-item tag format is absent throughout the backlog (lines 61-95)."
+        },
+        {
+          "text": "Ning\u00fan item del backlog es una tarea gen\u00e9rica ('implementar upload', 'manejar cr\u00e9ditos') \u2014 todos son increments espec\u00edficos derivados de las opciones de Phase 2",
+          "passed": true,
+          "evidence": "All 24 backlog bullets are specific and concrete, e.g. 'Handle the race condition where credits drop to zero between the check and the actual deduction' (line 63), 'Webhook idempotency and retry handling \u2014 Mux may redeliver webhooks; duplicate delivery must not double-deduct credits' (line 90), 'Resumable/retry-on-network-failure upload' (line 80). None are generic phrases like 'implementar upload' or 'manejar cr\u00e9ditos'."
+        },
+        {
+          "text": "Las descripciones del Walking Skeleton explican qu\u00e9 ve/hace el coach \u2014 pueden mencionar tecnolog\u00eda (Mux, progress bar) pero NO nombres de endpoints, campos de base de datos, ni nombres de funci\u00f3n/m\u00e9todo",
+          "passed": false,
+          "evidence": "The Walking Skeleton table repeatedly names DB/record fields and API payload fields directly: 'if `credits <= 0`' (line 43), 'sets `plan` on the pending upload record' (line 44), 'Single required `title` text field' (line 45), 'stores the returned Mux `upload_id`/`asset_id`' (line 46), and 'the upload XHR `progress` event' (line 47). These are backticked field/variable names, not coach-facing descriptions, violating the 'no DB field names' constraint."
+        },
+        {
+          "text": "El System Task 'Processes Uploaded Video' (deducci\u00f3n de cr\u00e9ditos + transcoding) se refleja en la decomposici\u00f3n de 'Uploads Video File' o 'Monitors Upload Progress' como parte del flujo, no se ignora",
+          "passed": true,
+          "evidence": "The System Task is explicitly present as its own row in the Walking Skeleton table: 'Mux webhook receiver listens for video.asset.ready; on receipt, deducts the plan's credit cost from the coach's balance and flips video status from procesando to listo' (line 48), and is elaborated further in Increments Backlog section 6 (lines 89-95) covering webhook idempotency, no-download enforcement, rendition pipeline, thumbnails, failure handling, and audit trail. It is clearly tied into the upload flow's end-to-end loop, not ignored."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.63,
+        "passed": 5,
+        "failed": 3,
+        "total": 8,
+        "time_seconds": 140.9,
+        "tokens": 39811,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "La secci\u00f3n '## \ud83d\udc80 Walking Skeleton' cubre las 6 User Tasks (Browses, Filters, Sorts, Searches, Updates, Deletes)",
+          "passed": false,
+          "evidence": "The doc's '## Walking Skeleton' section (no emoji, line 27) explicitly states at line 29: 'No filter, sort, search, grid view, or bulk actions yet.' It contains only WS-1 (Browses Video Collection), WS-2 (Updates Video Metadata), WS-3 (Deletes Video) \u2014 3 of the 6 User Tasks. Filters, Sorts, and Searches are entirely absent from the Walking Skeleton and pushed to the Increments Backlog instead."
+        },
+        {
+          "text": "Cada item del Walking Skeleton es la opci\u00f3n genuinamente m\u00e1s simple viable, construible en 1-3 d\u00edas",
+          "passed": true,
+          "evidence": "WS-1 'Estimate: 2 days.' (line 36), WS-2 'Estimate: 1 day.' (line 43), WS-3 'Estimate: 2 days.' (line 50) \u2014 all within 1-3 days, and each includes a 'Why minimal' / 'Explicitly deferred' rationale showing simplification choices (e.g. WS-2 defers description/tags editing, inline editing, optimistic UI to keep scope to the single lowest-risk field)."
+        },
+        {
+          "text": "El Walking Skeleton NO colapsa Filter/Sort/Search en un \u00fanico item gen\u00e9rico de 'b\u00fasqueda' \u2014 son Steps/Increments distintos por venir de User Tasks distintas",
+          "passed": true,
+          "evidence": "Filter/Sort/Search are not merged into any single generic item anywhere in the document. They are absent from the Walking Skeleton, and in the Increments Backlog they appear as three clearly separate groups: '### Filters Videos by Criteria' (line 67), '### Sorts Video List' (line 75), '### Searches Videos by Title or Tag' (line 82), each with its own distinct sub-items."
+        },
+        {
+          "text": "El item de Walking Skeleton para 'Deletes Video' es reversible o documenta expl\u00edcitamente por qu\u00e9 el borrado no puede deshacerse (dado que los cr\u00e9ditos no se reembolsan)",
+          "passed": true,
+          "evidence": "WS-3 states 'Hard delete on confirm' (line 47) and Assumption A5 explicitly documents the rationale: 'Deletion is a hard delete (\"permanently removes\"), not a soft-delete/undo \u2014 matches the literal wording in the source doc. No \"undo\" grace period is assumed unless later requested' (line 20). The Open Questions section also explicitly revisits whether a soft-delete/undo window would be acceptable given the no-refund rule (line 108), showing the tradeoff was deliberately considered and documented rather than ignored."
+        },
+        {
+          "text": "La secci\u00f3n '## \ud83c\udfd7\ufe0f Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+          "passed": true,
+          "evidence": "The document has a '## Increments Backlog (grouped by User Task)' section (line 56) with six subsections, one per User Task: Browses Video Collection, Filters Videos by Criteria, Sorts Video List, Searches Videos by Title or Tag, Updates Video Metadata, Deletes Video (lines 60-101), each containing several additional increment bullets."
+        },
+        {
+          "text": "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+          "passed": false,
+          "evidence": "No item in the document uses a bracketed inline tag format '**[User Task Name]**'. Walking Skeleton items instead use a separate label line '**User Task:** Browses Video Collection' (e.g. line 32), and Increments Backlog items are grouped under plain markdown subheadings like '### Browses Video Collection' (line 60) with no per-item tag at all on the bullets themselves (lines 61-65, etc.)."
+        },
+        {
+          "text": "Ning\u00fan item del backlog es una tarea gen\u00e9rica ('gestionar biblioteca de videos') \u2014 todos son increments espec\u00edficos",
+          "passed": true,
+          "evidence": "All backlog bullets are concrete and specific, e.g. 'Grid view (thumbnail-forward layout) + a list/grid toggle' (line 61), 'Filter by upcoming expiration (e.g., \"expiring in 7 days\")' (line 70), 'Bulk delete (select multiple videos, one confirmation covering the batch...)' (line 98). No generic catch-all item like 'gestionar biblioteca de videos' appears anywhere in the backlog."
+        },
+        {
+          "text": "Las descripciones no contienen nombres de endpoints, campos de base de datos, ni nombres de funci\u00f3n/m\u00e9todo",
+          "passed": false,
+          "evidence": "Assumption A1 (line 16) lists what reads as a raw data-model/field schema: 'the API already exposes video records with: id, title, description, tags, thumbnail URL, status (Active/Processing/Expired), plan, expiration date, clip count.' WS-1's rationale also names the technical read path 'API query \u2192 serialization \u2192 thumbnail rendering' (line 34), and WS-2's rationale names an HTTP verb/endpoint-level detail: 'form \u2192 validation \u2192 API PATCH \u2192 persisted update' (line 41). These go beyond user-facing description into implementation/schema-level naming."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 259.45,
+        "stddev": 58.4777,
+        "min": 218.1,
+        "max": 300.8
+      },
+      "tokens": {
+        "mean": 80197.0,
+        "stddev": 2022.3254,
+        "min": 78767,
+        "max": 81627
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.63,
+        "stddev": 0.0,
+        "min": 0.63,
+        "max": 0.63
+      },
+      "time_seconds": {
+        "mean": 140.6,
+        "stddev": 0.4243,
+        "min": 140.3,
+        "max": 140.9
+      },
+      "tokens": {
+        "mean": 39403.0,
+        "stddev": 576.9991,
+        "min": 38995,
+        "max": 39811
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.37",
+      "time_seconds": "+118.8",
+      "tokens": "+40794"
+    }
+  },
+  "notes": [
+    "First-ever eval setup for this skill \u2014 baseline is 'without_skill' (no methodology guidance at all), not a prior skill version.",
+    "Single run per configuration \u2014 stddev is 0 for all metrics; treat as directional signal from n=1, not a statistically robust estimate.",
+    "Without-skill baselines both under-covered: eval-1 leaked DB/field names (`credits`, `plan`, `upload_id`) into user-facing descriptions and used priority tags instead of the required '[User Task Name]' tag format; eval-2 only walking-skeletoned 3 of 6 User Tasks, deferring Filter/Sort/Search entirely rather than giving each a minimal option. The with_skill runs covered all tasks in both cases and stayed at user-facing altitude.",
+    "The with_skill eval-1 executor explored the actual clip2coach-api codebase (available as an additional working directory) and grounded its walking skeleton in real existing patterns (e.g. handlers/videos.js) rather than inventing a generic architecture \u2014 a plausible but unplanned realism bonus specific to this environment, not something the skill instructs directly."
+  ]
+}

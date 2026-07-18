@@ -1,0 +1,75 @@
+{
+  "expectations": [
+    {
+      "text": "Se identifican al menos 2 Features",
+      "passed": true,
+      "evidence": "Exactly 2 Features are present under '### Features Map': '#### Feature: Coach Creates Quiz From Any Video' (C2C-FEAT-001, line 65) and '#### Feature: Coach Creates Quiz From Existing Clip' (C2C-FEAT-002, line 104)."
+    },
+    {
+      "text": "Cada Feature tiene al menos 3 User Tasks",
+      "passed": true,
+      "evidence": "Feature C2C-FEAT-001 has 6 User Tasks (C2C-TASK-001 through 006: Starts New Quiz from Dashboard, Pastes YouTube Video URL, Selects Question Timestamp, Writes Quiz Question, Adds Answer Options, Shares Quiz). Feature C2C-FEAT-002 has 3 User Tasks (C2C-TASK-007 through 009: Selects Existing Clip as Video Source, Confirms Timestamp Within Clip, Publishes Quiz from Clip). Both meet the >=3 minimum."
+    },
+    {
+      "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] — sin cláusulas adicionales, sin conjunciones en el nombre",
+      "passed": true,
+      "evidence": "Both Feature names follow Actor+Verb+Object: 'Coach Creates Quiz From Any Video' and 'Coach Creates Quiz From Existing Clip'. Neither contains a subordinate clause (no subject+verb after the object) nor a conjunction ('y'/'and'/'o'/'or'); 'From Any Video' / 'From Existing Clip' are simple prepositional modifiers of the Object noun phrase, not additional clauses."
+    },
+    {
+      "text": "Ningún Feature usa 'System', 'Sistema', 'Engineer' ni 'Equipo' como Actor — las acciones del sistema son System Tasks, no Features",
+      "passed": true,
+      "evidence": "Both Feature names use 'Coach' as the Actor ('Coach Creates Quiz From Any Video', 'Coach Creates Quiz From Existing Clip'). No Feature name uses System, Sistema, Engineer, or Equipo as Actor."
+    },
+    {
+      "text": "Ningún User Task incluye el Actor como prefijo (las tasks son solo [Verb][Object])",
+      "passed": true,
+      "evidence": "All 9 User Task headings start directly with a verb: 'Starts New Quiz from Dashboard', 'Pastes YouTube Video URL', 'Selects Question Timestamp', 'Writes Quiz Question', 'Adds Answer Options', 'Shares Quiz', 'Selects Existing Clip as Video Source', 'Confirms Timestamp Within Clip', 'Publishes Quiz from Clip'. None is prefixed with 'Coach'."
+    },
+    {
+      "text": "Ningún User Task usa verbos genéricos de gestión: Manage, Handle, Gestionar, Manejar, Administrar — deben splitearse en verbos específicos",
+      "passed": true,
+      "evidence": "Task verbs used are Starts, Pastes, Selects, Writes, Adds, Shares, Confirms, Publishes — all specific action verbs. No occurrence of Manage/Handle/Gestionar/Manejar/Administrar in any of the 9 task titles."
+    },
+    {
+      "text": "Ningún User Task contiene una conjunción ('y', 'and', 'o', 'or') que indique bundling de dos acciones en una sola task",
+      "passed": true,
+      "evidence": "None of the 9 User Task titles contain a standalone conjunction word ('y', 'and', 'o', 'or'). E.g. 'Adds Answer Options', 'Selects Existing Clip as Video Source' use 'as', not a conjunction bundling two actions."
+    },
+    {
+      "text": "Ningún User Task describe una operación interna del sistema (validar internamente, persistir, procesar en background, computar) — solo acciones observables del usuario",
+      "passed": true,
+      "evidence": "Each task's primary content is an observable user action (e.g. 'The Coach enters a YouTube video URL...', 'The Coach finalizes the quiz for distribution'). System-side internal work (validation, persistence) only appears as a subordinate 'On [action], the system ...' note attached to a user-triggered task (Task 002: 'On submitting the URL, the system validates...'; Task 006: 'On sharing, the system saves a new QuizStandalone record... and generates a unique shareable link'), never as the task's own standalone description of internal processing."
+    },
+    {
+      "text": "Ningún nombre de Feature ni User Task contiene términos de implementación técnica (nombres de modelos como QuizStandalone, rutas como /create-quiz, nombres de clases o métodos)",
+      "passed": true,
+      "evidence": "All 2 Feature headings and 9 Task headings use plain domain language only ('Coach Creates Quiz From Any Video', 'Pastes YouTube Video URL', 'Shares Quiz', etc.). Technical terms like 'QuizStandalone', '/create-quiz', 'clipId' appear only in body prose (e.g. line 71, line 91), never inside a Feature or Task heading itself."
+    },
+    {
+      "text": "Todas las System Tasks (si las hay) tienen un campo Trigger explícito que describe qué acción del usuario las dispara",
+      "passed": true,
+      "evidence": "A grep for 'system task' (case-insensitive) across the file returns zero matches — the document contains no independent System Task sections at all. The condition is vacuously satisfied since there are no System Tasks to check for a missing Trigger field."
+    },
+    {
+      "text": "El scope generado es trazable al input — no se añaden Features ni Tasks no mencionadas en el input original",
+      "passed": true,
+      "evidence": "Feature C2C-FEAT-001 covers the input's Option A flow (pega URL → timestamp → pregunta → opciones → comparte) plus the new dashboard CTA, both explicit in the input. Feature C2C-FEAT-002 traces to the input's explicit line 'Mantener compatibilidad: el quiz sigue pudiendo crearse desde un clip existente' (input line 19); its 3 tasks mirror the equivalent steps of the new flow to document the preserved existing capability rather than introducing new functionality. No unrelated Feature (e.g. analytics, notifications) appears."
+    },
+    {
+      "text": "Las capacidades clave del input están cubiertas por al menos una Feature o Task: crear quiz desde URL de YouTube, seleccionar timestamp, escribir pregunta con opciones de respuesta, compartir quiz",
+      "passed": true,
+      "evidence": "All four capabilities are mapped: 'Pastes YouTube Video URL' (C2C-TASK-002), 'Selects Question Timestamp' (C2C-TASK-003), 'Writes Quiz Question' (C2C-TASK-004) + 'Adds Answer Options' (C2C-TASK-005), and 'Shares Quiz' (C2C-TASK-006)."
+    },
+    {
+      "text": "El System Task que persiste el quiz al publicarlo (guardar registro + generar link compartible) NO aparece como System Task independiente — el trigger es una acción directa de usuario (submit del form de publicación) con respuesta indivisible, así que debe estar embebido en la User Task de publicación como nota 'On [acción], system [respuesta]'",
+      "passed": true,
+      "evidence": "No independent System Task exists for persistence/link-generation. Instead, Task C2C-TASK-006 'Shares Quiz' embeds it directly: 'On sharing, the system saves a new QuizStandalone record (videoUrl + timestamp, no clipId) and generates a unique shareable link the Coach can copy and send out.' The parallel legacy task C2C-TASK-009 'Publishes Quiz from Clip' does the same: 'On sharing, the system saves the Quiz record with the existing clipId reference and generates a shareable link...'"
+    },
+    {
+      "text": "Todo System Task que sí permanezca independiente usa el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita '#### System Task:' ni '**System Task:**') y tiene un Trigger que es genuinamente una transición de workflow autónoma, no una respuesta directa a una acción de usuario",
+      "passed": true,
+      "evidence": "A full heading scan of the document (grep '^#') shows only Feature/User Task headings and section headers ('Feature Overview', 'Features Map', 'Feature Dependencies', 'Constitution Compliance') — no '##### System Task:' heading, no bold '**System Task:**' text, and no '#### System Task:' malformed heading anywhere. Since the model correctly classified every system-side effect in this input as a direct response embedded in its triggering User Task (per the prior assertion), no independent System Task was created, so the heading-format requirement is vacuously satisfied with zero violations."
+    }
+  ],
+  "summary": {"passed": 14, "failed": 0, "total": 14, "pass_rate": 1.0}
+}

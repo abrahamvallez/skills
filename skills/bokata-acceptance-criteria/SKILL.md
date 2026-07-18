@@ -21,6 +21,18 @@ This skill is flexible and methodology-agnostic regarding timing. It can generat
 
 ---
 
+## Depth Mode
+
+This skill supports two depth modes, selected via an argument flag:
+
+- **`--functional`** (used when generating ACs directly from a Features Backbone, before slicing exists): Produces **Requirement + Scenario** style output matching openspec spec conventions — a SHALL-statement Requirement per Rule, with one or more WHEN/THEN Scenarios covering the primary rule and its most important variant. Optimized for business-rule clarity and traceability, not exhaustive edge-case coverage. Never scoped to Walking Skeleton items or Increments (they don't exist yet at this stage). Use [Functional Output Template](resources/output-template-functional.md).
+
+- **`--concrete`** (used when generating ACs after a Feature has been sliced): Produces full Gherkin Given/When/Then coverage — happy path, edge cases, boundary conditions, error states, concurrency rules, and negative permission scenarios — exactly as this skill has always done. If the input contains a `## 💀 Walking Skeleton` / `## 🏗️ Increments Backlog` section, group scenarios by **Walking Skeleton item / Increment ID** instead of (or in addition to) User Task, so the output is directly consumable as an implementation handoff artifact. Use [Concrete Output Template](resources/output-template.md).
+
+If no flag is provided, default to `--concrete` behavior (preserves current behavior for direct/standalone invocations).
+
+---
+
 # YOUR ROLE
 
 You are the **Criteria Architect** - specialized in discovering hidden business logic and edge cases, then formalizing them into strict Gherkin scenarios without getting bogged down in UI implementation details.
@@ -64,6 +76,8 @@ Research context enriches output but is never required — proceed with any avai
 ---
 
 ## Phase 0 — Discovery
+
+**Skip this phase entirely** if a `## Discovery Context — Criteria` section (or an orchestrator's equivalent consolidated discovery context) is already present in the input, or if the invoking context states discovery was already completed upstream — proceed directly to Phase 1 using that context.
 
 ### 🧠 Think (as an expert PM in discovery):
 Before writing any rules or scenarios, scan each User Task for gaps that would produce wrong or incomplete acceptance criteria:
@@ -160,22 +174,26 @@ For EACH User Task:
 ### ▶️ Execute:
 1. Define Rules per User Task — if domain business rules or constraints are present in context (e.g. `## Criteria Research Summary`), use them as the source of Rules: map each domain constraint to the relevant User Task before generating scenarios
 2. Write Scenarios per Rule
-3. Ensure coverage of Happy Path and Edge Cases
-4. Include at least one negative permission scenario where applicable
+   - **If `--functional` mode**: Write ONE representative Scenario per Rule covering the primary happy path plus, only where business-critical, one key variant. Do not enumerate the full edge-case/boundary/concurrency matrix — that is deferred to the `--concrete` pass after slicing.
+   - **If `--concrete` mode**: Ensure coverage of Happy Path and Edge Cases, boundary conditions, error states, concurrency rules, and negative permission scenarios per existing quality bar
+3. Include at least one negative permission scenario where applicable (in `--concrete` mode; optional in `--functional`)
 
 ---
 
 ## Phase 3: Generate Output
 
 ### 🧠 Think:
-- Do the scenarios strictly follow Gherkin syntax?
+- Do the scenarios strictly follow Gherkin syntax (in `--concrete` mode) or WHEN/THEN style (in `--functional` mode)?
 - Are the Rules clearly defined as headers?
 - Is the data concrete and meaningful?
 - Did I avoid UI implementation details?
 - Are Feature and Task IDs cross-linked from the backbone?
+- **If `--concrete` with Walking Skeleton input**: Are scenarios grouped by skeleton item/increment, not just by User Task?
 
 ### ▶️ Execute:
-Generate markdown output via [Template](resources/output-template.md).
+Generate markdown output via:
+- **If `--functional`**: [Functional Output Template](resources/output-template-functional.md) (Requirement + WHEN/THEN Scenarios, whole-Feature scope)
+- **If `--concrete`**: [Concrete Output Template](resources/output-template.md) (full Gherkin, per-skeleton-item/increment grouping if applicable)
 
 ---
 
@@ -208,7 +226,10 @@ Before finishing, verify your output:
 - [ ] All User Tasks have Task ID cross-link: `<!-- Task ID: {PRJ}-TASK-{hash} | Source: features.md -->`
 - [ ] Research context used if available (never blocking)
 - [ ] All User Tasks from input are covered
-- [ ] Gherkin syntax is valid
 - [ ] No "Click button" steps (UI details) — no class/method names or internal service references (code constructs)
 - [ ] Rules are explicitly stated
 - [ ] Template structure is preserved
+
+**Depth Mode Specific:**
+- [ ] **If `--functional`**: Output uses `### Requirement:` + `#### Scenario:` headers (not strict Given/When/Then); coverage is breadth (primary rule + key variants) not exhaustive edge cases
+- [ ] **If `--concrete`**: Output uses strict `Given/When/Then` Gherkin; coverage is exhaustive (edge cases, boundary, concurrency, permissions); if Walking Skeleton input is present, scenarios are grouped by skeleton item / increment ID

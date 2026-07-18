@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "La sección '## 💀 Walking Skeleton' cubre las 6 User Tasks (Browses, Filters, Sorts, Searches, Updates, Deletes)",
+      "passed": false,
+      "evidence": "The doc's '## Walking Skeleton' section (no emoji, line 27) explicitly states at line 29: 'No filter, sort, search, grid view, or bulk actions yet.' It contains only WS-1 (Browses Video Collection), WS-2 (Updates Video Metadata), WS-3 (Deletes Video) — 3 of the 6 User Tasks. Filters, Sorts, and Searches are entirely absent from the Walking Skeleton and pushed to the Increments Backlog instead."
+    },
+    {
+      "text": "Cada item del Walking Skeleton es la opción genuinamente más simple viable, construible en 1-3 días",
+      "passed": true,
+      "evidence": "WS-1 'Estimate: 2 days.' (line 36), WS-2 'Estimate: 1 day.' (line 43), WS-3 'Estimate: 2 days.' (line 50) — all within 1-3 days, and each includes a 'Why minimal' / 'Explicitly deferred' rationale showing simplification choices (e.g. WS-2 defers description/tags editing, inline editing, optimistic UI to keep scope to the single lowest-risk field)."
+    },
+    {
+      "text": "El Walking Skeleton NO colapsa Filter/Sort/Search en un único item genérico de 'búsqueda' — son Steps/Increments distintos por venir de User Tasks distintas",
+      "passed": true,
+      "evidence": "Filter/Sort/Search are not merged into any single generic item anywhere in the document. They are absent from the Walking Skeleton, and in the Increments Backlog they appear as three clearly separate groups: '### Filters Videos by Criteria' (line 67), '### Sorts Video List' (line 75), '### Searches Videos by Title or Tag' (line 82), each with its own distinct sub-items."
+    },
+    {
+      "text": "El item de Walking Skeleton para 'Deletes Video' es reversible o documenta explícitamente por qué el borrado no puede deshacerse (dado que los créditos no se reembolsan)",
+      "passed": true,
+      "evidence": "WS-3 states 'Hard delete on confirm' (line 47) and Assumption A5 explicitly documents the rationale: 'Deletion is a hard delete (\"permanently removes\"), not a soft-delete/undo — matches the literal wording in the source doc. No \"undo\" grace period is assumed unless later requested' (line 20). The Open Questions section also explicitly revisits whether a soft-delete/undo window would be acceptable given the no-refund rule (line 108), showing the tradeoff was deliberately considered and documented rather than ignored."
+    },
+    {
+      "text": "La sección '## 🏗️ Increments Backlog' contiene opciones adicionales agrupadas por User Task",
+      "passed": true,
+      "evidence": "The document has a '## Increments Backlog (grouped by User Task)' section (line 56) with six subsections, one per User Task: Browses Video Collection, Filters Videos by Criteria, Sorts Video List, Searches Videos by Title or Tag, Updates Video Metadata, Deletes Video (lines 60-101), each containing several additional increment bullets."
+    },
+    {
+      "text": "Todos los items usan el formato de tag '**[Nombre de User Task]**'",
+      "passed": false,
+      "evidence": "No item in the document uses a bracketed inline tag format '**[User Task Name]**'. Walking Skeleton items instead use a separate label line '**User Task:** Browses Video Collection' (e.g. line 32), and Increments Backlog items are grouped under plain markdown subheadings like '### Browses Video Collection' (line 60) with no per-item tag at all on the bullets themselves (lines 61-65, etc.)."
+    },
+    {
+      "text": "Ningún item del backlog es una tarea genérica ('gestionar biblioteca de videos') — todos son increments específicos",
+      "passed": true,
+      "evidence": "All backlog bullets are concrete and specific, e.g. 'Grid view (thumbnail-forward layout) + a list/grid toggle' (line 61), 'Filter by upcoming expiration (e.g., \"expiring in 7 days\")' (line 70), 'Bulk delete (select multiple videos, one confirmation covering the batch...)' (line 98). No generic catch-all item like 'gestionar biblioteca de videos' appears anywhere in the backlog."
+    },
+    {
+      "text": "Las descripciones no contienen nombres de endpoints, campos de base de datos, ni nombres de función/método",
+      "passed": false,
+      "evidence": "Assumption A1 (line 16) lists what reads as a raw data-model/field schema: 'the API already exposes video records with: id, title, description, tags, thumbnail URL, status (Active/Processing/Expired), plan, expiration date, clip count.' WS-1's rationale also names the technical read path 'API query → serialization → thumbnail rendering' (line 34), and WS-2's rationale names an HTTP verb/endpoint-level detail: 'form → validation → API PATCH → persisted update' (line 41). These go beyond user-facing description into implementation/schema-level naming."
+    }
+  ],
+  "summary": {"passed": 5, "failed": 3, "total": 8, "pass_rate": 0.63}
+}

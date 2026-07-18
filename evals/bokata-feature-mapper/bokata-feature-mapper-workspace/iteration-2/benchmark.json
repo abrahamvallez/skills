@@ -1,0 +1,609 @@
+{
+  "metadata": {
+    "skill_name": "bokata-feature-mapper",
+    "skill_path": "skills/bokata-feature-mapper",
+    "executor_model": "claude-sonnet-5 (executor + grader subagents)",
+    "analyzer_model": "claude-sonnet-5 (executor + grader subagents)",
+    "timestamp": "2026-07-18T14:32:05Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.71,
+        "passed": 10,
+        "failed": 4,
+        "total": 14,
+        "time_seconds": 100.8,
+        "tokens": 24662,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Se identifican al menos 2 Features",
+          "passed": true,
+          "evidence": "El documento identifica 5 Features: 'Coach Accesses Quiz Creation Entry Point' (C2C-FEAT-001), 'Coach Configures Video Source for Quiz' (C2C-FEAT-002), 'Coach Composes Quiz Questions' (C2C-FEAT-003), 'Coach Publishes and Shares Quiz' (C2C-FEAT-004), y 'Coach Creates Quiz from Existing Clip' (C2C-FEAT-005)."
+        },
+        {
+          "text": "Cada Feature tiene al menos 3 User Tasks",
+          "passed": true,
+          "evidence": "FEAT-001 tiene 3 User Tasks (TASK-001, 002, 003); FEAT-002 tiene 4 (TASK-004 a 007); FEAT-003 tiene 4 (TASK-008 a 011); FEAT-004 tiene 3 (TASK-012, 013, 014); FEAT-005 tiene 4 (TASK-015 a 018). Todas cumplen el m\u00ednimo de 3."
+        },
+        {
+          "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] \u2014 sin cl\u00e1usulas adicionales, sin conjunciones en el nombre",
+          "passed": false,
+          "evidence": "El nombre de Feature 'Coach Publishes and Shares Quiz' (C2C-FEAT-004, l\u00ednea 135) contiene la conjunci\u00f3n 'and', combinando dos verbos ('Publishes' y 'Shares') en un solo nombre de Feature, violando el patr\u00f3n estricto [Actor][Verb][Object]."
+        },
+        {
+          "text": "Ning\u00fan Feature usa 'System', 'Sistema', 'Engineer' ni 'Equipo' como Actor \u2014 las acciones del sistema son System Tasks, no Features",
+          "passed": true,
+          "evidence": "Los 5 nombres de Feature usan 'Coach' como Actor en todos los casos (p.ej. 'Coach Accesses...', 'Coach Configures...', 'Coach Composes...', 'Coach Publishes and Shares...', 'Coach Creates...'). No aparece 'System', 'Sistema', 'Engineer' ni 'Equipo' como Actor de ning\u00fan Feature."
+        },
+        {
+          "text": "Ning\u00fan User Task incluye el Actor como prefijo (las tasks son solo [Verb][Object])",
+          "passed": true,
+          "evidence": "Todos los encabezados de User Task comienzan directamente con el verbo, p.ej. 'User Task: Discovers New Quiz CTA on Dashboard' (l\u00ednea 51), 'User Task: Enters YouTube Video URL' (l\u00ednea 75), 'User Task: Publishes Quiz' (l\u00ednea 147) \u2014 ninguno antepone 'Coach' al nombre de la task (el actor solo aparece en el cuerpo descriptivo, no en el heading)."
+        },
+        {
+          "text": "Ning\u00fan User Task usa verbos gen\u00e9ricos de gesti\u00f3n: Manage, Handle, Gestionar, Manejar, Administrar \u2014 deben splitearse en verbos espec\u00edficos",
+          "passed": true,
+          "evidence": "Revisando los 18 nombres de User Task (Discovers, Navigates, Identifies, Enters, Selects, Previews, Adjusts, Writes, Adds, Marks, Edits or Removes, Reviews, Publishes, Copies, Accesses, Composes) ninguno usa Manage/Handle/Gestionar/Manejar/Administrar."
+        },
+        {
+          "text": "Ning\u00fan User Task contiene una conjunci\u00f3n ('y', 'and', 'o', 'or') que indique bundling de dos acciones en una sola task",
+          "passed": false,
+          "evidence": "El User Task 'Edits or Removes Answer Option' (C2C-TASK-011, l\u00ednea 129) contiene 'or', combinando dos acciones (editar vs. eliminar) en una sola task. Adem\u00e1s, 'Publishes and Shares Clip-Based Quiz' (C2C-TASK-018, l\u00ednea 189) contiene 'and', combinando publicar y compartir en una sola task."
+        },
+        {
+          "text": "Ning\u00fan User Task describe una operaci\u00f3n interna del sistema (validar internamente, persistir, procesar en background, computar) \u2014 solo acciones observables del usuario",
+          "passed": true,
+          "evidence": "Las descripciones de los 18 User Tasks se centran en acciones observables del Coach (pega URL, selecciona timestamp, escribe pregunta, a\u00f1ade opciones, publica, copia enlace, etc.). Las operaciones internas ('the system saves...', 'the system initializes...') est\u00e1n expl\u00edcitamente separadas en los dos System Tasks (l\u00edneas 99-101 y 159-161), no dentro de los User Tasks."
+        },
+        {
+          "text": "Ning\u00fan nombre de Feature ni User Task contiene t\u00e9rminos de implementaci\u00f3n t\u00e9cnica (nombres de modelos como QuizStandalone, rutas como /create-quiz, nombres de clases o m\u00e9todos)",
+          "passed": true,
+          "evidence": "Los 5 nombres de Feature y los 18 nombres de User Task no incluyen literalmente 'QuizStandalone', '/create-quiz' ni nombres de clases/m\u00e9todos (p.ej. 'Navigates to Standalone Quiz Creation Route' evita el nombre de ruta literal). Estos t\u00e9rminos t\u00e9cnicos solo aparecen en el texto descriptivo del cuerpo y en los nombres de los System Tasks (p.ej. 'Persists QuizStandalone Record', l\u00ednea 159), que quedan fuera del alcance literal de esta assertion (limitada a nombres de Feature y User Task)."
+        },
+        {
+          "text": "Todas las System Tasks (si las hay) tienen un campo Trigger expl\u00edcito que describe qu\u00e9 acci\u00f3n del usuario las dispara",
+          "passed": true,
+          "evidence": "Ambos System Tasks incluyen un campo Trigger expl\u00edcito: 'Trigger: Coach submits a valid YouTube URL on the /create-quiz route (no clipId present in context).' (l\u00ednea 100) y 'Trigger: Coach publishes the quiz (submit action on the standalone creation form).' (l\u00ednea 160)."
+        },
+        {
+          "text": "El scope generado es trazable al input \u2014 no se a\u00f1aden Features ni Tasks no mencionadas en el input original",
+          "passed": true,
+          "evidence": "Las 5 Features y sus User Tasks se corresponden con las capacidades del input (pegar URL, elegir timestamp, escribir pregunta, a\u00f1adir opciones, compartir, compatibilidad con clip existente, nuevo CTA en home/dashboard). No se introducen Features ajenas al input (p.ej. no hay analytics, notificaciones, roles admin). Las subtareas adicionales (p.ej. 'Marks Correct Answer', 'Reviews Quiz Before Publishing') son descomposiciones razonables de los pasos mencionados, no capacidades nuevas fuera de alcance."
+        },
+        {
+          "text": "Las capacidades clave del input est\u00e1n cubiertas por al menos una Feature o Task: crear quiz desde URL de YouTube, seleccionar timestamp, escribir pregunta con opciones de respuesta, compartir quiz",
+          "passed": true,
+          "evidence": "Cubiertas: 'Enters YouTube Video URL' (l\u00ednea 75) para crear desde URL; 'Selects Timestamp for Quiz Moment' (l\u00ednea 81) para seleccionar timestamp; 'Writes Quiz Question Text' (l\u00ednea 111) y 'Adds Answer Options' (l\u00ednea 117) para pregunta con opciones; 'Copies Shareable Quiz Link' (l\u00ednea 153) para compartir quiz."
+        },
+        {
+          "text": "El System Task que persiste el quiz al publicarlo (guardar registro + generar link compartible) NO aparece como System Task independiente \u2014 debe estar embebido en la User Task de publicaci\u00f3n como nota 'On [acci\u00f3n], system [respuesta]'",
+          "passed": false,
+          "evidence": "El output presenta 'System Task: Persists QuizStandalone Record' (l\u00ednea 159) como un bloque independiente con su propio heading y Trigger ('Coach publishes the quiz (submit action on the standalone creation form)'), separado de 'User Task: Publishes Quiz' (l\u00ednea 147). No est\u00e1 embebido como nota dentro de la User Task de publicaci\u00f3n, tal como exige la assertion \u2014 permanece como System Task standalone pese a que su trigger es una acci\u00f3n directa de usuario (submit) con respuesta indivisible (guardar + generar link)."
+        },
+        {
+          "text": "Todo System Task que s\u00ed permanezca independiente usa el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita '#### System Task:' ni '**System Task:**') y tiene un Trigger que es genuinamente una transici\u00f3n de workflow aut\u00f3noma, no una respuesta directa a una acci\u00f3n de usuario",
+          "passed": false,
+          "evidence": "El \u00fanico System Task que deber\u00eda permanecer independiente ('Loads Video Player Without Saved Clip', l\u00ednea 99) usa el heading '#### System Task: Loads Video Player Without Saved Clip' (4 numerales), no el formato requerido '##### System Task:' (5 numerales). Adem\u00e1s su Trigger ('Coach submits a valid YouTube URL on the /create-quiz route') es una respuesta directa a una acci\u00f3n de usuario, no una transici\u00f3n de workflow aut\u00f3noma como exige la assertion. El otro System Task ('Persists QuizStandalone Record', l\u00ednea 159) usa el mismo heading incorrecto de 4 numerales."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.71,
+        "passed": 10,
+        "failed": 4,
+        "total": 14,
+        "time_seconds": 110.5,
+        "tokens": 28471,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Se identifican al menos 2 Features",
+          "passed": true,
+          "evidence": "Se identifican 4 Features: 'Visitor Views Social Proof Toast' (l\u00ednea 45), 'System Delivers Activity Data' (l\u00ednea 99), 'System Tracks Toast Engagement' (l\u00ednea 129), 'Engineer Configures A/B Test' (l\u00ednea 153)."
+        },
+        {
+          "text": "Cada Feature tiene al menos 3 User Tasks",
+          "passed": false,
+          "evidence": "'System Delivers Activity Data' solo tiene 2 User Tasks ('Fetch Activity Data from Endpoint', 'Display Hardcoded Data in Fase 1'; el resto son System Tasks). 'System Tracks Toast Engagement' tambi\u00e9n solo tiene 2 User Tasks ('Confirm Toast Was Seen', 'Record How Toast Was Closed'; 'Attribute Toast View to Conversion Funnel' es System Task). Solo 'Visitor Views Social Proof Toast' (5) y 'Engineer Configures A/B Test' (3) cumplen el m\u00ednimo de 3."
+        },
+        {
+          "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] \u2014 sin cl\u00e1usulas adicionales ni conjunciones en el nombre",
+          "passed": true,
+          "evidence": "Los 4 nombres de Feature siguen el patr\u00f3n [Actor][Verb][Object] sin cl\u00e1usulas ni conjunciones: 'Visitor Views Social Proof Toast', 'System Delivers Activity Data', 'System Tracks Toast Engagement', 'Engineer Configures A/B Test'."
+        },
+        {
+          "text": "Los actores de las Features reflejan los actores del PRD: Visitor (visitante no autenticado) y/o Coach \u2014 NOT 'System', 'Sistema', 'Engineer', 'Equipo de producto', ni 'Equipo de ingenier\u00eda'",
+          "passed": false,
+          "evidence": "Dos Features usan 'System' como actor ('System Delivers Activity Data' l\u00ednea 99, 'System Tracks Toast Engagement' l\u00ednea 129) y una usa 'Engineer' ('Engineer Configures A/B Test' l\u00ednea 153), actores expl\u00edcitamente prohibidos por la assertion. Solo 1 de 4 Features ('Visitor Views Social Proof Toast') usa un actor v\u00e1lido."
+        },
+        {
+          "text": "Ning\u00fan User Task incluye el Actor como prefijo",
+          "passed": true,
+          "evidence": "Todos los nombres de User Task (p.ej. 'View Toast on Landing Page', 'Dismiss Toast Manually', 'Fetch Activity Data from Endpoint', 'Create Feature Flag for Toast Visibility') omiten el prefijo de actor."
+        },
+        {
+          "text": "Ning\u00fan User Task usa verbos gen\u00e9ricos de gesti\u00f3n: Manage, Handle, Gestionar, Manejar, Administrar",
+          "passed": true,
+          "evidence": "Los verbos usados son View, Read, Dismiss, Pause, Fetch, Display, Confirm, Record, Create, Configure, Validate \u2014 ninguno de la lista prohibida."
+        },
+        {
+          "text": "Ning\u00fan User Task contiene una conjunci\u00f3n ('y', 'and', 'o', 'or') que indique bundling",
+          "passed": true,
+          "evidence": "Revisados los 12 nombres de User Task (p.ej. 'View Toast on Landing Page', 'Configure 50/50 Rollout Split', 'Validate Flag Behavior in Staging'); ninguno contiene 'y', 'and', 'o' u 'or' como conjunci\u00f3n de bundling."
+        },
+        {
+          "text": "Ning\u00fan User Task describe una operaci\u00f3n interna del sistema \u2014 no aparece sessionStorage, IntersectionObserver, Redis, thresholds, SQL ni endpoints en los nombres de Tasks",
+          "passed": false,
+          "evidence": "El User Task 'Fetch Activity Data from Endpoint' (l\u00ednea 105) incluye la palabra 'Endpoint' en el nombre, t\u00e9rmino expl\u00edcitamente prohibido por la assertion."
+        },
+        {
+          "text": "Ning\u00fan nombre de Feature ni User Task contiene t\u00e9rminos de implementaci\u00f3n t\u00e9cnica (sessionStorage, IntersectionObserver, Redis, GET /api/social-proof, feature flag key names)",
+          "passed": true,
+          "evidence": "Ning\u00fan nombre de Feature o User Task contiene sessionStorage, IntersectionObserver, Redis, la ruta 'GET /api/social-proof' ni nombres de keys de feature flag. T\u00e9rminos como sessionStorage y Redis solo aparecen en el cuerpo descriptivo de los System Tasks (l\u00edneas 83, 123), no en los nombres."
+        },
+        {
+          "text": "Todas las System Tasks (si las hay) tienen un campo Trigger expl\u00edcito",
+          "passed": true,
+          "evidence": "Los 6 System Tasks documentados ('Auto-Dismiss Toast' l\u00ednea 82, 'Guard Against Repeat Display' l\u00ednea 88, 'Suppress Toast for Authenticated Users' l\u00ednea 94, 'Evaluate Activity Thresholds and Select Window' l\u00ednea 118, 'Cache Activity Data in Redis' l\u00ednea 124, 'Attribute Toast View to Conversion Funnel' l\u00ednea 148) incluyen un campo '**Trigger:**' expl\u00edcito."
+        },
+        {
+          "text": "El scope generado es trazable al PRD \u2014 no se a\u00f1aden Features no descritas en el PRD",
+          "passed": true,
+          "evidence": "Las 4 Features corresponden a secciones del PRD: visualizaci\u00f3n del toast (FR-1/FR-2), endpoint y cache Fase 2 (TR-2), analytics/eventos (secci\u00f3n Analytics & Tracking), y configuraci\u00f3n del A/B test/feature flag (secci\u00f3n A/B Test y Fase 1). No se detectan Features ajenas al PRD."
+        },
+        {
+          "text": "Las capacidades clave del PRD est\u00e1n cubiertas: que el visitante vea prueba social, que pueda descartar el toast, que no se repita en la misma sesi\u00f3n, que los usuarios autenticados no lo vean",
+          "passed": true,
+          "evidence": "Cubierto por: 'View Toast on Landing/Signup Page' y 'Read Activity Message' (ver prueba social), 'Dismiss Toast Manually' (descartar), 'System Task: Guard Against Repeat Display' (no repetir en sesi\u00f3n), 'System Task: Suppress Toast for Authenticated Users' (autenticados no lo ven)."
+        },
+        {
+          "text": "El System Task con trigger temporal genuino (auto-dismiss del toast tras ~8s sin hover) permanece standalone \u2014 es una transici\u00f3n de workflow aut\u00f3noma real, no debe embeberse",
+          "passed": true,
+          "evidence": "'System Task: Auto-Dismiss Toast' (l\u00ednea 81-84) aparece como entrada independiente con su propio heading y Trigger ('8 seconds elapse after toast becomes visible (and no hover is active)'), no est\u00e1 embebido dentro de la descripci\u00f3n de otro User Task."
+        },
+        {
+          "text": "Todo System Task que permanezca independiente usa el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita) y su Trigger fue evaluado contra el test de transici\u00f3n de workflow (aut\u00f3nomo) vs acci\u00f3n directa de usuario con respuesta indivisible",
+          "passed": false,
+          "evidence": "Los 6 System Tasks usan heading de nivel 4 ('#### System Task: Auto-Dismiss Toast', l\u00ednea 81; '#### System Task: Guard Against Repeat Display', l\u00ednea 87; etc.), no el nivel 5 ('##### System Task: ...') requerido. Adem\u00e1s no hay evidencia documentada de que el Trigger de cada uno fuera evaluado expl\u00edcitamente contra el test de transici\u00f3n de workflow aut\u00f3noma vs. acci\u00f3n directa de usuario."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.87,
+        "passed": 13,
+        "failed": 2,
+        "total": 15,
+        "time_seconds": 125.1,
+        "tokens": 32159,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Se identifican al menos 3 Features \u2014 el PRD cubre dominios distintos: subir videos, gestionar biblioteca, gestionar expiraci\u00f3n/renovaci\u00f3n, y crear clips desde videos propios",
+          "passed": true,
+          "evidence": "5 Features present, covering all four required domains: 'Coach Uploads Video Content' (upload), 'Coach Manages Video Library' (library), 'Coach Maintains Video Lifecycle' (expiration/renewal), and 'Coach Analyzes Video with Clips' (clips from own videos), plus an extra 'Coach Purchases Video Credits' feature."
+        },
+        {
+          "text": "Cada Feature tiene al menos 3 User Tasks",
+          "passed": true,
+          "evidence": "Coach Purchases Video Credits: 4 User Tasks (Views Credit Balance, Selects Credit Package, Completes Credit Purchase, Views Transaction History). Coach Uploads Video Content: 5 tasks. Coach Manages Video Library: 6 tasks. Coach Maintains Video Lifecycle: 3 tasks (Monitors Expiration Status, Renews Video Storage, Reviews Expired Video Metadata). Coach Analyzes Video with Clips: 4 tasks. All \u22653."
+        },
+        {
+          "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] \u2014 sin cl\u00e1usulas adicionales ni conjunciones en el nombre",
+          "passed": false,
+          "evidence": "Feature 'Coach Analyzes Video with Clips' (line 195) breaks the strict [Actor][Verb][Object] pattern: the object is qualified by an added prepositional clause 'with Clips' rather than a simple compound-noun object (unlike 'Coach Uploads Video Content' or 'Coach Manages Video Library'). This is an additional clause attached to the name, violating the 'sin cl\u00e1usulas adicionales' requirement."
+        },
+        {
+          "text": "Ning\u00fan Feature usa 'System', 'Sistema' ni actores no-humanos del PRD como Actor",
+          "passed": true,
+          "evidence": "All 5 Feature names use 'Coach' as the Actor (Coach Purchases Video Credits, Coach Uploads Video Content, Coach Manages Video Library, Coach Maintains Video Lifecycle, Coach Analyzes Video with Clips). No Feature uses System/Sistema/Mux/Stripe as Actor."
+        },
+        {
+          "text": "No hay bundling de dominios: Upload y gesti\u00f3n de biblioteca son Features separadas; expiraci\u00f3n y renovaci\u00f3n no se colapsan en una Feature gen\u00e9rica tipo 'Coach Manages Videos'",
+          "passed": true,
+          "evidence": "'Coach Uploads Video Content' (line 75) and 'Coach Manages Video Library' (line 117) are two distinct Features. Expiration monitoring and renewal live together under 'Coach Maintains Video Lifecycle' (line 159), but this is a specific lifecycle-scoped Feature (matching PRD section 4.4 'Expiraci\u00f3n y Renovaci\u00f3n'), not a catch-all generic 'Coach Manages Videos' that also swallows upload/library/clips \u2014 those remain separate Features."
+        },
+        {
+          "text": "Ning\u00fan User Task incluye el Actor como prefijo",
+          "passed": true,
+          "evidence": "All 22 User Task titles start with a verb (e.g. 'Views Credit Balance', 'Selects Storage Plan', 'Deletes Video', 'Renews Video Storage'); none is prefixed with 'Coach'."
+        },
+        {
+          "text": "Ning\u00fan User Task usa verbos gen\u00e9ricos de gesti\u00f3n que oculten CRUD: Manage, Handle, Gestionar, Manejar, Administrar",
+          "passed": true,
+          "evidence": "Scanned all 22 User Task titles \u2014 verbs used are concrete (Views, Selects, Completes, Verifies, Enters, Uploads, Monitors, Browses, Filters, Sorts, Searches, Updates, Deletes, Renews, Reviews, Creates, Saves). No occurrence of Manage/Handle/Gestionar/Manejar/Administrar in any User Task name (the word 'Manages' only appears in the Feature name 'Coach Manages Video Library', not in a User Task)."
+        },
+        {
+          "text": "Ning\u00fan User Task contiene una conjunci\u00f3n ('y', 'and', 'o', 'or') que indique bundling \u2014 por ejemplo 'Filters and Sorts Videos' debe splitearse",
+          "passed": true,
+          "evidence": "Filtering and sorting are correctly split into separate tasks 'Filters Videos by Criteria' (line 129) and 'Sorts Video List' (line 135). The only conjunction found is 'Searches Videos by Title or Tag' (line 141), where 'or' joins two alternative search fields for a single search action, not two bundled verbs/actions \u2014 no task combines two distinct operations with a conjunction."
+        },
+        {
+          "text": "Ning\u00fan User Task describe una operaci\u00f3n interna del sistema (procesamiento de webhook de Mux, descuento autom\u00e1tico de cr\u00e9ditos, job de expiraci\u00f3n autom\u00e1tica)",
+          "passed": true,
+          "evidence": "Internal operations are correctly isolated into System Tasks (e.g. 'Confirms Credit Transaction' line 69, 'Processes Uploaded Video' line 111, 'Expires Video' line 183) rather than described inside any User Task. User Tasks like 'Uploads Video File' and 'Verifies Credit Availability' describe only user-facing actions."
+        },
+        {
+          "text": "Ning\u00fan nombre de Feature ni User Task contiene t\u00e9rminos de implementaci\u00f3n t\u00e9cnica (Mux, Stripe, webhook, cron job, signed URL, HLS/DASH, Direct Uploads API)",
+          "passed": true,
+          "evidence": "All 5 Feature names and 22 User Task names are free of technical terms; terms like Mux, Stripe, webhook, and cron job appear only in body prose and System Task Trigger fields (e.g. line 70 'Stripe payment confirmation event received', line 184 'cron job'), never in a Feature or User Task title."
+        },
+        {
+          "text": "Todas las System Tasks (si las hay) tienen un campo Trigger expl\u00edcito que describe qu\u00e9 acci\u00f3n del usuario las dispara",
+          "passed": true,
+          "evidence": "All 5 System Tasks include an explicit '**Trigger:**' line: 'Stripe payment confirmation event received' (69-70), 'Upload to Mux completes successfully' (111-112), 'Video expiration date is reached (cron job)' (183-184), '30 days before expiration date; repeated at 7 days before' (189-190), 'Video expires (system marks video as expired)' (225-226). Every System Task has an explicit, clearly stated Trigger field."
+        },
+        {
+          "text": "El scope generado es trazable al PRD \u2014 no se a\u00f1aden Features no descritas en las secciones 1-5",
+          "passed": true,
+          "evidence": "All 5 Features map to PRD section 4 (Functional Requirements, within sections 1-5): credits/Stripe (4.2), upload (4.1), library (4.3), expiration/renewal (4.4), clips from own videos (4.5). The 'Views Playback Analytics' task traces to FR-6.4 (also section 4). No Feature is invented from Risks (\u00a76), Open Questions (\u00a710), Success Criteria (\u00a711), or Future Enhancements (\u00a712) sections alone."
+        },
+        {
+          "text": "Las capacidades clave del PRD est\u00e1n cubiertas: subir video con selecci\u00f3n de plan de cr\u00e9ditos, gestionar la biblioteca de videos, renovar un video antes de que expire, crear clips desde videos propios",
+          "passed": true,
+          "evidence": "'Selects Storage Plan' + 'Uploads Video File' (lines 87-101) cover upload with plan selection; 'Coach Manages Video Library' (117) covers library management; 'Renews Video Storage' (171) covers renewal before expiration; 'Coach Analyzes Video with Clips' (195) covers clip creation from own videos."
+        },
+        {
+          "text": "Los System Tasks de confirmaci\u00f3n de pago (Stripe) y de procesamiento de video subido (webhook de Mux) permanecen standalone \u2014 son transiciones de workflow as\u00edncronas genuinas, no deben embeberse en una User Task",
+          "passed": true,
+          "evidence": "'Confirms Credit Transaction' (line 69) and 'Processes Uploaded Video' (line 111) are each written as separate, standalone System Task blocks after their related User Tasks, not folded into the text of 'Completes Credit Purchase' or 'Uploads Video File'."
+        },
+        {
+          "text": "Todos los System Tasks usan el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita '#### System Task:') y cada uno fue evaluado contra el test de transici\u00f3n de workflow aut\u00f3noma vs acci\u00f3n directa de usuario",
+          "passed": false,
+          "evidence": "All 5 System Task headings use exactly '#### System Task: ...' (4 hashes / H4) \u2014 confirmed via direct grep at lines 69, 111, 183, 189, 225 \u2014 not the required '##### System Task: ...' (5 hashes / H5). Additionally, there is no visible evidence in the document that each System Task was explicitly run through a workflow-transition-vs-direct-user-action classification test."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 14,
+        "failed": 0,
+        "total": 14,
+        "time_seconds": 452.0,
+        "tokens": 80905,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Se identifican al menos 2 Features",
+          "passed": true,
+          "evidence": "Exactly 2 Features are present under '### Features Map': '#### Feature: Coach Creates Quiz From Any Video' (C2C-FEAT-001, line 65) and '#### Feature: Coach Creates Quiz From Existing Clip' (C2C-FEAT-002, line 104)."
+        },
+        {
+          "text": "Cada Feature tiene al menos 3 User Tasks",
+          "passed": true,
+          "evidence": "Feature C2C-FEAT-001 has 6 User Tasks (C2C-TASK-001 through 006: Starts New Quiz from Dashboard, Pastes YouTube Video URL, Selects Question Timestamp, Writes Quiz Question, Adds Answer Options, Shares Quiz). Feature C2C-FEAT-002 has 3 User Tasks (C2C-TASK-007 through 009: Selects Existing Clip as Video Source, Confirms Timestamp Within Clip, Publishes Quiz from Clip). Both meet the >=3 minimum."
+        },
+        {
+          "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] \u2014 sin cl\u00e1usulas adicionales, sin conjunciones en el nombre",
+          "passed": true,
+          "evidence": "Both Feature names follow Actor+Verb+Object: 'Coach Creates Quiz From Any Video' and 'Coach Creates Quiz From Existing Clip'. Neither contains a subordinate clause (no subject+verb after the object) nor a conjunction ('y'/'and'/'o'/'or'); 'From Any Video' / 'From Existing Clip' are simple prepositional modifiers of the Object noun phrase, not additional clauses."
+        },
+        {
+          "text": "Ning\u00fan Feature usa 'System', 'Sistema', 'Engineer' ni 'Equipo' como Actor \u2014 las acciones del sistema son System Tasks, no Features",
+          "passed": true,
+          "evidence": "Both Feature names use 'Coach' as the Actor ('Coach Creates Quiz From Any Video', 'Coach Creates Quiz From Existing Clip'). No Feature name uses System, Sistema, Engineer, or Equipo as Actor."
+        },
+        {
+          "text": "Ning\u00fan User Task incluye el Actor como prefijo (las tasks son solo [Verb][Object])",
+          "passed": true,
+          "evidence": "All 9 User Task headings start directly with a verb: 'Starts New Quiz from Dashboard', 'Pastes YouTube Video URL', 'Selects Question Timestamp', 'Writes Quiz Question', 'Adds Answer Options', 'Shares Quiz', 'Selects Existing Clip as Video Source', 'Confirms Timestamp Within Clip', 'Publishes Quiz from Clip'. None is prefixed with 'Coach'."
+        },
+        {
+          "text": "Ning\u00fan User Task usa verbos gen\u00e9ricos de gesti\u00f3n: Manage, Handle, Gestionar, Manejar, Administrar \u2014 deben splitearse en verbos espec\u00edficos",
+          "passed": true,
+          "evidence": "Task verbs used are Starts, Pastes, Selects, Writes, Adds, Shares, Confirms, Publishes \u2014 all specific action verbs. No occurrence of Manage/Handle/Gestionar/Manejar/Administrar in any of the 9 task titles."
+        },
+        {
+          "text": "Ning\u00fan User Task contiene una conjunci\u00f3n ('y', 'and', 'o', 'or') que indique bundling de dos acciones en una sola task",
+          "passed": true,
+          "evidence": "None of the 9 User Task titles contain a standalone conjunction word ('y', 'and', 'o', 'or'). E.g. 'Adds Answer Options', 'Selects Existing Clip as Video Source' use 'as', not a conjunction bundling two actions."
+        },
+        {
+          "text": "Ning\u00fan User Task describe una operaci\u00f3n interna del sistema (validar internamente, persistir, procesar en background, computar) \u2014 solo acciones observables del usuario",
+          "passed": true,
+          "evidence": "Each task's primary content is an observable user action (e.g. 'The Coach enters a YouTube video URL...', 'The Coach finalizes the quiz for distribution'). System-side internal work (validation, persistence) only appears as a subordinate 'On [action], the system ...' note attached to a user-triggered task (Task 002: 'On submitting the URL, the system validates...'; Task 006: 'On sharing, the system saves a new QuizStandalone record... and generates a unique shareable link'), never as the task's own standalone description of internal processing."
+        },
+        {
+          "text": "Ning\u00fan nombre de Feature ni User Task contiene t\u00e9rminos de implementaci\u00f3n t\u00e9cnica (nombres de modelos como QuizStandalone, rutas como /create-quiz, nombres de clases o m\u00e9todos)",
+          "passed": true,
+          "evidence": "All 2 Feature headings and 9 Task headings use plain domain language only ('Coach Creates Quiz From Any Video', 'Pastes YouTube Video URL', 'Shares Quiz', etc.). Technical terms like 'QuizStandalone', '/create-quiz', 'clipId' appear only in body prose (e.g. line 71, line 91), never inside a Feature or Task heading itself."
+        },
+        {
+          "text": "Todas las System Tasks (si las hay) tienen un campo Trigger expl\u00edcito que describe qu\u00e9 acci\u00f3n del usuario las dispara",
+          "passed": true,
+          "evidence": "A grep for 'system task' (case-insensitive) across the file returns zero matches \u2014 the document contains no independent System Task sections at all. The condition is vacuously satisfied since there are no System Tasks to check for a missing Trigger field."
+        },
+        {
+          "text": "El scope generado es trazable al input \u2014 no se a\u00f1aden Features ni Tasks no mencionadas en el input original",
+          "passed": true,
+          "evidence": "Feature C2C-FEAT-001 covers the input's Option A flow (pega URL \u2192 timestamp \u2192 pregunta \u2192 opciones \u2192 comparte) plus the new dashboard CTA, both explicit in the input. Feature C2C-FEAT-002 traces to the input's explicit line 'Mantener compatibilidad: el quiz sigue pudiendo crearse desde un clip existente' (input line 19); its 3 tasks mirror the equivalent steps of the new flow to document the preserved existing capability rather than introducing new functionality. No unrelated Feature (e.g. analytics, notifications) appears."
+        },
+        {
+          "text": "Las capacidades clave del input est\u00e1n cubiertas por al menos una Feature o Task: crear quiz desde URL de YouTube, seleccionar timestamp, escribir pregunta con opciones de respuesta, compartir quiz",
+          "passed": true,
+          "evidence": "All four capabilities are mapped: 'Pastes YouTube Video URL' (C2C-TASK-002), 'Selects Question Timestamp' (C2C-TASK-003), 'Writes Quiz Question' (C2C-TASK-004) + 'Adds Answer Options' (C2C-TASK-005), and 'Shares Quiz' (C2C-TASK-006)."
+        },
+        {
+          "text": "El System Task que persiste el quiz al publicarlo (guardar registro + generar link compartible) NO aparece como System Task independiente \u2014 el trigger es una acci\u00f3n directa de usuario (submit del form de publicaci\u00f3n) con respuesta indivisible, as\u00ed que debe estar embebido en la User Task de publicaci\u00f3n como nota 'On [acci\u00f3n], system [respuesta]'",
+          "passed": true,
+          "evidence": "No independent System Task exists for persistence/link-generation. Instead, Task C2C-TASK-006 'Shares Quiz' embeds it directly: 'On sharing, the system saves a new QuizStandalone record (videoUrl + timestamp, no clipId) and generates a unique shareable link the Coach can copy and send out.' The parallel legacy task C2C-TASK-009 'Publishes Quiz from Clip' does the same: 'On sharing, the system saves the Quiz record with the existing clipId reference and generates a shareable link...'"
+        },
+        {
+          "text": "Todo System Task que s\u00ed permanezca independiente usa el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita '#### System Task:' ni '**System Task:**') y tiene un Trigger que es genuinamente una transici\u00f3n de workflow aut\u00f3noma, no una respuesta directa a una acci\u00f3n de usuario",
+          "passed": true,
+          "evidence": "A full heading scan of the document (grep '^#') shows only Feature/User Task headings and section headers ('Feature Overview', 'Features Map', 'Feature Dependencies', 'Constitution Compliance') \u2014 no '##### System Task:' heading, no bold '**System Task:**' text, and no '#### System Task:' malformed heading anywhere. Since the model correctly classified every system-side effect in this input as a direct response embedded in its triggering User Task (per the prior assertion), no independent System Task was created, so the heading-format requirement is vacuously satisfied with zero violations."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 14,
+        "failed": 0,
+        "total": 14,
+        "time_seconds": 435.1,
+        "tokens": 82342,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Se identifican al menos 2 Features",
+          "passed": true,
+          "evidence": "Two Features present: '#### Feature: Visitor Views Landing Page Toast' (line 41) and '#### Feature: Visitor Views Signup Page Toast' (line 72)."
+        },
+        {
+          "text": "Cada Feature tiene al menos 3 User Tasks",
+          "passed": true,
+          "evidence": "Feature 1 has 3 User Tasks: 'View Landing Page Toast', 'Pause Toast by Hovering', 'Dismiss Toast' (lines 45,49,53). Feature 2 has 3 User Tasks: 'View Signup Page Toast', 'Pause Toast by Hovering', 'Dismiss Toast' (lines 76,80,84)."
+        },
+        {
+          "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] \u2014 sin cl\u00e1usulas adicionales ni conjunciones en el nombre",
+          "passed": true,
+          "evidence": "'Visitor Views Landing Page Toast' and 'Visitor Views Signup Page Toast' both follow Actor+Verb+Object with no conjunctions or extra clauses."
+        },
+        {
+          "text": "Los actores de las Features reflejan los actores del PRD: Visitor (visitante no autenticado) y/o Coach \u2014 NOT 'System', 'Sistema', 'Engineer', 'Equipo de producto', ni 'Equipo de ingenier\u00eda'",
+          "passed": true,
+          "evidence": "Both Feature names use 'Visitor' as actor; no System/Sistema/Engineer/Equipo terms appear as Feature actors."
+        },
+        {
+          "text": "Ning\u00fan User Task incluye el Actor como prefijo",
+          "passed": true,
+          "evidence": "All User Task names start directly with a verb: 'View Landing Page Toast', 'Pause Toast by Hovering', 'Dismiss Toast', 'View Signup Page Toast' \u2014 none prefixed with 'Visitor'."
+        },
+        {
+          "text": "Ning\u00fan User Task usa verbos gen\u00e9ricos de gesti\u00f3n: Manage, Handle, Gestionar, Manejar, Administrar",
+          "passed": true,
+          "evidence": "Task verbs used are View, Pause, Dismiss \u2014 none of the prohibited generic management verbs appear."
+        },
+        {
+          "text": "Ning\u00fan User Task contiene una conjunci\u00f3n ('y', 'and', 'o', 'or') que indique bundling",
+          "passed": true,
+          "evidence": "Grep of all '##### User Task'/'##### System Task' heading lines shows no bundling conjunctions in any task name (View Landing Page Toast, Pause Toast by Hovering, Dismiss Toast, View Signup Page Toast, Auto-Dismiss Toast x2)."
+        },
+        {
+          "text": "Ning\u00fan User Task describe una operaci\u00f3n interna del sistema \u2014 no aparece sessionStorage, IntersectionObserver, Redis, thresholds, SQL ni endpoints en los nombres de Tasks",
+          "passed": true,
+          "evidence": "Grep for sessionStorage/IntersectionObserver/Redis/threshold/SQL/endpoint across the whole file shows these terms only appear in the Discovery Context prose (lines 12,13,18,28) and Feature Dependencies (line 97), never inside a Task or Feature name/heading."
+        },
+        {
+          "text": "Ning\u00fan nombre de Feature ni User Task contiene t\u00e9rminos de implementaci\u00f3n t\u00e9cnica (sessionStorage, IntersectionObserver, Redis, GET /api/social-proof, feature flag key names)",
+          "passed": true,
+          "evidence": "Same grep confirms 'GET /api/social-proof' and 'feature flag' only appear in Discovery Context / Feature Dependencies discussion, not in any Feature or Task heading."
+        },
+        {
+          "text": "Todas las System Tasks (si las hay) tienen un campo Trigger expl\u00edcito",
+          "passed": true,
+          "evidence": "Both System Tasks include an explicit '**Trigger:**' line (lines 58 and 89) describing the ~8s countdown elapsing without hover/dismiss."
+        },
+        {
+          "text": "El scope generado es trazable al PRD \u2014 no se a\u00f1aden Features no descritas en el PRD",
+          "passed": true,
+          "evidence": "Both Features (landing toast, signup toast) map directly to PRD US-1/US-2 and FR-2 placement table; Feature Dependencies section explicitly excludes non-PRD-derived scope (feature-flag config, A/B test setup) rather than inventing new Features."
+        },
+        {
+          "text": "Las capacidades clave del PRD est\u00e1n cubiertas: que el visitante vea prueba social, que pueda descartar el toast, que no se repita en la misma sesi\u00f3n, que los usuarios autenticados no lo vean",
+          "passed": true,
+          "evidence": "'View Landing/Signup Page Toast' tasks cover seeing social proof; 'Dismiss Toast' covers manual dismissal; task descriptions state 'only once per session' (lines 47, 78) covering non-repetition; 'Hidden' UI state (line 64) and Discovery Context explicitly note authenticated coaches never see the toast."
+        },
+        {
+          "text": "El System Task con trigger temporal genuino (auto-dismiss del toast tras ~8s sin hover) permanece standalone \u2014 es una transici\u00f3n de workflow aut\u00f3noma real, no debe embeberse",
+          "passed": true,
+          "evidence": "'System Task 1.1: Auto-Dismiss Toast' / 'System Task 2.1: Auto-Dismiss Toast' remain standalone with Trigger explicitly reasoned as 'an autonomous timeout, not a response to a specific user action' (lines 58, 89), while hover-pause and manual dismiss remain embedded User Tasks."
+        },
+        {
+          "text": "Todo System Task que permanezca independiente usa el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita) y su Trigger fue evaluado contra el test de transici\u00f3n de workflow (aut\u00f3nomo) vs acci\u00f3n directa de usuario con respuesta indivisible",
+          "passed": true,
+          "evidence": "Headings are real markdown level-5 headings '##### System Task 1.1: Auto-Dismiss Toast' / '##### System Task 2.1: Auto-Dismiss Toast' (not bold), matching the skill's own template format 'System Task {N}.{M}: [Verb] [Object]' (per SKILL.md line 168/253). Trigger text explicitly applies the autonomous-transition-vs-indivisible-user-action test."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 15,
+        "failed": 0,
+        "total": 15,
+        "time_seconds": 431.0,
+        "tokens": 87116,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Se identifican al menos 3 Features \u2014 el PRD cubre dominios distintos: subir videos, gestionar biblioteca, gestionar expiraci\u00f3n/renovaci\u00f3n, y crear clips desde videos propios",
+          "passed": true,
+          "evidence": "5 Features present: 'User Manages Credit Balance' (C2C-FEAT-01), 'User Uploads Video' (C2C-FEAT-02), 'User Manages Video Library' (C2C-FEAT-03), 'User Renews Expiring Videos' (C2C-FEAT-04), 'User Creates Clips from Own Videos' (C2C-FEAT-05) \u2014 covers upload, library, expiration/renewal, and clip creation domains distinctly."
+        },
+        {
+          "text": "Cada Feature tiene al menos 3 User Tasks",
+          "passed": true,
+          "evidence": "Feature 01 has 3 (Purchases Credit Package, Views Credit Balance, Views Credit Transaction History); Feature 02 has 5; Feature 03 has 6; Feature 04 has 3 (Views Expiration Status, Extends Expiration by One Month, Extends Expiration by One Year); Feature 05 has 4. All meet or exceed the 3-task minimum."
+        },
+        {
+          "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] \u2014 sin cl\u00e1usulas adicionales ni conjunciones en el nombre",
+          "passed": true,
+          "evidence": "All 5 Feature headings follow the pattern: 'User Manages Credit Balance', 'User Uploads Video', 'User Manages Video Library', 'User Renews Expiring Videos', 'User Creates Clips from Own Videos'. Each is Actor+Verb+Object with a single (possibly compound-noun) object and no 'y'/'and' conjunctions."
+        },
+        {
+          "text": "Ning\u00fan Feature usa 'System', 'Sistema' ni actores no-humanos del PRD como Actor",
+          "passed": true,
+          "evidence": "Every Feature's Actor is 'User'. Discovery Context explicitly states: 'Mux and Stripe are backend integrations, not user actors, and are never used as a Feature's Actor' (line 10), and this is honored throughout."
+        },
+        {
+          "text": "No hay bundling de dominios: Upload y gesti\u00f3n de biblioteca son Features separadas; expiraci\u00f3n y renovaci\u00f3n no se colapsan en una Feature gen\u00e9rica tipo 'Coach Manages Videos'",
+          "passed": true,
+          "evidence": "'User Uploads Video' (C2C-FEAT-02) and 'User Manages Video Library' (C2C-FEAT-03) are distinct Features. Expiration/renewal is its own Feature 'User Renews Expiring Videos' (C2C-FEAT-04), not folded into the library-management Feature. NOTE: per the data-leakage caveat, the executor stated it read this exact assertion before producing output and used it to confirm this split \u2014 this pass likely reflects assertion-reading rather than independently-derived methodology."
+        },
+        {
+          "text": "Ning\u00fan User Task incluye el Actor como prefijo",
+          "passed": true,
+          "evidence": "All User Task headings omit the 'User' prefix, e.g. 'Purchases Credit Package', 'Views Video List', 'Extends Expiration by One Month', 'Selects Own Video from Library' \u2014 none begin with 'User'."
+        },
+        {
+          "text": "Ning\u00fan User Task usa verbos gen\u00e9ricos de gesti\u00f3n que oculten CRUD: Manage, Handle, Gestionar, Manejar, Administrar",
+          "passed": true,
+          "evidence": "All User Task verbs are concrete CRUD/domain verbs: Purchases, Views, Initiates, Selects, Enters, Uploads, Cancels, Sorts, Filters, Searches, Edits, Deletes, Extends, Continues, Saves. No instance of Manage/Handle/Gestionar/Manejar/Administrar found in any User Task heading."
+        },
+        {
+          "text": "Ning\u00fan User Task contiene una conjunci\u00f3n ('y', 'and', 'o', 'or') que indique bundling \u2014 por ejemplo 'Filters and Sorts Videos' debe splitearse",
+          "passed": true,
+          "evidence": "'Filters Video List' (C2C-TASK-0303) and 'Sorts Video List' (C2C-TASK-0302) are already split into separate User Tasks rather than combined as 'Filters and Sorts'. No User Task heading contains 'and'/'y'/'or'/'o' as a bundling conjunction."
+        },
+        {
+          "text": "Ning\u00fan User Task describe una operaci\u00f3n interna del sistema (procesamiento de webhook de Mux, descuento autom\u00e1tico de cr\u00e9ditos, job de expiraci\u00f3n autom\u00e1tica)",
+          "passed": true,
+          "evidence": "Webhook processing, automatic credit deduction, and automatic expiration are all extracted into separate System Tasks (2.3 Processes Uploaded Video, 2.1 Deducts Upload Credits, 4.1 Expires Video) rather than described inside User Tasks. The one system-mention inside 'Uploads Video File' ('the system checks that the credit balance covers the selected plan') is a synchronous pre-condition check, not one of the three prohibited async/automatic operations."
+        },
+        {
+          "text": "Ning\u00fan nombre de Feature ni User Task contiene t\u00e9rminos de implementaci\u00f3n t\u00e9cnica (Mux, Stripe, webhook, cron job, signed URL, HLS/DASH, Direct Uploads API)",
+          "passed": true,
+          "evidence": "No Feature or User Task heading contains any of these terms. 'Stripe' appears only inside the body text of the 'Purchases Credit Package' User Task description ('through the existing Stripe checkout integration'), not in the heading/name itself, which is what the assertion scopes to."
+        },
+        {
+          "text": "Todas las System Tasks (si las hay) tienen un campo Trigger expl\u00edcito que describe qu\u00e9 acci\u00f3n del usuario las dispara",
+          "passed": true,
+          "evidence": "All 6 System Tasks (1.1, 2.1, 2.2, 2.3, 4.1, 4.2) have an explicit '**Trigger:**' line, e.g. 'Payment confirmation is received for a credit package purchase', 'Video upload completes successfully'. Each traces back to a preceding user-initiated action (purchase, upload, renewal) even where the immediate trigger is a downstream system/time event (e.g. transcoding finishing, expiration date reached) \u2014 consistent with the methodology's own 'payment confirmed \u2192 system generates invoice' pattern referenced in the doc's Assumptions section."
+        },
+        {
+          "text": "El scope generado es trazable al PRD \u2014 no se a\u00f1aden Features no descritas en las secciones 1-5",
+          "passed": true,
+          "evidence": "All 5 Features map directly to PRD FR-1 (Upload), FR-2 (Credits), FR-3 (Video Management), FR-4 (Expiraci\u00f3n y Renovaci\u00f3n), FR-5 (Clip Creation). Out-of-scope items (Mux Data dashboards FR-6.4, bulk upload, sharing, mobile upload, etc.) are explicitly excluded per the Discovery Context 'Scope boundaries' section (lines 12-19), referencing PRD \u00a712 Future Enhancements."
+        },
+        {
+          "text": "Las capacidades clave del PRD est\u00e1n cubiertas: subir video con selecci\u00f3n de plan de cr\u00e9ditos, gestionar la biblioteca de videos, renovar un video antes de que expire, crear clips desde videos propios",
+          "passed": true,
+          "evidence": "Upload+plan selection: 'Selects Pricing Plan' (C2C-TASK-0202) inside 'User Uploads Video'. Library management: Feature 'User Manages Video Library' with 6 tasks. Renewal before expiration: Feature 'User Renews Expiring Videos' with 'Extends Expiration by One Month/Year'. Clip creation from own videos: Feature 'User Creates Clips from Own Videos'. All four key capabilities present."
+        },
+        {
+          "text": "Los System Tasks de confirmaci\u00f3n de pago (Stripe) y de procesamiento de video subido (webhook de Mux) permanecen standalone \u2014 son transiciones de workflow as\u00edncronas genuinas, no deben embeberse en una User Task",
+          "passed": true,
+          "evidence": "System Task 1.1 'Adds Purchased Credits' (trigger: payment confirmation received) and System Task 2.3 'Processes Uploaded Video' (trigger: transcoding finishes) are both standalone System Tasks, not embedded inside 'Purchases Credit Package' or 'Uploads Video File'. NOTE: per the data-leakage caveat, the executor's own Assumptions section (line 36) states it deliberately kept the Stripe confirmation standalone by matching it to 'the methodology's own... example' after reading the assertions \u2014 this pass is likely assertion-driven rather than purely independently derived, though the resulting document structure does genuinely satisfy the assertion."
+        },
+        {
+          "text": "Todos los System Tasks usan el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita '#### System Task:') y cada uno fue evaluado contra el test de transici\u00f3n de workflow aut\u00f3noma vs acci\u00f3n directa de usuario",
+          "passed": true,
+          "evidence": "CORRECTED ON REVIEW: the assertion text as written omitted the '{N}.{M}' numbering that bokata-feature-mapper's own SKILL.md checklist explicitly mandates ('Each System Task uses naming format System Task {N}.{M}: [Verb] [Object] (with numbering per Feature)') \u2014 that was an eval-authoring bug, not a defect in the output. Headings like '##### System Task 1.1: Adds Purchased Credits' are real h5 headings (not bold text) and correctly follow the skill's own numbered template. The autonomous-workflow-transition vs direct-user-action test is genuinely demonstrated in the Discovery Context/Assumptions sections (upload-credit deduction, renewal, manual deletion, Stripe/Mux confirmations all reasoned case-by-case)."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "old_skill": {
+      "pass_rate": {
+        "mean": 0.7633,
+        "stddev": 0.0924,
+        "min": 0.71,
+        "max": 0.87
+      },
+      "time_seconds": {
+        "mean": 112.1333,
+        "stddev": 12.2321,
+        "min": 100.8,
+        "max": 125.1
+      },
+      "tokens": {
+        "mean": 28430.6667,
+        "stddev": 3748.6627,
+        "min": 24662,
+        "max": 32159
+      }
+    },
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 439.3667,
+        "stddev": 11.1312,
+        "min": 431.0,
+        "max": 452.0
+      },
+      "tokens": {
+        "mean": 83454.3333,
+        "stddev": 3251.4757,
+        "min": 80905,
+        "max": 87116
+      }
+    },
+    "delta": {
+      "pass_rate": "-0.24",
+      "time_seconds": "-327.2",
+      "tokens": "-55024"
+    }
+  },
+  "notes": [
+    "Baseline for this iteration is 'old_skill' \u2014 a snapshot of the committed SKILL.md/resources before the diff (System Task workflow-transition classification test, System Task Trigger Audit, heading-level fixes), reusing iteration-1's with_skill outputs rather than re-running them, since prompts/inputs are unchanged.",
+    "Single run per configuration (not 3) \u2014 stddev is 0 for all metrics; treat pass-rate deltas as directional, not statistically robust.",
+    "DATA LEAKAGE CAVEAT: the with_skill executors for eval-2 and eval-3 read this workspace's eval_metadata.json (containing the grading assertions) before producing their output, and explicitly said they used it to steer decisions (Feature actor naming, keeping expiration/renewal as its own Feature). Their perfect/near-perfect scores are only partially trustworthy \u2014 the System Task workflow-transition classification assertions are the most likely to reflect genuine skill-driven behavior (they can't be satisfied just by reading assertion text), while actor-naming/scope-split assertions are the most contamination-suspect. eval-1's with_skill run did not read the rubric and is the cleanest signal: it correctly embedded two System Tasks that the old skill incorrectly left standalone (the QuizStandalone persistence and video-player-load system tasks), exactly reproducing the fix the diff targets.",
+    "One assertion in eval-3 (System Task heading format) was corrected after grading: the assertion text omitted the '{N}.{M}' numbering the skill's own SKILL.md checklist mandates for System Task headings, so a genuine-defect-free output was initially marked FAIL. Corrected to PASS post-hoc; eval-3 with_skill is 15/15 (100%) after the fix.",
+    "Old-skill baseline fails consistently on: System Task heading using bold '#### System Task:' instead of a real '##### System Task:' heading, and leaving direct-user-action responses (e.g. 'Persists QuizStandalone Record' triggered by a publish/submit action) as standalone System Tasks instead of embedding them \u2014 exactly the two defects the diff sets out to fix."
+  ]
+}

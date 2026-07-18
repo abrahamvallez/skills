@@ -1,0 +1,80 @@
+{
+  "expectations": [
+    {
+      "text": "Se identifican al menos 3 Features — el PRD cubre dominios distintos: subir videos, gestionar biblioteca, gestionar expiración/renovación, y crear clips desde videos propios",
+      "passed": true,
+      "evidence": "5 Features present, covering all four required domains: 'Coach Uploads Video Content' (upload), 'Coach Manages Video Library' (library), 'Coach Maintains Video Lifecycle' (expiration/renewal), and 'Coach Analyzes Video with Clips' (clips from own videos), plus an extra 'Coach Purchases Video Credits' feature."
+    },
+    {
+      "text": "Cada Feature tiene al menos 3 User Tasks",
+      "passed": true,
+      "evidence": "Coach Purchases Video Credits: 4 User Tasks (Views Credit Balance, Selects Credit Package, Completes Credit Purchase, Views Transaction History). Coach Uploads Video Content: 5 tasks. Coach Manages Video Library: 6 tasks. Coach Maintains Video Lifecycle: 3 tasks (Monitors Expiration Status, Renews Video Storage, Reviews Expired Video Metadata). Coach Analyzes Video with Clips: 4 tasks. All ≥3."
+    },
+    {
+      "text": "Cada Feature expresa un objetivo de usuario usando exactamente [Actor][Verb][Object] — sin cláusulas adicionales ni conjunciones en el nombre",
+      "passed": false,
+      "evidence": "Feature 'Coach Analyzes Video with Clips' (line 195) breaks the strict [Actor][Verb][Object] pattern: the object is qualified by an added prepositional clause 'with Clips' rather than a simple compound-noun object (unlike 'Coach Uploads Video Content' or 'Coach Manages Video Library'). This is an additional clause attached to the name, violating the 'sin cláusulas adicionales' requirement."
+    },
+    {
+      "text": "Ningún Feature usa 'System', 'Sistema' ni actores no-humanos del PRD como Actor",
+      "passed": true,
+      "evidence": "All 5 Feature names use 'Coach' as the Actor (Coach Purchases Video Credits, Coach Uploads Video Content, Coach Manages Video Library, Coach Maintains Video Lifecycle, Coach Analyzes Video with Clips). No Feature uses System/Sistema/Mux/Stripe as Actor."
+    },
+    {
+      "text": "No hay bundling de dominios: Upload y gestión de biblioteca son Features separadas; expiración y renovación no se colapsan en una Feature genérica tipo 'Coach Manages Videos'",
+      "passed": true,
+      "evidence": "'Coach Uploads Video Content' (line 75) and 'Coach Manages Video Library' (line 117) are two distinct Features. Expiration monitoring and renewal live together under 'Coach Maintains Video Lifecycle' (line 159), but this is a specific lifecycle-scoped Feature (matching PRD section 4.4 'Expiración y Renovación'), not a catch-all generic 'Coach Manages Videos' that also swallows upload/library/clips — those remain separate Features."
+    },
+    {
+      "text": "Ningún User Task incluye el Actor como prefijo",
+      "passed": true,
+      "evidence": "All 22 User Task titles start with a verb (e.g. 'Views Credit Balance', 'Selects Storage Plan', 'Deletes Video', 'Renews Video Storage'); none is prefixed with 'Coach'."
+    },
+    {
+      "text": "Ningún User Task usa verbos genéricos de gestión que oculten CRUD: Manage, Handle, Gestionar, Manejar, Administrar",
+      "passed": true,
+      "evidence": "Scanned all 22 User Task titles — verbs used are concrete (Views, Selects, Completes, Verifies, Enters, Uploads, Monitors, Browses, Filters, Sorts, Searches, Updates, Deletes, Renews, Reviews, Creates, Saves). No occurrence of Manage/Handle/Gestionar/Manejar/Administrar in any User Task name (the word 'Manages' only appears in the Feature name 'Coach Manages Video Library', not in a User Task)."
+    },
+    {
+      "text": "Ningún User Task contiene una conjunción ('y', 'and', 'o', 'or') que indique bundling — por ejemplo 'Filters and Sorts Videos' debe splitearse",
+      "passed": true,
+      "evidence": "Filtering and sorting are correctly split into separate tasks 'Filters Videos by Criteria' (line 129) and 'Sorts Video List' (line 135). The only conjunction found is 'Searches Videos by Title or Tag' (line 141), where 'or' joins two alternative search fields for a single search action, not two bundled verbs/actions — no task combines two distinct operations with a conjunction."
+    },
+    {
+      "text": "Ningún User Task describe una operación interna del sistema (procesamiento de webhook de Mux, descuento automático de créditos, job de expiración automática)",
+      "passed": true,
+      "evidence": "Internal operations are correctly isolated into System Tasks (e.g. 'Confirms Credit Transaction' line 69, 'Processes Uploaded Video' line 111, 'Expires Video' line 183) rather than described inside any User Task. User Tasks like 'Uploads Video File' and 'Verifies Credit Availability' describe only user-facing actions."
+    },
+    {
+      "text": "Ningún nombre de Feature ni User Task contiene términos de implementación técnica (Mux, Stripe, webhook, cron job, signed URL, HLS/DASH, Direct Uploads API)",
+      "passed": true,
+      "evidence": "All 5 Feature names and 22 User Task names are free of technical terms; terms like Mux, Stripe, webhook, and cron job appear only in body prose and System Task Trigger fields (e.g. line 70 'Stripe payment confirmation event received', line 184 'cron job'), never in a Feature or User Task title."
+    },
+    {
+      "text": "Todas las System Tasks (si las hay) tienen un campo Trigger explícito que describe qué acción del usuario las dispara",
+      "passed": true,
+      "evidence": "All 5 System Tasks include an explicit '**Trigger:**' line: 'Stripe payment confirmation event received' (69-70), 'Upload to Mux completes successfully' (111-112), 'Video expiration date is reached (cron job)' (183-184), '30 days before expiration date; repeated at 7 days before' (189-190), 'Video expires (system marks video as expired)' (225-226). Every System Task has an explicit, clearly stated Trigger field."
+    },
+    {
+      "text": "El scope generado es trazable al PRD — no se añaden Features no descritas en las secciones 1-5",
+      "passed": true,
+      "evidence": "All 5 Features map to PRD section 4 (Functional Requirements, within sections 1-5): credits/Stripe (4.2), upload (4.1), library (4.3), expiration/renewal (4.4), clips from own videos (4.5). The 'Views Playback Analytics' task traces to FR-6.4 (also section 4). No Feature is invented from Risks (§6), Open Questions (§10), Success Criteria (§11), or Future Enhancements (§12) sections alone."
+    },
+    {
+      "text": "Las capacidades clave del PRD están cubiertas: subir video con selección de plan de créditos, gestionar la biblioteca de videos, renovar un video antes de que expire, crear clips desde videos propios",
+      "passed": true,
+      "evidence": "'Selects Storage Plan' + 'Uploads Video File' (lines 87-101) cover upload with plan selection; 'Coach Manages Video Library' (117) covers library management; 'Renews Video Storage' (171) covers renewal before expiration; 'Coach Analyzes Video with Clips' (195) covers clip creation from own videos."
+    },
+    {
+      "text": "Los System Tasks de confirmación de pago (Stripe) y de procesamiento de video subido (webhook de Mux) permanecen standalone — son transiciones de workflow asíncronas genuinas, no deben embeberse en una User Task",
+      "passed": true,
+      "evidence": "'Confirms Credit Transaction' (line 69) and 'Processes Uploaded Video' (line 111) are each written as separate, standalone System Task blocks after their related User Tasks, not folded into the text of 'Completes Credit Purchase' or 'Uploads Video File'."
+    },
+    {
+      "text": "Todos los System Tasks usan el formato de heading '##### System Task: [Verb] [Object]' (heading real, no negrita '#### System Task:') y cada uno fue evaluado contra el test de transición de workflow autónoma vs acción directa de usuario",
+      "passed": false,
+      "evidence": "All 5 System Task headings use exactly '#### System Task: ...' (4 hashes / H4) — confirmed via direct grep at lines 69, 111, 183, 189, 225 — not the required '##### System Task: ...' (5 hashes / H5). Additionally, there is no visible evidence in the document that each System Task was explicitly run through a workflow-transition-vs-direct-user-action classification test."
+    }
+  ],
+  "summary": {"passed": 13, "failed": 2, "total": 15, "pass_rate": 0.87}
+}

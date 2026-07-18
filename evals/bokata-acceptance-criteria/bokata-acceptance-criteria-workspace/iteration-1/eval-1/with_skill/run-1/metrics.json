@@ -1,0 +1,13 @@
+{
+  "tool_calls": {
+    "Read": 3,
+    "Bash": 4,
+    "Write": 2
+  },
+  "total_tool_calls": 9,
+  "total_steps": 6,
+  "files_created": 2,
+  "errors_encountered": 0,
+  "output_chars": 7736,
+  "transcript_chars": 25000
+}
