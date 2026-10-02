@@ -19,6 +19,7 @@ Uses [skills CLI](https://github.com/vercel-labs/skills) — supports Claude Cod
 | [`bokata-feature-mapper`](#bokata-feature-mapper) | Product Dev | Maps actors, features, and user tasks from a PRD or description | User Story Mapping · bundling heuristics · Phase 0 discovery |
 | [`bokata-ac-analyst`](#bokata-ac-analyst) | Product Dev | Generates Gherkin acceptance criteria from a Features Backbone | Rule-first · happy path + edge cases + permissions |
 | [`bokata-feature-slicer`](#bokata-feature-slicer) | Product Dev | Decomposes a feature into a Walking Skeleton + Increments Backlog | 16+ slicing strategies · Walking Skeleton buildable in 1–3 days |
+| [`product-discovery-ost`](#product-discovery-ost) | Product Dev | Turns specs, notes, transcripts or idea dumps into an Opportunity Solution Tree with ICE-scored solutions | Teresa Torres + Itamar Gilad · qualitative opportunity assessment · adapts to non-corporate contexts |
 
 ---
 
@@ -159,6 +160,28 @@ Use `--show-steps`, `--show-increments`, or `--show-all` to surface intermediate
 ```
 docs/<initiative>/slices/<FEAT-ID>-<name>.md   ← Walking Skeleton + Backlog
 docs/<initiative>/walking-skeleton-plan.md      ← Consolidated plan across features
+```
+
+---
+
+## product-discovery-ost
+
+**Category:** Product Dev
+
+Takes any raw material (spec, meeting notes, interview transcript, brainstorming dump, feature list) and produces a complete Opportunity Solution Tree analysis in markdown:
+
+- Prioritized **opportunities**, assessed qualitatively by comparing siblings (Teresa Torres, *Continuous Discovery Habits*)
+- **Solutions** scored with a simplified 1–4 ICE scale (Itamar Gilad)
+- Detailed descriptions, assumptions, experiments, and summary tables with a roadmap
+
+Language follows the input (Spanish, Catalan, English...). Torres criteria can be adapted to NGOs, unions, cooperatives and public sector (see `references/torres-adaptation.md`).
+
+**Usage:**
+```
+Run product-discovery-ost on these meeting notes: notes/2026-09-30-discovery.md
+```
+```
+Build an OST from this brainstorming list and score the solutions with ICE
 ```
 
 ---
