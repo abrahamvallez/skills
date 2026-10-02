@@ -1,0 +1,82 @@
+{
+  "skill_name": "the-mom-test",
+  "skill_path": "skills/the-mom-test",
+  "evals": [
+    {
+      "id": 1,
+      "name": "evaluate-bad-interview-spanish",
+      "prompt": "Evalúa esta entrevista con la skill the-mom-test y dime qué hice mal y qué aprendí realmente:\n\nevals/the-mom-test/inputs/01-transcript-bad-interview.txt",
+      "expected_output": "Informe en español. Veredicto: la reunión fracasó (termina con cumplido + 'te mando la beta', sin compromiso real). Detecta pitch inmediato, preguntar por la idea, preguntas hipotéticas/futuro (¿usarías? ¿pagarías?), escala 1-5, sesgo de formalidad, aceptar cumplidos como dato, feature request sin cavar (chat), no preguntar por el presupuesto ni por la última vez. Hechos reales: casi ninguno (falta de tiempo, vecinos difíciles) sin anclar. Propone preguntas mejoradas y próximos pasos.",
+      "files": ["evals/the-mom-test/inputs/01-transcript-bad-interview.txt"],
+      "assertions": [
+        "El informe está escrito en español",
+        "El veredicto declara que la reunión fracasó (o equivalente) y lo justifica por cumplido/promesa vaga sin compromiso o avance concreto",
+        "Identifica que el entrevistador presentó la idea/hizo pitch al inicio y pidió opinión ('¿Qué te parece la idea?') como error",
+        "Marca '¿Usarías…?' y/o '¿Pagarías 5 euros…?' como preguntas hipotéticas/de futuro que generan datos inútiles",
+        "Clasifica 'Me encanta', 'idea muy práctica' y/o 'me encantará probarla' como cumplidos o fluff y no como evidencia",
+        "Señala que la petición del chat (o votar) es una feature request que debía explorarse con 'por qué' en lugar de anotarse",
+        "Señala que la respuesta sobre falta de tiempo/vecinos es una oportunidad perdida de anclar o cavar con un ejemplo concreto pasado",
+        "Señala el exceso de formalidad o la pregunta de escala 1-5 como error",
+        "Incluye al menos tres reescrituras de preguntas en pasado y específicas sobre la vida de Marta (p. ej. 'cuéntame la última vez que organizaste la limpieza')",
+        "Indica qué compromiso o siguiente paso debió pedirse (p. ej. presentarle a otros vecinos/administrador, probar el piloto, compromiso concreto) en lugar de aceptar 'te mando la beta'",
+        "No da por validada la idea ni cuenta los cumplidos como evidencia positiva"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "review-question-list",
+      "prompt": "Revisa este guion de preguntas con the-mom-test y reescribe las que no valgan:\n\nevals/the-mom-test/inputs/02-question-list.md",
+      "expected_output": "Tabla en español con veredicto por pregunta. Falla: 1 (opinión), 2 (hipotética), 3 (precio hipotético), 6 (feature wishes sin porqué), 7 (escala, asume que importa), 9 (pregunta por el prototipo / busca cumplido). Pasan: 5 y 8 (muy buenas), 10 (cierre). 4 es genérica/arreglable (anclar a la última vez). Detecta que falta una pregunta 'aterradora' (dinero/presupuesto/quién decide) y compromiso/siguiente paso, y que el guion enseña la idea (pregunta 1, 9). Propone orden: abrir amplio antes de hacer zoom.",
+      "files": ["evals/the-mom-test/inputs/02-question-list.md"],
+      "assertions": [
+        "El resultado incluye una tabla o lista con veredicto por cada una de las 10 preguntas",
+        "Las preguntas 1, 2 y 3 se marcan como fallo/malas",
+        "Las preguntas 5 y 8 se marcan como buenas/pasan",
+        "La pregunta 10 se marca como buena (pregunta de cierre)",
+        "La pregunta 4 se marca como mejorable/genérica (no como mala ni como buena sin matices) y se propone anclarla a la última vez",
+        "La pregunta 6 se marca como mejorable o floja y se recomienda preguntar por qué/motivación detrás de cada deseo",
+        "La pregunta 9 se identifica como pedir opinión/cumplido sobre el prototipo",
+        "Cada pregunta marcada como fallo o mejorable incluye una reescritura redactada en español, centrada en pasado y vida del entrenador",
+        "Señala que falta una pregunta incómoda/importante (dinero, presupuesto, quién decide, qué lo haría fracasar) o una petición de compromiso/siguiente paso",
+        "Recomienda empezar amplio (objetivos/problemas del entrenador) antes de hacer zoom en el análisis de vídeo"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "evidence-audit-validated-claim",
+      "prompt": "Mi equipo dice que la idea está validada y quiere empezar a desarrollar el MVP completo. Audita la evidencia con the-mom-test:\n\nevals/the-mom-test/inputs/03-evidence-claims.md",
+      "expected_output": "Auditoría honesta en español: la evidencia es mayormente compliments/fluff/hipotéticos (encuesta, 'seguro lo usaría', 'me encanta'), el 'avísame cuando lancéis' es cumplido + aplazamiento, los 310 emails son leads para conversar y no validación cuantitativa, la diversidad de peticiones sugiere segmento demasiado amplio (cuatro tipos de personas). No hay compromisos (tiempo/reputación/dinero) ni hechos de comportamiento actual. Veredicto: no validada; propone segmentar, usar los emails para conversar, preguntar por última vez y gasto actual, y pedir compromisos antes de construir.",
+      "files": ["evals/the-mom-test/inputs/03-evidence-claims.md"],
+      "assertions": [
+        "El veredicto dice claramente que la idea NO está validada con la evidencia presentada (o que no hay evidencia sólida todavía)",
+        "Clasifica 'a todos les encanta' y 'ojalá hubiera existido' como cumplidos",
+        "Clasifica 'seguro lo usarían' / 'pagarían' como fluff hipotético/futuro sin compromiso",
+        "Identifica 'Avísame cuando lancéis…' como cumplido + táctica de aplazamiento, no como compromiso",
+        "Indica que la encuesta (81% interesado) mide opiniones/futuro y no es evidencia fuerte; y trata los 310 emails como lista de leads con quien conversar, no como validación por sí misma",
+        "Señala que peticiones muy diversas y mezcla de entrevistados (entrenadores, directivos, padres, jugadores) indican segmento demasiado amplio / hay que segmentar",
+        "Señala la ausencia de compromisos (tiempo, reputación o dinero) y de hechos de comportamiento actual (gasto, workaround, última vez)",
+        "Propone próximos pasos concretos: elegir un segmento 'quién-dónde', conversaciones sobre vida y pasado, pedir compromisos (pre-pago, piloto, intros) antes del MVP completo",
+        "Menciona el riesgo de mercado vs. de producto o quién paga/quién decide como puntos a aclarar",
+        "Tono directo y honesto, sin validar la conclusión del equipo por cortesía"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "live-coach-follow-ups",
+      "prompt": "Necesito ayuda rápida con the-mom-test, estoy en plena conversación:\n\nevals/the-mom-test/inputs/04-live-coach-scenario.md",
+      "expected_output": "Respuesta breve y accionable en español: clasifica lo dicho (emoción/dolor real: grabar con móvil y horas viendo vídeos; fluff futuro: 'seguro que lo compraría'; idea: exportar a Excel). Da 3 opciones de frase exacta: (1) anclar al último partido ('¿cuándo fue la última vez? cuéntame cómo lo hiciste'), (2) cavar la emoción y el feature request ('¿qué te daría exportar a Excel?', '¿cómo lo resuelves ahora?'), (3) pregunta incómoda/compromiso (tiempo/coste, cuánto tiempo pierde, qué ha probado, si ha buscado soluciones). Recomienda no contar aún la idea.",
+      "files": ["evals/the-mom-test/inputs/04-live-coach-scenario.md"],
+      "assertions": [
+        "La respuesta es breve (sin teoría larga) y está en español",
+        "Identifica la frustración con grabar/ver vídeos como emoción o dolor que merece cavar",
+        "Identifica 'seguro que lo compraría' como fluff/hipotético que no cuenta como evidencia",
+        "Identifica 'exportar a Excel' como feature request que hay que entender (por qué/qué le permitiría) y no apuntar tal cual",
+        "Ofrece exactamente tres frases listas para decir (anclar, cavar, pregunta incómoda o compromiso)",
+        "Una de las frases pide un ejemplo concreto pasado (la última vez que revisó un partido/qué hizo/cuánto tardó)",
+        "Una de las frases pregunta qué ha probado o cómo lo resuelve ahora / si ha buscado soluciones",
+        "Aconseja no revelar todavía la idea o mantener la conversación sobre su vida",
+        "No propone preguntar '¿pagarías X?' ni '¿lo usarías?'"
+      ]
+    }
+  ]
+}

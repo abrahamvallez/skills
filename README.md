@@ -20,6 +20,7 @@ Uses [skills CLI](https://github.com/vercel-labs/skills) — supports Claude Cod
 | [`bokata-ac-analyst`](#bokata-ac-analyst) | Product Dev | Generates Gherkin acceptance criteria from a Features Backbone | Rule-first · happy path + edge cases + permissions |
 | [`bokata-feature-slicer`](#bokata-feature-slicer) | Product Dev | Decomposes a feature into a Walking Skeleton + Increments Backlog | 16+ slicing strategies · Walking Skeleton buildable in 1–3 days |
 | [`product-discovery-ost`](#product-discovery-ost) | Product Dev | Turns specs, notes, transcripts or idea dumps into an Opportunity Solution Tree with ICE-scored solutions | Teresa Torres + Itamar Gilad · qualitative opportunity assessment · adapts to non-corporate contexts |
+| [`the-mom-test`](#the-mom-test) | Product Dev | Writes, reviews and evaluates customer/user interviews, questions and discovery evidence using The Mom Test | 6 modes (prepare · review questions · evaluate interviews · evidence audit · live coach · batch review) · Spanish/English · based on Rob Fitzpatrick's book |
 
 ---
 
@@ -186,6 +187,39 @@ Build an OST from this brainstorming list and score the solutions with ICE
 
 ---
 
+## the-mom-test
+
+**Category:** Product Dev
+
+A discovery-conversation coach grounded in *The Mom Test* (Rob Fitzpatrick). It helps you ask questions people can't lie about, spot bad data (compliments, fluff, ideas), and decide the next step. Six modes:
+
+| Mode | You provide | You get |
+|---|---|---|
+| **Prepare** | Segment / idea / stage | Big-3 learning goals (incl. a scary one), conversation flow with concrete questions, do-not-say list, commitment to ask for, framing message, note-taking setup |
+| **Review questions** | A list of questions or a guide | Verdict per question (✅/⚠️/❌), rule broken, rewrite, missing questions |
+| **Evaluate interview / communication** | Transcript, notes, email, message | Succeeded/failed verdict, facts vs compliments/fluff/ideas, interviewer errors with better lines, missed digs, commitments, next steps |
+| **Evidence audit** | "Everyone loves it", survey results, discovery summary | What is validated / not / unknown, segment and risk checks, cheapest next conversations |
+| **Live coach** | What the person just said | 3 exact follow-up lines (anchor · dig · scary/commitment) |
+| **Batch review** | Notes from several conversations | Themes, consistency/segment check, beliefs updated, next Big 3 |
+
+Replies in the user's language. Book content is paraphrased with chapter pointers in `references/`; skill-specific additions are marked **[skill heuristic]**. Pairs well with `product-discovery-ost` (evidence in, opportunities out).
+
+**Usage:**
+```
+Prepare interviews for amateur basketball coaches to learn how they review games
+```
+```
+Review these questions with the mom test: evals/the-mom-test/inputs/02-question-list.md
+```
+```
+Evaluate this transcript: transcripts/2026-10-01-marta.txt
+```
+```
+They said "seguro que lo compraría" — what do I ask now?
+```
+
+---
+
 ## Bokata Agents
 
 Agents are orchestration wrappers that chain Bokata skills together and handle file I/O automatically. Skills can also be invoked standalone.
@@ -212,6 +246,8 @@ Slice BKC-FEAT-f16d from initiative basket-chess.
 ## Credits & Inspiration
 
 Skills and agents architecture inspired by [eferro/skill-factory](https://github.com/eferro/skill-factory/tree/main).
+
+`the-mom-test` is based on *The Mom Test* by [Rob Fitzpatrick](https://www.momtestbook.com/); the skill is an independent paraphrased working aid, not a substitute for the book.
 
 ## License
 

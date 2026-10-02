@@ -1,0 +1,18 @@
+Entrevista — idea: app para gestionar turnos de limpieza de escaleras en comunidades de vecinos
+Entrevistador (E) / Presidenta de comunidad (P)
+
+E: Hola Marta, gracias por aceptar esta entrevista, solo serán unas preguntas y te dejo seguir con tu día. Estoy montando una app que reparte automáticamente los turnos de limpieza de la escalera y avisa a cada vecino. Creo que va a cambiar la forma de gestionar las comunidades. ¿Qué te parece la idea?
+P: Pues suena muy bien, la verdad. Me encanta.
+E: ¿Usarías una app así?
+P: Sí, seguro que sí. Es una idea muy práctica.
+E: ¿Y pagarías 5 euros al mes por ella?
+P: Hombre, si funciona bien, claro. Cinco euros no es mucho.
+E: Genial. Además la app permite subir fotos de la limpieza, hacer encuestas y votar. ¿Qué es lo que más te gusta?
+P: Lo de votar está bien. Ah, y que tuviera un chat también.
+E: Anotado, lo del chat. Qué bueno que te guste. ¿Qué es lo más difícil de organizar la limpieza?
+P: Ay, el tiempo, siempre voy justa de tiempo. Y los vecinos, que cada uno es de su padre y de su madre.
+E: Ya veo. En una escala del 1 al 5, ¿cuánto dirías que te cuesta convencer a los vecinos?
+P: Un 4, más o menos.
+E: Perfecto. Pues te mando un enlace cuando esté lista la beta para que la pruebes.
+P: Vale, házmelo llegar cuando la tengas, me encantará probarla.
+E: Muchas gracias, ha ido genial.
